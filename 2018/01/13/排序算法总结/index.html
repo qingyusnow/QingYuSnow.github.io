@@ -17,7 +17,7 @@
 
 <script id="hexo-configurations">
     var NexT = window.NexT || {};
-    var CONFIG = {"hostname":"example.com","root":"/","scheme":"Mist","version":"7.8.0","exturl":false,"sidebar":{"position":"right","display":"post","padding":18,"offset":12,"onmobile":false},"copycode":{"enable":false,"show_result":false,"style":null},"back2top":{"enable":true,"sidebar":false,"scrollpercent":false},"bookmark":{"enable":true,"color":"#222","save":"auto"},"fancybox":false,"mediumzoom":false,"lazyload":false,"pangu":false,"comments":{"style":"tabs","active":null,"storage":true,"lazyload":false,"nav":null},"algolia":{"hits":{"per_page":10},"labels":{"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}},"localsearch":{"enable":false,"trigger":"auto","top_n_per_article":1,"unescape":false,"preload":false},"motion":{"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}}};
+    var CONFIG = {"hostname":"example.com","root":"/","scheme":"Mist","version":"7.8.0","exturl":false,"sidebar":{"position":"right","display":"post","padding":18,"offset":12,"onmobile":false},"copycode":{"enable":false,"show_result":false,"style":null},"back2top":{"enable":true,"sidebar":false,"scrollpercent":false},"bookmark":{"enable":false,"color":"#222","save":"auto"},"fancybox":false,"mediumzoom":false,"lazyload":false,"pangu":false,"comments":{"style":"tabs","active":null,"storage":true,"lazyload":false,"nav":null},"algolia":{"hits":{"per_page":10},"labels":{"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}},"localsearch":{"enable":true,"trigger":"auto","top_n_per_article":1,"unescape":false,"preload":false},"motion":{"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}},"path":"search.xml"};
   </script>
 
   <meta name="description" content="排序算法一直以来是我学的比较乱的一个部分，分不太清很多常用算法的特点。这次趁着写博客，我仔细捋一捋我听说过的算法。wiki百科上给出了很全的算法目录，我点了点，有一半的算法连名字都没听过，尤其是不实用算法的那五个，就不多做阐述了。 本篇博客排序的适用规模从小到大。">
@@ -41,7 +41,7 @@
 <meta property="og:image" content="http://example.com/2018/01/13/%E6%8E%92%E5%BA%8F%E7%AE%97%E6%B3%95%E6%80%BB%E7%BB%93/HeapSort.gif">
 <meta property="og:image" content="http://example.com/2018/01/13/%E6%8E%92%E5%BA%8F%E7%AE%97%E6%B3%95%E6%80%BB%E7%BB%93/sort.png">
 <meta property="article:published_time" content="2018-01-13T11:10:39.000Z">
-<meta property="article:modified_time" content="2020-10-14T03:34:12.911Z">
+<meta property="article:modified_time" content="2020-10-16T06:35:21.399Z">
 <meta property="article:author" content="希夏">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:image" content="http://example.com/2018/01/13/%E6%8E%92%E5%BA%8F%E7%AE%97%E6%B3%95%E6%80%BB%E7%BB%93/BubbleSort.gif">
@@ -121,6 +121,7 @@
 
   <div class="site-nav-right">
     <div class="toggle popup-trigger">
+        <i class="fa fa-search fa-fw fa-lg"></i>
     </div>
   </div>
 </div>
@@ -135,16 +136,53 @@
     <a href="/" rel="section"><i class="fa fa-home fa-fw"></i>首页</a>
 
   </li>
+        <li class="menu-item menu-item-about">
+
+    <a href="/about/" rel="section"><i class="fa fa-user fa-fw"></i>关于</a>
+
+  </li>
+        <li class="menu-item menu-item-categories">
+
+    <a href="/categories/" rel="section"><i class="fa fa-th fa-fw"></i>分类</a>
+
+  </li>
         <li class="menu-item menu-item-archives">
 
     <a href="/archives/" rel="section"><i class="fa fa-archive fa-fw"></i>归档</a>
 
   </li>
+      <li class="menu-item menu-item-search">
+        <a role="button" class="popup-trigger"><i class="fa fa-search fa-fw"></i>搜索
+        </a>
+      </li>
   </ul>
 </nav>
 
 
 
+  <div class="search-pop-overlay">
+    <div class="popup search-popup">
+        <div class="search-header">
+  <span class="search-icon">
+    <i class="fa fa-search"></i>
+  </span>
+  <div class="search-input-container">
+    <input autocomplete="off" autocapitalize="off"
+           placeholder="搜索..." spellcheck="false"
+           type="search" class="search-input">
+  </div>
+  <span class="popup-btn-close">
+    <i class="fa fa-times-circle"></i>
+  </span>
+</div>
+<div id="search-result">
+  <div id="no-result">
+    <i class="fa fa-spinner fa-pulse fa-5x fa-fw"></i>
+  </div>
+</div>
+
+    </div>
+  </div>
 
 </div>
     </header>
@@ -154,8 +192,6 @@
     <i class="fa fa-arrow-up"></i>
     <span>0%</span>
   </div>
-  <div class="reading-progress-bar"></div>
-  <a role="button" class="book-mark-link book-mark-link-fixed"></a>
 
 
     <main class="main">
@@ -200,7 +236,7 @@
                   <i class="far fa-calendar-check"></i>
                 </span>
                 <span class="post-meta-item-text">更新于</span>
-                <time title="修改时间：2020-10-14 11:34:12" itemprop="dateModified" datetime="2020-10-14T11:34:12+08:00">2020-10-14</time>
+                <time title="修改时间：2020-10-16 14:35:21" itemprop="dateModified" datetime="2020-10-16T14:35:21+08:00">2020-10-16</time>
               </span>
             <span class="post-meta-item">
               <span class="post-meta-item-icon">
@@ -212,7 +248,21 @@
                 </span>
             </span>
 
-          
+          <br>
+            <span class="post-meta-item" title="本文字数">
+              <span class="post-meta-item-icon">
+                <i class="far fa-file-word"></i>
+              </span>
+                <span class="post-meta-item-text">本文字数：</span>
+              <span>8.1k</span>
+            </span>
+            <span class="post-meta-item" title="阅读时长">
+              <span class="post-meta-item-icon">
+                <i class="far fa-clock"></i>
+              </span>
+                <span class="post-meta-item-text">阅读时长 &asymp;</span>
+              <span>7 分钟</span>
+            </span>
 
         </div>
       </header>
@@ -226,12 +276,11 @@
         <p>排序算法一直以来是我学的比较乱的一个部分，分不太清很多常用算法的特点。这次趁着写博客，我仔细捋一捋我听说过的算法。wiki百科上给出了很全的算法目录，我点了点，有一半的算法连名字都没听过，尤其是不实用算法的那五个，就不多做阐述了。</p>
 <p>本篇博客排序的适用规模从小到大。</p>
 <a id="more"></a>
-
 <h1 id="序"><a href="#序" class="headerlink" title="序"></a>序</h1><p>在讲解算法之前，要先考虑清楚，一个算法孰优孰劣，应该有怎样的评判标准。我觉得wiki百科上给出的几点很明确了，我就在这里直接引用了。</p>
 <p>评判标准：</p>
 <blockquote>
 <ul>
-<li><strong>计算的时间复杂度</strong>：（最差、最优及平均），依据列表的大小(n)。一般而言，好的性能是O($nlogn$)，坏的性能是O($n^2$)。</li>
+<li><strong>计算的时间复杂度</strong>：（最差、最优及平均），依据列表的大小($n$)。一般而言，好的性能是$O(nlogn)$，坏的性能是$O(n^2)$。</li>
 <li><strong>内存使用量</strong>：以及其他电脑资源的使用</li>
 <li><strong>稳定性</strong>：稳定排序算法会让原本有相同键值的记录维持相对次序。比如说5，2，5，6，排完序后第一个5依然在第二个5之前，称稳定。但很多情况下，排列的元素并不会只是一个数字，多数为有很多属性的元素，所以稳定性就显得格外重要。</li>
 </ul>
@@ -241,114 +290,103 @@
 <p><strong>计算的时间复杂度</strong>：</p>
 <blockquote>
 <ul>
-<li>最坏：O($n^2$)</li>
-<li>最优：O(n)</li>
-<li>平均：O($n^2$)</li>
+<li>最坏：$O(n^2)$</li>
+<li>最优：$O(n)$</li>
+<li>平均：$O(n^2)$</li>
 </ul>
 </blockquote>
 <p><strong>内存使用量</strong>：</p>
 <blockquote>
 <ul>
-<li>空间复杂度：需要辅助空间O(1)</li>
+<li>空间复杂度：需要辅助空间$O(1)$</li>
 </ul>
 </blockquote>
 <p><strong>稳定性</strong>：<strong>稳定</strong></p>
 <p><strong>特点</strong>：简单，稳定，但效率低下。</p>
-<p>Java代码：</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><span class="line">public static void bubbleSort(int arr[]) &#123;</span><br><span class="line">        int len &#x3D; arr.length;</span><br><span class="line">        for(int i &#x3D; 0; i &lt; len - 1; i++) &#123;</span><br><span class="line">            for(int j &#x3D; 0; j &lt; len - 1 - i; j++) &#123;</span><br><span class="line">                if(arr[j] &gt; arr[j + 1]) &#123;</span><br><span class="line">                    int temp &#x3D; arr[j];</span><br><span class="line">                    arr[j] &#x3D; arr[j + 1];</span><br><span class="line">                    arr[j + 1] &#x3D; temp;</span><br><span class="line">                &#125;</span><br><span class="line">            &#125;</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br></pre></td></tr></table></figure>
-
+<p>Java代码：<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><span class="line">public static void bubbleSort(int arr[]) &#123;</span><br><span class="line">        int len &#x3D; arr.length;</span><br><span class="line">        for(int i &#x3D; 0; i &lt; len - 1; i++) &#123;</span><br><span class="line">            for(int j &#x3D; 0; j &lt; len - 1 - i; j++) &#123;</span><br><span class="line">                if(arr[j] &gt; arr[j + 1]) &#123;</span><br><span class="line">                    int temp &#x3D; arr[j];</span><br><span class="line">                    arr[j] &#x3D; arr[j + 1];</span><br><span class="line">                    arr[j + 1] &#x3D; temp;</span><br><span class="line">                &#125;</span><br><span class="line">            &#125;</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br></pre></td></tr></table></figure></p>
 <p><strong>示意图</strong>：</p>
-<p><img src="/2018/01/13/%E6%8E%92%E5%BA%8F%E7%AE%97%E6%B3%95%E6%80%BB%E7%BB%93/BubbleSort.gif"></p>
+<p><img src="/2018/01/13/%E6%8E%92%E5%BA%8F%E7%AE%97%E6%B3%95%E6%80%BB%E7%BB%93/BubbleSort.gif" alt></p>
 <p><strong>鸡尾酒排序</strong></p>
 <p>鸡尾酒排序属于冒泡排序的一种变形，不同的是冒泡每次循环是单向，但鸡尾酒是双向。</p>
-<p>大部分特点与冒泡排序一样。若排序是大部分已经排序过的话，会接近O(n)。</p>
+<p>大部分特点与冒泡排序一样。若排序是大部分已经排序过的话，会接近$O(n)$。</p>
 <p><strong>示意图</strong>：</p>
-<p><img src="/2018/01/13/%E6%8E%92%E5%BA%8F%E7%AE%97%E6%B3%95%E6%80%BB%E7%BB%93/CocktailSort.gif"></p>
+<p><img src="/2018/01/13/%E6%8E%92%E5%BA%8F%E7%AE%97%E6%B3%95%E6%80%BB%E7%BB%93/CocktailSort.gif" alt></p>
 <h1 id="选择排序"><a href="#选择排序" class="headerlink" title="选择排序"></a>选择排序</h1><p>工作原理：首先在未排序序列中找到最小（大）元素，存放到排序序列的起始位置，然后，再从剩余未排序元素中继续寻找最小（大）元素，然后放到已排序序列的末尾。以此类推，直到所有元素均排序完毕。</p>
 <p>算法描述：<br>1、将未排序序列的第一个元素标记为最小值<br>2、遍历当前未排序序列，找出最小值并标记<br>3、将最小值放至已排序序列末尾<br>4、重复1、2、3，直至未排序序列为空</p>
 <p><strong>计算的时间复杂度</strong>：</p>
 <blockquote>
 <ul>
-<li>最优、最差及平均：O($n^2$)</li>
+<li>最优、最差及平均：$O(n^2)$</li>
 </ul>
 </blockquote>
 <p><strong>内存使用量</strong>：</p>
 <blockquote>
 <ul>
-<li>空间复杂度：需要辅助空间O(1)</li>
+<li>空间复杂度：需要辅助空间$O(1)$</li>
 </ul>
 </blockquote>
 <p><strong>稳定性</strong>：<strong>不稳定</strong></p>
 <p><strong>特点</strong>：数据量较小时，选择排序比冒泡排序要快。原地操作几乎是选择排序的唯一优点，空间复杂度要求较高时，可选择此排序；然而实际应用比较罕见。</p>
-<p>Java代码：</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br></pre></td><td class="code"><pre><span class="line">public static void selectionSort(int[] arr) &#123;</span><br><span class="line">        int i, j, min, temp, len &#x3D; arr.length;</span><br><span class="line">        for (i &#x3D; 0; i &lt; len - 1; i++) &#123;</span><br><span class="line">            min &#x3D; i;&#x2F;&#x2F;未排序序列中最小数据数组下标</span><br><span class="line">            for (j &#x3D; i + 1; j &lt; len; j++)&#x2F;&#x2F;在未排序元素中继续寻找最小元素，并保存其下标</span><br><span class="line">                if (arr[min] &gt; arr[j]) &#123;</span><br><span class="line">                    min &#x3D; j;</span><br><span class="line">                &#125;</span><br><span class="line">            temp &#x3D; arr[min]; &#x2F;&#x2F;将最小元素放到已排序序列的末尾</span><br><span class="line">            arr[min] &#x3D; arr[i];</span><br><span class="line">            arr[i] &#x3D; temp;</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br></pre></td></tr></table></figure>
-
+<p>Java代码：<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br></pre></td><td class="code"><pre><span class="line">public static void selectionSort(int[] arr) &#123;</span><br><span class="line">        int i, j, min, temp, len &#x3D; arr.length;</span><br><span class="line">        for (i &#x3D; 0; i &lt; len - 1; i++) &#123;</span><br><span class="line">            min &#x3D; i;&#x2F;&#x2F;未排序序列中最小数据数组下标</span><br><span class="line">            for (j &#x3D; i + 1; j &lt; len; j++)&#x2F;&#x2F;在未排序元素中继续寻找最小元素，并保存其下标</span><br><span class="line">                if (arr[min] &gt; arr[j]) &#123;</span><br><span class="line">                    min &#x3D; j;</span><br><span class="line">                &#125;</span><br><span class="line">            temp &#x3D; arr[min]; &#x2F;&#x2F;将最小元素放到已排序序列的末尾</span><br><span class="line">            arr[min] &#x3D; arr[i];</span><br><span class="line">            arr[i] &#x3D; temp;</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br></pre></td></tr></table></figure></p>
 <p><strong>示意图</strong>：</p>
-<p><img src="/2018/01/13/%E6%8E%92%E5%BA%8F%E7%AE%97%E6%B3%95%E6%80%BB%E7%BB%93/SelectionSort.gif"></p>
+<p><img src="/2018/01/13/%E6%8E%92%E5%BA%8F%E7%AE%97%E6%B3%95%E6%80%BB%E7%BB%93/SelectionSort.gif" alt></p>
 <h1 id="插入排序"><a href="#插入排序" class="headerlink" title="插入排序"></a>插入排序</h1><p>工作原理：通过构建有序序列，对于未排序数据，在已排序序列中从后向前扫描，找到相应位置并插入。其实插入排序的过程与玩手牌一样，从后往前查看比较，找到相应的位置插入即可。</p>
 <p>算法描述：<br>1、从第一个元素开始，可以认为它已被排序<br>2、取出下一个元素，在已排序序列中从后往前扫描<br>3、若某元素大于新元素，将该元素移至下一位置，如此重复，直至找到小于新元素的位置，将新元素插入该位置后<br>4、重复操作3</p>
 <p><strong>计算的时间复杂度</strong>：</p>
 <blockquote>
 <ul>
-<li>最坏：O($n^2$)</li>
-<li>最优：O(n)</li>
-<li>平均：O($n^2$)</li>
+<li>最坏：$O(n^2)$</li>
+<li>最优：$O(n)$</li>
+<li>平均：$O(n^2)$</li>
 </ul>
 </blockquote>
 <p><strong>内存使用量</strong>：</p>
 <blockquote>
 <ul>
-<li>空间复杂度：需要辅助空间O(1)</li>
+<li>空间复杂度：需要辅助空间$O(1)$</li>
 </ul>
 </blockquote>
 <p><strong>稳定性</strong>：<strong>稳定</strong></p>
 <p><strong>特点</strong>：不适合数据量比较大的排序应用。如果数据量小于千，或输入元素大致上按顺序排列，那么插入排序是一个不错的选择。</p>
-<p>Java代码：</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line">public static void insertionSort(int[] arr) &#123;</span><br><span class="line">        for(int i &#x3D; 0; i&lt;arr.length-1; i++) &#123;</span><br><span class="line">            for(int j &#x3D; i + 1; j &gt; 0; j--) &#123;</span><br><span class="line">                if(arr[j - 1] &lt;&#x3D; arr[j])</span><br><span class="line">                    break;</span><br><span class="line">                int temp &#x3D; arr[j];</span><br><span class="line">                arr[j] &#x3D; arr[j - 1];</span><br><span class="line">                arr[j - 1] &#x3D; temp;</span><br><span class="line">            &#125;</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br></pre></td></tr></table></figure>
-
+<p>Java代码：<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line">public static void insertionSort(int[] arr) &#123;</span><br><span class="line">        for(int i &#x3D; 0; i&lt;arr.length-1; i++) &#123;</span><br><span class="line">            for(int j &#x3D; i + 1; j &gt; 0; j--) &#123;</span><br><span class="line">                if(arr[j - 1] &lt;&#x3D; arr[j])</span><br><span class="line">                    break;</span><br><span class="line">                int temp &#x3D; arr[j];</span><br><span class="line">                arr[j] &#x3D; arr[j - 1];</span><br><span class="line">                arr[j - 1] &#x3D; temp;</span><br><span class="line">            &#125;</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br></pre></td></tr></table></figure></p>
 <p><strong>示意图</strong>：</p>
-<p><img src="/2018/01/13/%E6%8E%92%E5%BA%8F%E7%AE%97%E6%B3%95%E6%80%BB%E7%BB%93/InsertionSort-example.gif"></p>
-<p><img src="/2018/01/13/%E6%8E%92%E5%BA%8F%E7%AE%97%E6%B3%95%E6%80%BB%E7%BB%93/InsertionSort.gif"></p>
+<p><img src="/2018/01/13/%E6%8E%92%E5%BA%8F%E7%AE%97%E6%B3%95%E6%80%BB%E7%BB%93/InsertionSort-example.gif" alt></p>
+<p><img src="/2018/01/13/%E6%8E%92%E5%BA%8F%E7%AE%97%E6%B3%95%E6%80%BB%E7%BB%93/InsertionSort.gif" alt></p>
 <h1 id="希尔排序"><a href="#希尔排序" class="headerlink" title="希尔排序"></a>希尔排序</h1><p>也称递减增量排序算法，是插入排序的一种更高效的改进版本。</p>
 <p>工作原理：将比较的全部元素分为几个区域来提升插入排序的性能。这样可以让一个元素一次性地朝最终位置前进一大步，然后算法再取越来越小的步长进行排序，到最后一步，即变成了普通的插入排序。不过在最后，所有数据基本已经排序好了。</p>
 <p>算法描述：<br>例如，假设有这样一组数[ 13 14 94 33 82 25 59 94 65 23 45 27 73 25 39 10 ]，如果我们以步长为5开始进行排序，我们可以通过将这列表放在有5列的表中来更好地描述算法，这样他们就应该看起来是这样：</p>
 <figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">13 14 94 33 82</span><br><span class="line">25 59 94 65 23</span><br><span class="line">45 27 73 25 39</span><br><span class="line">10</span><br></pre></td></tr></table></figure>
-
 <p>然后我们对<strong>每列</strong>进行排序：</p>
 <figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">10 14 73 25 23</span><br><span class="line">13 27 94 33 39</span><br><span class="line">25 59 94 65 82</span><br><span class="line">45</span><br></pre></td></tr></table></figure>
-
 <p>然后再以3为步长进行划分：</p>
 <figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">10 14 73</span><br><span class="line">25 23 13</span><br><span class="line">27 94 33</span><br><span class="line">39 25 59</span><br><span class="line">94 65 82</span><br><span class="line">45</span><br></pre></td></tr></table></figure>
-
 <p>排序后：</p>
 <figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">10 14 13</span><br><span class="line">25 23 33</span><br><span class="line">27 25 59</span><br><span class="line">39 65 73</span><br><span class="line">45 94 82</span><br><span class="line">94</span><br></pre></td></tr></table></figure>
-
 <p>最后再以1为步长进行排序，此时就是简单的插入排序了</p>
 <p><strong>重点</strong>：步长的选择是希尔排序的重要部分</p>
-<p>Donald Shell(设计者)最初建议选择步长为n/2</p>
+<p>Donald Shell(设计者)最初建议选择步长为$\frac {n}{2}$</p>
 <p>已知的最好步长序列是（1，5，19，41，109，……）（详情见<a target="_blank" rel="noopener" href="https://zh.wikipedia.org/wiki/%E5%B8%8C%E5%B0%94%E6%8E%92%E5%BA%8F">希尔排序</a>）</p>
 <p><strong>计算的时间复杂度</strong>：</p>
 <blockquote>
 <ul>
-<li>最优：O(n)</li>
-<li>最差：O($(nlogn)^2$)</li>
-<li>平均：O($(nlogn)^2$)</li>
+<li>最优：$O(n)$</li>
+<li>最差：$O((nlogn)^2)$</li>
+<li>平均：$O((nlogn)^2)$</li>
 </ul>
 </blockquote>
 <p><strong>内存使用量</strong>：</p>
 <blockquote>
 <ul>
-<li>空间复杂度：需要辅助空间O(1)</li>
+<li>空间复杂度：需要辅助空间$O(1)$</li>
 </ul>
 </blockquote>
 <p><strong>稳定性</strong>：<strong>不稳定</strong></p>
 <p><strong>特点</strong>：在使用最优步长序列时，比插入排序快。在较小数组中，比快速排序和堆排序还要快。但若涉及大量数据，速度依旧不及快速排序。</p>
 <p>Java代码：</p>
 <figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br></pre></td><td class="code"><pre><span class="line">public static void shellSort(int[] arr) &#123;</span><br><span class="line">	int gap &#x3D; 1, i, j, len &#x3D; arr.length;</span><br><span class="line">	int temp;</span><br><span class="line">	while (gap &lt; len &#x2F; 3)</span><br><span class="line">		gap &#x3D; gap * 3 + 1; </span><br><span class="line">	for (; gap &gt; 0; gap &#x2F;&#x3D; 3)</span><br><span class="line">		for (i &#x3D; gap; i &lt; len; i++) &#123;</span><br><span class="line">			temp &#x3D; arr[i];</span><br><span class="line">			for (j &#x3D; i - gap; j &gt;&#x3D; 0 &amp;&amp; arr[j] &gt; temp; j -&#x3D; gap)</span><br><span class="line">				arr[j + gap] &#x3D; arr[j];</span><br><span class="line">			arr[j + gap] &#x3D; temp;</span><br><span class="line">		&#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-
-<p>这里的代码中的步长取n/3</p>
+<p>这里的代码中的步长取$\frac {n}{3}$</p>
 <p><strong>示意图</strong>：</p>
-<p><img src="/2018/01/13/%E6%8E%92%E5%BA%8F%E7%AE%97%E6%B3%95%E6%80%BB%E7%BB%93/ShellSort.gif"></p>
+<p><img src="/2018/01/13/%E6%8E%92%E5%BA%8F%E7%AE%97%E6%B3%95%E6%80%BB%E7%BB%93/ShellSort.gif" alt></p>
 <h1 id="归并排序"><a href="#归并排序" class="headerlink" title="归并排序"></a>归并排序</h1><p>工作原理：归并排序是采用<a target="_blank" rel="noopener" href="https://zh.wikipedia.org/wiki/%E5%88%86%E6%B2%BB%E6%B3%95">分治法</a>的一个非常典型的应用。归并排序的思想是先递归分解数组，再合并数组。</p>
 <p>算法描述（迭代法）：<br>1、申请空间，使其大小为两个已经排序序列之和，该空间用来存放合并后的序列<br>2、设定两个指针，最初位置分别为两个已经排序序列的起始位置<br>3、比较两个指针所指向的元素，选择相对小的元素放入到合并空间，并移动指针到下一位置<br>4、重复步骤3直到某一指针到达序列尾<br>5、将另一序列剩下的所有元素直接复制到合并序列尾</p>
 <p>合并：基本思路是比较两个数组的最前面的数，谁小就先取谁，取了后相应的指针就往后移一位。然后再比较，直至一个数组为空，最后把另一个数组的剩余部分复制过来即可。</p>
@@ -356,73 +394,69 @@
 <p><strong>计算的时间复杂度</strong>：</p>
 <blockquote>
 <ul>
-<li>最优、最差及平均：O($nlogn$)</li>
+<li>最优、最差及平均：$O(nlogn)$</li>
 </ul>
 </blockquote>
 <p><strong>内存使用量</strong>：</p>
 <blockquote>
 <ul>
-<li>空间复杂度：所需辅助空间O(n)</li>
+<li>空间复杂度：所需辅助空间$O(n)$</li>
 </ul>
 </blockquote>
 <p><strong>稳定性</strong>：<strong>稳定</strong></p>
 <p>Java代码（迭代版）：</p>
 <figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br></pre></td><td class="code"><pre><span class="line">public static void mergeSort(int[] arr) &#123;</span><br><span class="line">    int len &#x3D; arr.length;</span><br><span class="line">    int[] result &#x3D; new int[len];</span><br><span class="line">    int block, start;</span><br><span class="line">    </span><br><span class="line">    &#x2F;&#x2F; 原版代码的迭代次数少了一次，没有考虑到奇数列数组的情况</span><br><span class="line">    for(block &#x3D; 1; block &lt; len; block *&#x3D; 2) &#123;</span><br><span class="line">        for(start &#x3D; 0; start &lt;len; start +&#x3D; 2 * block) &#123;</span><br><span class="line">            int low &#x3D; start;</span><br><span class="line">            int mid &#x3D; (start + block) &lt; len ? (start + block) : len;</span><br><span class="line">            int high &#x3D; (start + 2 * block) &lt; len ? (start + 2 * block) : len;</span><br><span class="line">            &#x2F;&#x2F;两个块的起始下标及结束下标</span><br><span class="line">            int start1 &#x3D; low, end1 &#x3D; mid;</span><br><span class="line">            int start2 &#x3D; mid, end2 &#x3D; high;</span><br><span class="line">            &#x2F;&#x2F;开始对两个block进行归并排序</span><br><span class="line">            while (start1 &lt; end1 &amp;&amp; start2 &lt; end2) &#123;</span><br><span class="line">	        result[low++] &#x3D; arr[start1] &lt; arr[start2] ? arr[start1++] : arr[start2++];</span><br><span class="line">            &#125;</span><br><span class="line">            while(start1 &lt; end1) &#123;</span><br><span class="line">	        result[low++] &#x3D; arr[start1++];</span><br><span class="line">            &#125;</span><br><span class="line">            while(start2 &lt; end2) &#123;</span><br><span class="line">	        result[low++] &#x3D; arr[start2++];</span><br><span class="line">            &#125;</span><br><span class="line">        &#125;</span><br><span class="line">	int[] temp &#x3D; arr;</span><br><span class="line">	arr &#x3D; result;</span><br><span class="line">	result &#x3D; temp;</span><br><span class="line">    &#125;</span><br><span class="line">    result &#x3D; arr;       </span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-
 <p><strong>示意图</strong>：</p>
-<p><img src="/2018/01/13/%E6%8E%92%E5%BA%8F%E7%AE%97%E6%B3%95%E6%80%BB%E7%BB%93/MergeSort-example.gif"></p>
-<p><img src="/2018/01/13/%E6%8E%92%E5%BA%8F%E7%AE%97%E6%B3%95%E6%80%BB%E7%BB%93/MergeSort.gif"></p>
+<p><img src="/2018/01/13/%E6%8E%92%E5%BA%8F%E7%AE%97%E6%B3%95%E6%80%BB%E7%BB%93/MergeSort-example.gif" alt></p>
+<p><img src="/2018/01/13/%E6%8E%92%E5%BA%8F%E7%AE%97%E6%B3%95%E6%80%BB%E7%BB%93/MergeSort.gif" alt></p>
 <h1 id="快速排序"><a href="#快速排序" class="headerlink" title="快速排序"></a>快速排序</h1><p>工作原理：快速排序主要采取分治法，将大问题逐步划分为小问题，逐个解决。</p>
 <p>算法描述：<br>1、从数列中挑出一个元素，称为“基准”。<br>2、分区：所有比基准值小的元素摆在基准前面，所有比基准值大的元素摆在基准后面。分区结束时，基准应位于数列中间。<br>3、对左右区间递归执行操作2，直至各区间只有一个数。</p>
 <p><strong>计算的时间复杂度</strong>：</p>
 <blockquote>
 <ul>
-<li>最坏：O($n^2$)</li>
-<li>最优：O($nlogn$)</li>
-<li>平均：O($nlogn$)</li>
+<li>最坏：$O(n^2)$</li>
+<li>最优：$O(nlogn)$</li>
+<li>平均：$O(nlogn)$</li>
 </ul>
 </blockquote>
 <p><strong>内存使用量</strong>：</p>
 <blockquote>
 <ul>
-<li>空间复杂度：需要辅助空间O($logn$)</li>
+<li>空间复杂度：需要辅助空间$O(logn)$</li>
 </ul>
 </blockquote>
 <p><strong>稳定性</strong>：<strong>不稳定</strong></p>
-<p><strong>特点</strong>：通常情况下，快速排序比其他O($nlogn$)算法更快。</p>
-<p>Java代码：</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br></pre></td><td class="code"><pre><span class="line">public static void quickSort(int arr[],int head,int tail) &#123;</span><br><span class="line">        if (head &gt;&#x3D; tail || arr &#x3D;&#x3D; null || arr.length &lt;&#x3D; 1) &#123;</span><br><span class="line">            return;</span><br><span class="line">        &#125;</span><br><span class="line">        int i &#x3D; head, j &#x3D; tail, pivot &#x3D; arr[(head + tail) &#x2F; 2];</span><br><span class="line">        while (i &lt;&#x3D; j) &#123;</span><br><span class="line">            while (arr[i] &lt; pivot) &#123;</span><br><span class="line">                ++i;</span><br><span class="line">            &#125;</span><br><span class="line">            while (arr[j] &gt; pivot) &#123;</span><br><span class="line">                --j;</span><br><span class="line">            &#125;</span><br><span class="line">            if (i &lt; j) &#123;</span><br><span class="line">                int t &#x3D; arr[i];</span><br><span class="line">                arr[i] &#x3D; arr[j];</span><br><span class="line">                arr[j] &#x3D; t;</span><br><span class="line">                ++i;</span><br><span class="line">                --j;</span><br><span class="line">            &#125; else if (i &#x3D;&#x3D; j) &#123;</span><br><span class="line">                ++i;</span><br><span class="line">            &#125;</span><br><span class="line">        &#125;</span><br><span class="line">        quickSort(arr, head, j);</span><br><span class="line">        quickSort(arr, i, tail);</span><br><span class="line">    &#125;</span><br></pre></td></tr></table></figure>
-
+<p><strong>特点</strong>：通常情况下，快速排序比其他$O(nlogn)$算法更快。</p>
+<p>Java代码：<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br></pre></td><td class="code"><pre><span class="line">public static void quickSort(int arr[],int head,int tail) &#123;</span><br><span class="line">        if (head &gt;&#x3D; tail || arr &#x3D;&#x3D; null || arr.length &lt;&#x3D; 1) &#123;</span><br><span class="line">            return;</span><br><span class="line">        &#125;</span><br><span class="line">        int i &#x3D; head, j &#x3D; tail, pivot &#x3D; arr[(head + tail) &#x2F; 2];</span><br><span class="line">        while (i &lt;&#x3D; j) &#123;</span><br><span class="line">            while (arr[i] &lt; pivot) &#123;</span><br><span class="line">                ++i;</span><br><span class="line">            &#125;</span><br><span class="line">            while (arr[j] &gt; pivot) &#123;</span><br><span class="line">                --j;</span><br><span class="line">            &#125;</span><br><span class="line">            if (i &lt; j) &#123;</span><br><span class="line">                int t &#x3D; arr[i];</span><br><span class="line">                arr[i] &#x3D; arr[j];</span><br><span class="line">                arr[j] &#x3D; t;</span><br><span class="line">                ++i;</span><br><span class="line">                --j;</span><br><span class="line">            &#125; else if (i &#x3D;&#x3D; j) &#123;</span><br><span class="line">                ++i;</span><br><span class="line">            &#125;</span><br><span class="line">        &#125;</span><br><span class="line">        quickSort(arr, head, j);</span><br><span class="line">        quickSort(arr, i, tail);</span><br><span class="line">    &#125;</span><br></pre></td></tr></table></figure></p>
 <p><strong>示意图</strong>：</p>
-<p><img src="/2018/01/13/%E6%8E%92%E5%BA%8F%E7%AE%97%E6%B3%95%E6%80%BB%E7%BB%93/QuickSort-example.gif"></p>
-<p><img src="/2018/01/13/%E6%8E%92%E5%BA%8F%E7%AE%97%E6%B3%95%E6%80%BB%E7%BB%93/QuickSort.gif"></p>
+<p><img src="/2018/01/13/%E6%8E%92%E5%BA%8F%E7%AE%97%E6%B3%95%E6%80%BB%E7%BB%93/QuickSort-example.gif" alt></p>
+<p><img src="/2018/01/13/%E6%8E%92%E5%BA%8F%E7%AE%97%E6%B3%95%E6%80%BB%E7%BB%93/QuickSort.gif" alt></p>
 <h1 id="堆排序"><a href="#堆排序" class="headerlink" title="堆排序"></a>堆排序</h1><p>顾名思义，堆排序是利用堆这种数据结构所设计的一种排序算法，采用的是<a target="_blank" rel="noopener" href="https://zh.wikipedia.org/wiki/%E4%BA%8C%E5%8F%89%E5%A0%86">二叉堆</a>。</p>
 <p><strong>二叉堆性质</strong>：<br>1、父节点的键值总是大于或等于（小于或等于）任何一个子节点的键值。<br>2、每个节点的左右子树都是一个二叉堆（都是最大堆或最小堆）。</p>
-<p>算法描述：<br>1、构造最大堆（Build_Max_Heap）：若数组下标范围为0~n，考虑到单独一个元素是大根堆，则从下标n/2开始的元素均为大根堆。于是只要从n/2-1开始，向前依次构造大根堆，这样就能保证，构造到某个节点时，它的左右子树都已经是大根堆。</p>
-<p>2、堆排序（HeapSort）：由于堆是用数组模拟的。得到一个大根堆后，数组内部并不是有序的。因此需要将堆化数组有序化。思想是移除根节点，并做最大堆调整的递归运算。第一次将heap[0]与heap[n-1]交换，再对heap[0…n-2]做最大堆调整。第二次将heap[0]与heap[n-2]交换，再对heap[0…n-3]做最大堆调整。重复该操作直至heap[0]和heap[1]交换。由于每次都是将最大的数并入到后面的有序区间，故操作完后整个数组就是有序的了。</p>
+<p>算法描述：<br>1、构造最大堆（Build_Max_Heap）：若数组下标范围为0~$n$，考虑到单独一个元素是大根堆，则从下标$\frac {n}{2}$开始的元素均为大根堆。于是只要从$\frac {n}{2}-1$开始，向前依次构造大根堆，这样就能保证，构造到某个节点时，它的左右子树都已经是大根堆。</p>
+<p>2、堆排序（HeapSort）：由于堆是用数组模拟的。得到一个大根堆后，数组内部并不是有序的。因此需要将堆化数组有序化。思想是移除根节点，并做最大堆调整的递归运算。第一次将heap[0]与heap[$n$-1]交换，再对heap[0…$n$-2]做最大堆调整。第二次将heap[0]与heap[$n$-2]交换，再对heap[0…$n$-3]做最大堆调整。重复该操作直至heap[0]和heap[1]交换。由于每次都是将最大的数并入到后面的有序区间，故操作完后整个数组就是有序的了。</p>
 <p>3、最大堆调整（Max_Heapify）：该方法是提供给上述两个过程调用的。目的是将堆的末端子节点作调整，使得子节点永远小于父节点 。</p>
 <p>上面这个是从大佬的博客拷来的步骤，说实话，太官方太仔细了些，我看不太懂。不过我看了几遍大佬博客下面的示意图后，明白了大概步骤，下面就整理一下。</p>
 <p>步骤：<br>1、将数组构造为最大堆，在构造的过程中每一步都要检测当前堆是否为最大堆，如果不是，则进行调整<br>2、将第一个根节点与末节点互换后，移除末节点。移除出的末节点，就是堆中的最大数。<br>3、重新构建最大堆<br>4、重复步骤2、3，直至堆只有一个节点后再移除，则得到排列好的序列</p>
 <p><strong>计算的时间复杂度</strong>：</p>
 <blockquote>
 <ul>
-<li>最优、最差及平均：O($nlogn$)</li>
+<li>最优、最差及平均：$O(nlogn)$</li>
 </ul>
 </blockquote>
 <p><strong>内存使用量</strong>：</p>
 <blockquote>
 <ul>
-<li>空间复杂度：所需辅助空间O(n)</li>
+<li>空间复杂度：所需辅助空间$O(n)$</li>
 </ul>
 </blockquote>
 <p><strong>稳定性</strong>：<strong>不稳定</strong></p>
 <p>Java代码：</p>
 <figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br><span class="line">63</span><br><span class="line">64</span><br><span class="line">65</span><br><span class="line">66</span><br><span class="line">67</span><br><span class="line">68</span><br><span class="line">69</span><br><span class="line">70</span><br><span class="line">71</span><br><span class="line">72</span><br><span class="line">73</span><br><span class="line">74</span><br><span class="line">75</span><br></pre></td><td class="code"><pre><span class="line">public class HeapSort &#123;</span><br><span class="line">    </span><br><span class="line">    private int[] arr;</span><br><span class="line">    </span><br><span class="line">    public HeapSort(int[] arr)&#123;</span><br><span class="line">        this.arr &#x3D; arr;</span><br><span class="line">    &#125;</span><br><span class="line">    </span><br><span class="line">    &#x2F;**</span><br><span class="line">     * 堆排序的主要入口方法，共两步。</span><br><span class="line">     *&#x2F;</span><br><span class="line">    public void sort()&#123;</span><br><span class="line">        &#x2F;*</span><br><span class="line">         *  第一步：将数组堆化</span><br><span class="line">         *  beginIndex &#x3D; 第一个非叶子节点。</span><br><span class="line">         *  从第一个非叶子节点开始即可。无需从最后一个叶子节点开始。</span><br><span class="line">         *  叶子节点可以看作已符合堆要求的节点，根节点就是它自己且自己以下值为最大。</span><br><span class="line">         *&#x2F;</span><br><span class="line">        int len &#x3D; arr.length - 1;</span><br><span class="line">        int beginIndex &#x3D; (len - 1) &gt;&gt; 1; </span><br><span class="line">        for(int i &#x3D; beginIndex; i &gt;&#x3D; 0; i--)&#123;</span><br><span class="line">            maxHeapify(i, len);</span><br><span class="line">        &#125;</span><br><span class="line">        </span><br><span class="line">        &#x2F;*</span><br><span class="line">         * 第二步：对堆化数据排序</span><br><span class="line">         * 每次都是移出最顶层的根节点A[0]，与最尾部节点位置调换，同时遍历长度 - 1。</span><br><span class="line">         * 然后从新整理被换到根节点的末尾元素，使其符合堆的特性。</span><br><span class="line">         * 直至未排序的堆长度为 0。</span><br><span class="line">         *&#x2F;</span><br><span class="line">        for(int i &#x3D; len; i &gt; 0; i--)&#123;</span><br><span class="line">            swap(0, i);</span><br><span class="line">            maxHeapify(0, i - 1);</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line">    </span><br><span class="line">    private void swap(int i,int j)&#123;</span><br><span class="line">        int temp &#x3D; arr[i];</span><br><span class="line">        arr[i] &#x3D; arr[j];</span><br><span class="line">        arr[j] &#x3D; temp;</span><br><span class="line">    &#125;</span><br><span class="line">    </span><br><span class="line">    &#x2F;**</span><br><span class="line">     * 调整索引为 index 处的数据，使其符合堆的特性。</span><br><span class="line">     * </span><br><span class="line">     * @param index 需要堆化处理的数据的索引</span><br><span class="line">     * @param len 未排序的堆（数组）的长度</span><br><span class="line">     *&#x2F;</span><br><span class="line">    private void maxHeapify(int index,int len)&#123;</span><br><span class="line">        int li &#x3D; (index &lt;&lt; 1) + 1; &#x2F;&#x2F; 左子节点索引</span><br><span class="line">        int ri &#x3D; li + 1;           &#x2F;&#x2F; 右子节点索引</span><br><span class="line">        int cMax &#x3D; li;             &#x2F;&#x2F; 子节点值最大索引，默认左子节点。</span><br><span class="line">        </span><br><span class="line">        if(li &gt; len) return;       &#x2F;&#x2F; 左子节点索引超出计算范围，直接返回。</span><br><span class="line">        if(ri &lt;&#x3D; len &amp;&amp; arr[ri] &gt; arr[li]) &#x2F;&#x2F; 先判断左右子节点，哪个较大。</span><br><span class="line">            cMax &#x3D; ri;</span><br><span class="line">        if(arr[cMax] &gt; arr[index])&#123;</span><br><span class="line">            swap(cMax, index);      &#x2F;&#x2F; 如果父节点被子节点调换，</span><br><span class="line">            maxHeapify(cMax, len);  &#x2F;&#x2F; 则需要继续判断换下后的父节点是否符合堆的特性。</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line">    </span><br><span class="line">    &#x2F;**</span><br><span class="line">     * 测试用例</span><br><span class="line">     * </span><br><span class="line">     * 输出：</span><br><span class="line">     * [0, 0, 0, 1, 1, 1, 2, 2, 2, 3, 3, 3, 4, 4, 4, 5, 5, 5, 6, 6, 6, 7, 7, 7, 8, 8, 8, 9, 9, 9]</span><br><span class="line">     *&#x2F;</span><br><span class="line">    public static void main(String[] args) &#123;</span><br><span class="line">        int[] arr &#x3D; new int[]&#123;3,5,3,0,8,6,1,5,8,6,2,4,9,4,7,0,1,8,9,7,3,1,2,5,9,7,4,0,2,6&#125;;        </span><br><span class="line">        new HeapSort(arr).sort();        </span><br><span class="line">        System.out.println(Arrays.toString(arr));</span><br><span class="line">    &#125;</span><br><span class="line">    </span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-
 <p><strong>示意图</strong>：</p>
-<p><img src="/2018/01/13/%E6%8E%92%E5%BA%8F%E7%AE%97%E6%B3%95%E6%80%BB%E7%BB%93/Heapsort-example.gif"></p>
-<p><img src="/2018/01/13/%E6%8E%92%E5%BA%8F%E7%AE%97%E6%B3%95%E6%80%BB%E7%BB%93/HeapSort.gif"></p>
-<h1 id="总结"><a href="#总结" class="headerlink" title="总结"></a>总结</h1><p><img src="/2018/01/13/%E6%8E%92%E5%BA%8F%E7%AE%97%E6%B3%95%E6%80%BB%E7%BB%93/sort.png"></p>
+<p><img src="/2018/01/13/%E6%8E%92%E5%BA%8F%E7%AE%97%E6%B3%95%E6%80%BB%E7%BB%93/Heapsort-example.gif" alt></p>
+<p><img src="/2018/01/13/%E6%8E%92%E5%BA%8F%E7%AE%97%E6%B3%95%E6%80%BB%E7%BB%93/HeapSort.gif" alt></p>
+<h1 id="总结"><a href="#总结" class="headerlink" title="总结"></a>总结</h1><p><img src="/2018/01/13/%E6%8E%92%E5%BA%8F%E7%AE%97%E6%B3%95%E6%80%BB%E7%BB%93/sort.png" alt></p>
 <p>PS：</p>
 <blockquote>
 <ul>
@@ -533,8 +567,10 @@
         </a>
       </div>
       <div class="site-state-item site-state-categories">
-        <span class="site-state-item-count">5</span>
-        <span class="site-state-item-name">分类</span>
+            <a href="/categories/">
+          
+        <span class="site-state-item-count">4</span>
+        <span class="site-state-item-name">分类</span></a>
       </div>
   </nav>
 </div>
@@ -565,6 +601,16 @@
     <i class="fa fa-heart"></i>
   </span>
   <span class="author" itemprop="copyrightHolder">希夏</span>
+    <span class="post-meta-divider">|</span>
+    <span class="post-meta-item-icon">
+      <i class="fa fa-chart-area"></i>
+    </span>
+    <span title="站点总字数">62k</span>
+    <span class="post-meta-divider">|</span>
+    <span class="post-meta-item-icon">
+      <i class="fa fa-coffee"></i>
+    </span>
+    <span title="站点阅读时长">56 分钟</span>
 </div>
   <div class="powered-by">由 <a href="https://hexo.io/" class="theme-link" rel="noopener" target="_blank">Hexo</a> & <a href="https://mist.theme-next.org/" class="theme-link" rel="noopener" target="_blank">NexT.Mist</a> 强力驱动
   </div>
@@ -597,14 +643,16 @@
 
 <script src="/js/next-boot.js"></script>
 
-<script src="/js/bookmark.js"></script>
-
 
 
 
   
 
 
+
+
+  
+<script src="/js/local-search.js"></script>
 
 
 

@@ -17,7 +17,7 @@
 
 <script id="hexo-configurations">
     var NexT = window.NexT || {};
-    var CONFIG = {"hostname":"example.com","root":"/","scheme":"Mist","version":"7.8.0","exturl":false,"sidebar":{"position":"right","display":"post","padding":18,"offset":12,"onmobile":false},"copycode":{"enable":false,"show_result":false,"style":null},"back2top":{"enable":true,"sidebar":false,"scrollpercent":false},"bookmark":{"enable":true,"color":"#222","save":"auto"},"fancybox":false,"mediumzoom":false,"lazyload":false,"pangu":false,"comments":{"style":"tabs","active":null,"storage":true,"lazyload":false,"nav":null},"algolia":{"hits":{"per_page":10},"labels":{"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}},"localsearch":{"enable":false,"trigger":"auto","top_n_per_article":1,"unescape":false,"preload":false},"motion":{"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}}};
+    var CONFIG = {"hostname":"example.com","root":"/","scheme":"Mist","version":"7.8.0","exturl":false,"sidebar":{"position":"right","display":"post","padding":18,"offset":12,"onmobile":false},"copycode":{"enable":false,"show_result":false,"style":null},"back2top":{"enable":true,"sidebar":false,"scrollpercent":false},"bookmark":{"enable":false,"color":"#222","save":"auto"},"fancybox":false,"mediumzoom":false,"lazyload":false,"pangu":false,"comments":{"style":"tabs","active":null,"storage":true,"lazyload":false,"nav":null},"algolia":{"hits":{"per_page":10},"labels":{"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}},"localsearch":{"enable":true,"trigger":"auto","top_n_per_article":1,"unescape":false,"preload":false},"motion":{"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}},"path":"search.xml"};
   </script>
 
   <meta name="description" content="又到了一年一度的总结时间。其实写多了，也没什么好说的。前年的时候是苦于入职不顺，内心深处有感而发，写了《迷茫》；辞职后买了本心心念念的徐璐的书看，感慨颇多，写了《那些文字》；在杭州鬼混了三个月，回到家思考人生，写了《2018总结》。那时候三个阶段都很迷茫，无所适从，无处可去。如今混的还算可以，起码可以自给自足，整日有活干活，无事划水，且不表入职初始的艰辛，如今也算是个游刃有余了。">
@@ -29,7 +29,7 @@
 <meta property="og:locale" content="zh_CN">
 <meta property="og:image" content="http://example.com/2019/12/31/2019%E6%80%BB%E7%BB%93/xiaoyu_bg.jpg">
 <meta property="article:published_time" content="2019-12-31T07:43:03.000Z">
-<meta property="article:modified_time" content="2020-10-13T08:10:45.646Z">
+<meta property="article:modified_time" content="2020-10-16T02:46:44.964Z">
 <meta property="article:author" content="希夏">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:image" content="http://example.com/2019/12/31/2019%E6%80%BB%E7%BB%93/xiaoyu_bg.jpg">
@@ -109,6 +109,7 @@
 
   <div class="site-nav-right">
     <div class="toggle popup-trigger">
+        <i class="fa fa-search fa-fw fa-lg"></i>
     </div>
   </div>
 </div>
@@ -123,16 +124,53 @@
     <a href="/" rel="section"><i class="fa fa-home fa-fw"></i>首页</a>
 
   </li>
+        <li class="menu-item menu-item-about">
+
+    <a href="/about/" rel="section"><i class="fa fa-user fa-fw"></i>关于</a>
+
+  </li>
+        <li class="menu-item menu-item-categories">
+
+    <a href="/categories/" rel="section"><i class="fa fa-th fa-fw"></i>分类</a>
+
+  </li>
         <li class="menu-item menu-item-archives">
 
     <a href="/archives/" rel="section"><i class="fa fa-archive fa-fw"></i>归档</a>
 
   </li>
+      <li class="menu-item menu-item-search">
+        <a role="button" class="popup-trigger"><i class="fa fa-search fa-fw"></i>搜索
+        </a>
+      </li>
   </ul>
 </nav>
 
 
 
+  <div class="search-pop-overlay">
+    <div class="popup search-popup">
+        <div class="search-header">
+  <span class="search-icon">
+    <i class="fa fa-search"></i>
+  </span>
+  <div class="search-input-container">
+    <input autocomplete="off" autocapitalize="off"
+           placeholder="搜索..." spellcheck="false"
+           type="search" class="search-input">
+  </div>
+  <span class="popup-btn-close">
+    <i class="fa fa-times-circle"></i>
+  </span>
+</div>
+<div id="search-result">
+  <div id="no-result">
+    <i class="fa fa-spinner fa-pulse fa-5x fa-fw"></i>
+  </div>
+</div>
+
+    </div>
+  </div>
 
 </div>
     </header>
@@ -142,8 +180,6 @@
     <i class="fa fa-arrow-up"></i>
     <span>0%</span>
   </div>
-  <div class="reading-progress-bar"></div>
-  <a role="button" class="book-mark-link book-mark-link-fixed"></a>
 
 
     <main class="main">
@@ -188,10 +224,33 @@
                   <i class="far fa-calendar-check"></i>
                 </span>
                 <span class="post-meta-item-text">更新于</span>
-                <time title="修改时间：2020-10-13 16:10:45" itemprop="dateModified" datetime="2020-10-13T16:10:45+08:00">2020-10-13</time>
+                <time title="修改时间：2020-10-16 10:46:44" itemprop="dateModified" datetime="2020-10-16T10:46:44+08:00">2020-10-16</time>
               </span>
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-folder"></i>
+              </span>
+              <span class="post-meta-item-text">分类于</span>
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/Book/" itemprop="url" rel="index"><span itemprop="name">Book</span></a>
+                </span>
+            </span>
 
-          
+          <br>
+            <span class="post-meta-item" title="本文字数">
+              <span class="post-meta-item-icon">
+                <i class="far fa-file-word"></i>
+              </span>
+                <span class="post-meta-item-text">本文字数：</span>
+              <span>2k</span>
+            </span>
+            <span class="post-meta-item" title="阅读时长">
+              <span class="post-meta-item-icon">
+                <i class="far fa-clock"></i>
+              </span>
+                <span class="post-meta-item-text">阅读时长 &asymp;</span>
+              <span>2 分钟</span>
+            </span>
 
         </div>
       </header>
@@ -204,18 +263,17 @@
       
         <p>又到了一年一度的总结时间。其实写多了，也没什么好说的。前年的时候是苦于入职不顺，内心深处有感而发，写了《迷茫》；辞职后买了本心心念念的徐璐的书看，感慨颇多，写了《那些文字》；在杭州鬼混了三个月，回到家思考人生，写了《2018总结》。那时候三个阶段都很迷茫，无所适从，无处可去。如今混的还算可以，起码可以自给自足，整日有活干活，无事划水，且不表入职初始的艰辛，如今也算是个游刃有余了。</p>
 <a id="more"></a>
-
 <p>那我现在要考虑什么方面的？职业？感情？兴趣爱好？还有，人生方向？</p>
 <h1 id="职业"><a href="#职业" class="headerlink" title="职业"></a>职业</h1><p>职业和工作自不必多说。我确实需要着手准备一些进阶的学习了。我完成了第一个自己的APP，虽然功能简陋，但初步完成了我要的两个标准：Material Design界面标准与符合预期设计的功能。这让我自己还是感到挺满意的。不足之处自然存在，但我在想出下一个很好的idea之前，我是不会改动这个应用了。除此之外，Android和Java方面，我需要学习很多东西：有些是早有耳闻不曾涉及，如今突发兴趣的，还有一些就是职业所必需了。我还是希望，我所学的，是我感兴趣的，这样才会更有动力。</p>
 <h1 id="感情"><a href="#感情" class="headerlink" title="感情"></a>感情</h1><p>若是此刻让我在一张白纸上写一个喜欢的人的名字，除了小钰，我怕是写不出其他人了，哈哈。先附一张壁纸：</p>
-<p><img src="/2019/12/31/2019%E6%80%BB%E7%BB%93/xiaoyu_bg.jpg"></p>
+<p><img src="/2019/12/31/2019%E6%80%BB%E7%BB%93/xiaoyu_bg.jpg" alt></p>
 <p>哇，果然，黑长直还是我的最爱啊。要说理想伴侣的话，徐璐笔下的陆希与狄夏，则完全满足了我的所有幻想，这也是我的新网名的由来。</p>
 <p><strong>但如果未来想遇到这样的女孩子，我要做到多优秀呢？或者，我又需要去做到什么呢？</strong></p>
 <h1 id="兴趣爱好"><a href="#兴趣爱好" class="headerlink" title="兴趣爱好"></a>兴趣爱好</h1><p>我依然还在坚持着去年立下的读书计划，去年只读了15本，距离预期目标差了5本。而且，读什么样的书，很是让我困惑。若要说，这几个月来我读的感触最深的，无疑是柴静的《看见》；但若要我一年内只读这种书，怕是很难顶。上半年内我读的基本都是东野圭吾的书，起初很好看，《解忧杂货店》甚至在我迷茫之时指导了我一二；但在看完《恶意》那本书之后，再读他的其他悬疑向作品，总有一种相形见绌的感觉。所以，我打算换几个作者看了，但外文题材的作品，我也很是忌惮，《哈姆雷特》《乱世佳人》《局外人》，开篇读起来实在是味同嚼蜡。到底还是文化底蕴的不同，完全不能接受西方的文笔描写，所以接下来的时间，我打算挑几部国内作者的书看一看。</p>
 <p>至于游戏，在年末，我终于玩到了好评如潮的黑暗之魂3。黑魂大名果真当之无愧！剧情内容磅礴，战斗场面激烈，人物形象立体，称作史诗又未有不可！</p>
 <h1 id="人生"><a href="#人生" class="headerlink" title="人生"></a>人生</h1><p>说人生，就要谈一下优秀的人。要说今年令我感触最大的几个人，当属B站的老菊、老番茄和微小微了。</p>
 <h2 id="阅历丰富，善于思考，行事踏实有章法"><a href="#阅历丰富，善于思考，行事踏实有章法" class="headerlink" title="阅历丰富，善于思考，行事踏实有章法"></a>阅历丰富，善于思考，行事踏实有章法</h2><p>老菊，很有自己的一套想法，不论是在长篇的游戏视频中的体现，能把rgb游戏kenshi做出一个七月霸权——奴隶阿飞系列，好看到爆，能玩梗，能创造梗，更能把一个生硬的游戏背景故事经营得有血有肉，用自己的理解和想法玩出自己的一套东西；更是在兼顾做视频的同时，迈出自己勇敢的一步——成立工作室，做自己的独立游戏，有自己对于游戏开发的初步预想，好结果坏结果都已经做好承受的准备了。转念一想，老菊的独立游戏计划，从太吾绘卷就开始酝酿了。他从来不缺游戏的创意，缺的是经验，所以才会几度与太吾绘卷的核心人员茄子接触，慢慢敲定了这项计划。</p>
-<p>他在年初曾接受过采访，后来有微信号出过一篇文章——<a target="_blank" rel="noopener" href="https://mp.weixin.qq.com/s?__biz=MzIzNzM3NzE2MA==&mid=2247526741&idx=1&sn=6e6e8b248d59ab74e89e2dfef5aa24a6&scene=21&token=2118450709&lang=zh_CN#wechat_redirect">《王老菊的多重身份》</a>，这篇文章我很喜欢，读完触动很大。幽默风趣，行事随机，敢于破格，这是老菊在多个系列游戏视频中表现出的一贯形象；严肃认真，行事努力，按部就班，这是文章的采访描述，或者说是老菊对自己的评价。而<strong>我印象最深的还是那句“普通人最多只能做好一件事”</strong>，而他，把自己归为普通人。</p>
+<p>他在年初曾接受过采访，后来有微信号出过一篇文章——<a target="_blank" rel="noopener" href="https://mp.weixin.qq.com/s?__biz=MzIzNzM3NzE2MA==&amp;mid=2247526741&amp;idx=1&amp;sn=6e6e8b248d59ab74e89e2dfef5aa24a6&amp;scene=21&amp;token=2118450709&amp;lang=zh_CN#wechat_redirect">《王老菊的多重身份》</a>，这篇文章我很喜欢，读完触动很大。幽默风趣，行事随机，敢于破格，这是老菊在多个系列游戏视频中表现出的一贯形象；严肃认真，行事努力，按部就班，这是文章的采访描述，或者说是老菊对自己的评价。而<strong>我印象最深的还是那句“普通人最多只能做好一件事”</strong>，而他，把自己归为普通人。</p>
 <h2 id="认真与幽默两兼顾"><a href="#认真与幽默两兼顾" class="headerlink" title="认真与幽默两兼顾"></a>认真与幽默两兼顾</h2><p>老番茄是我去年才开始关注的，因为之前他发的多是些游戏视频，，做的视频不感冒。我对此人有耳闻，看了b站故事王第二季，他是冠军得主，很有才。毕业之际他发了一个vlog——<a target="_blank" rel="noopener" href="https://www.bilibili.com/video/BV1rx411o74x">《我毕业啦》</a>，这个认真优秀又幽默风趣的人一下子就把我吸引到了。之后的个人vlog，深深地让我感慨：这个人怎么会这么优秀又有才华啊！还TM长得帅！惊了！老番茄还有一个视频我也很喜欢，就是他的生日vlog——<a target="_blank" rel="noopener" href="https://www.bilibili.com/video/BV1V4411S7Hf">《我过生日啦》</a>。</p>
 <p>其实B站也有很多优秀的学霸，老菊，C菌，散人等等，无一不是优秀之才。</p>
 <p>我确实看不到，也很难体会得到，他们的努力有多少；<strong>但我很羡慕，老番茄登场的那一瞬间，是多么耀眼</strong>。这，就足以当作我的告诫和动力了。</p>
@@ -324,8 +382,10 @@
         </a>
       </div>
       <div class="site-state-item site-state-categories">
-        <span class="site-state-item-count">5</span>
-        <span class="site-state-item-name">分类</span>
+            <a href="/categories/">
+          
+        <span class="site-state-item-count">4</span>
+        <span class="site-state-item-name">分类</span></a>
       </div>
   </nav>
 </div>
@@ -356,6 +416,16 @@
     <i class="fa fa-heart"></i>
   </span>
   <span class="author" itemprop="copyrightHolder">希夏</span>
+    <span class="post-meta-divider">|</span>
+    <span class="post-meta-item-icon">
+      <i class="fa fa-chart-area"></i>
+    </span>
+    <span title="站点总字数">62k</span>
+    <span class="post-meta-divider">|</span>
+    <span class="post-meta-item-icon">
+      <i class="fa fa-coffee"></i>
+    </span>
+    <span title="站点阅读时长">56 分钟</span>
 </div>
   <div class="powered-by">由 <a href="https://hexo.io/" class="theme-link" rel="noopener" target="_blank">Hexo</a> & <a href="https://mist.theme-next.org/" class="theme-link" rel="noopener" target="_blank">NexT.Mist</a> 强力驱动
   </div>
@@ -388,14 +458,16 @@
 
 <script src="/js/next-boot.js"></script>
 
-<script src="/js/bookmark.js"></script>
-
 
 
 
   
 
 
+
+
+  
+<script src="/js/local-search.js"></script>
 
 
 

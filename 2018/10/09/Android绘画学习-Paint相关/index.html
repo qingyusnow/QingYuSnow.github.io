@@ -17,7 +17,7 @@
 
 <script id="hexo-configurations">
     var NexT = window.NexT || {};
-    var CONFIG = {"hostname":"example.com","root":"/","scheme":"Mist","version":"7.8.0","exturl":false,"sidebar":{"position":"right","display":"post","padding":18,"offset":12,"onmobile":false},"copycode":{"enable":false,"show_result":false,"style":null},"back2top":{"enable":true,"sidebar":false,"scrollpercent":false},"bookmark":{"enable":true,"color":"#222","save":"auto"},"fancybox":false,"mediumzoom":false,"lazyload":false,"pangu":false,"comments":{"style":"tabs","active":null,"storage":true,"lazyload":false,"nav":null},"algolia":{"hits":{"per_page":10},"labels":{"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}},"localsearch":{"enable":false,"trigger":"auto","top_n_per_article":1,"unescape":false,"preload":false},"motion":{"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}}};
+    var CONFIG = {"hostname":"example.com","root":"/","scheme":"Mist","version":"7.8.0","exturl":false,"sidebar":{"position":"right","display":"post","padding":18,"offset":12,"onmobile":false},"copycode":{"enable":false,"show_result":false,"style":null},"back2top":{"enable":true,"sidebar":false,"scrollpercent":false},"bookmark":{"enable":false,"color":"#222","save":"auto"},"fancybox":false,"mediumzoom":false,"lazyload":false,"pangu":false,"comments":{"style":"tabs","active":null,"storage":true,"lazyload":false,"nav":null},"algolia":{"hits":{"per_page":10},"labels":{"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}},"localsearch":{"enable":true,"trigger":"auto","top_n_per_article":1,"unescape":false,"preload":false},"motion":{"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}},"path":"search.xml"};
   </script>
 
   <meta name="description" content="想做Android动画的时候，有的时候又需要自己画一些图形，比如自定义的进度条这样的。所以，学一些基础的绘画代码也是必要的。">
@@ -127,6 +127,7 @@
 
   <div class="site-nav-right">
     <div class="toggle popup-trigger">
+        <i class="fa fa-search fa-fw fa-lg"></i>
     </div>
   </div>
 </div>
@@ -141,16 +142,53 @@
     <a href="/" rel="section"><i class="fa fa-home fa-fw"></i>首页</a>
 
   </li>
+        <li class="menu-item menu-item-about">
+
+    <a href="/about/" rel="section"><i class="fa fa-user fa-fw"></i>关于</a>
+
+  </li>
+        <li class="menu-item menu-item-categories">
+
+    <a href="/categories/" rel="section"><i class="fa fa-th fa-fw"></i>分类</a>
+
+  </li>
         <li class="menu-item menu-item-archives">
 
     <a href="/archives/" rel="section"><i class="fa fa-archive fa-fw"></i>归档</a>
 
   </li>
+      <li class="menu-item menu-item-search">
+        <a role="button" class="popup-trigger"><i class="fa fa-search fa-fw"></i>搜索
+        </a>
+      </li>
   </ul>
 </nav>
 
 
 
+  <div class="search-pop-overlay">
+    <div class="popup search-popup">
+        <div class="search-header">
+  <span class="search-icon">
+    <i class="fa fa-search"></i>
+  </span>
+  <div class="search-input-container">
+    <input autocomplete="off" autocapitalize="off"
+           placeholder="搜索..." spellcheck="false"
+           type="search" class="search-input">
+  </div>
+  <span class="popup-btn-close">
+    <i class="fa fa-times-circle"></i>
+  </span>
+</div>
+<div id="search-result">
+  <div id="no-result">
+    <i class="fa fa-spinner fa-pulse fa-5x fa-fw"></i>
+  </div>
+</div>
+
+    </div>
+  </div>
 
 </div>
     </header>
@@ -160,8 +198,6 @@
     <i class="fa fa-arrow-up"></i>
     <span>0%</span>
   </div>
-  <div class="reading-progress-bar"></div>
-  <a role="button" class="book-mark-link book-mark-link-fixed"></a>
 
 
     <main class="main">
@@ -218,7 +254,21 @@
                 </span>
             </span>
 
-          
+          <br>
+            <span class="post-meta-item" title="本文字数">
+              <span class="post-meta-item-icon">
+                <i class="far fa-file-word"></i>
+              </span>
+                <span class="post-meta-item-text">本文字数：</span>
+              <span>11k</span>
+            </span>
+            <span class="post-meta-item" title="阅读时长">
+              <span class="post-meta-item-icon">
+                <i class="far fa-clock"></i>
+              </span>
+                <span class="post-meta-item-text">阅读时长 &asymp;</span>
+              <span>10 分钟</span>
+            </span>
 
         </div>
       </header>
@@ -231,22 +281,18 @@
       
         <p>想做Android动画的时候，有的时候又需要自己画一些图形，比如自定义的进度条这样的。所以，学一些基础的绘画代码也是必要的。</p>
 <a id="more"></a>
-
 <p>我这里的Androi动画学习笔记是从CSDN的一位大佬的动画博客教程那里学来的，其实很多部分都与原博客相似，且内容不如原博客详细。这里直接贴上原博客，原博客有更丰富、更全面的教程，以方便大家学习，毕竟我自己的学习习惯有些问题，笔记并不一定全面。</p>
 <p>原博客：<a target="_blank" rel="noopener" href="https://blog.csdn.net/harvic880925/article/details/50995268">Android自定义控件学习三部曲</a></p>
 <h1 id="Paint与Canvas"><a href="#Paint与Canvas" class="headerlink" title="Paint与Canvas"></a>Paint与Canvas</h1><p>Paint是画笔，Canvas是画布。画笔可以负责的，比如颜色，粗细，透明度等；而画布负责的，是画笔在画布上画的位置，大小，形状等。所以，搞清楚各部分负责的职能，逻辑会更清晰些。</p>
 <p>参数稍后再写，先写怎么能让应用运行起来，这样，在改一些参数设置的时候，就用不着只是看，可以亲自感受变化了。</p>
 <h2 id="基本实现方法"><a href="#基本实现方法" class="headerlink" title="基本实现方法"></a>基本实现方法</h2><p>1、先将布局更换为FrameLayout，并添加id，用于添加视图</p>
 <figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line">&lt;FrameLayout xmlns:android&#x3D;&quot;http:&#x2F;&#x2F;schemas.android.com&#x2F;apk&#x2F;res&#x2F;android&quot;</span><br><span class="line">    xmlns:app&#x3D;&quot;http:&#x2F;&#x2F;schemas.android.com&#x2F;apk&#x2F;res-auto&quot;</span><br><span class="line">    android:id&#x3D;&quot;@+id&#x2F;main_frame&quot;</span><br><span class="line">    xmlns:tools&#x3D;&quot;http:&#x2F;&#x2F;schemas.android.com&#x2F;tools&quot;</span><br><span class="line">    android:layout_width&#x3D;&quot;match_parent&quot;</span><br><span class="line">    android:layout_height&#x3D;&quot;match_parent&quot;</span><br><span class="line">    tools:context&#x3D;&quot;com.example.administrator.animationtest.activity.MainActivity&quot;&gt;</span><br><span class="line">&lt;&#x2F;FrameLayout&gt;</span><br></pre></td></tr></table></figure>
-
 <p>2、创建一个自定义视图类，继承自View类。在这个类中，重点在于重写OnDraw()函数。</p>
 <figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br></pre></td><td class="code"><pre><span class="line">public class CustomView extends View &#123;</span><br><span class="line"></span><br><span class="line">    Context context;</span><br><span class="line"></span><br><span class="line">    public CustomView(Context context) &#123;</span><br><span class="line">        super(context);</span><br><span class="line">        this.context &#x3D; context;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    @Override</span><br><span class="line">    protected void onDraw(Canvas canvas) &#123;</span><br><span class="line">        super.onDraw(canvas);</span><br><span class="line"></span><br><span class="line">		&#x2F;&#x2F;示例代码</span><br><span class="line">		&#x2F;&#x2F;设置画笔基本属性</span><br><span class="line">        Paint paint &#x3D; new Paint();</span><br><span class="line">        paint.setAntiAlias(true);           &#x2F;&#x2F;抗锯齿</span><br><span class="line">        paint.setColor(Color.RED);          &#x2F;&#x2F;画笔颜色</span><br><span class="line">        paint.setStyle(Paint.Style.FILL);   &#x2F;&#x2F;填充样式</span><br><span class="line">        paint.setStrokeWidth(5);            &#x2F;&#x2F;画笔宽度</span><br><span class="line">        &#x2F;&#x2F;paint.setShadowLayer(1,15,15,Color.GREEN);      &#x2F;&#x2F;设置阴影</span><br><span class="line"></span><br><span class="line">        canvas.drawRGB(255,255,255);</span><br><span class="line">        &#x2F;&#x2F;画图</span><br><span class="line">        canvas.drawCircle(200,200,150,paint);</span><br><span class="line"></span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-
 <p>3、在Activity类中添加绘画显示代码。</p>
 <figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line">@Bind(R.id.main_frame) FrameLayout mainFrame;</span><br><span class="line"></span><br><span class="line">@Override</span><br><span class="line">    protected void onCreate(Bundle savedInstanceState) &#123;</span><br><span class="line">        ...</span><br><span class="line">        mainFrame.addView(new CustomView(MainActivity.this));</span><br><span class="line"></span><br><span class="line">    &#125;</span><br><span class="line"></span><br></pre></td></tr></table></figure>
-
 <p>运行效果如下：</p>
-<p><img src="/2018/10/09/Android%E7%BB%98%E7%94%BB%E5%AD%A6%E4%B9%A0-Paint%E7%9B%B8%E5%85%B3/1.jpg"></p>
+<p><img src="/2018/10/09/Android%E7%BB%98%E7%94%BB%E5%AD%A6%E4%B9%A0-Paint%E7%9B%B8%E5%85%B3/1.jpg" alt></p>
 <p>我记得还有一个实现方法，是在布局文件中直接引用view类，不通过addView()方法也可以显示view。但由于忘了一些细节，没办法实现这个操作，所以在这里插个眼，等找到实现方法了TP回来。</p>
 <h2 id="Paint的基本参数设置"><a href="#Paint的基本参数设置" class="headerlink" title="Paint的基本参数设置"></a>Paint的基本参数设置</h2><ul>
 <li><p>setAntiAlias(Boolean boolean)    设置是否开启抗锯齿</p>
@@ -271,27 +317,23 @@
 <h3 id="一条直线"><a href="#一条直线" class="headerlink" title="一条直线"></a>一条直线</h3><p>方法：drawLine (float startX, float startY, float stopX, float stopY, Paint paint)</p>
 <p>参数不用多解释，起点的横纵坐标，终点的横纵坐标，最后就是已经设置好参数的画笔。最后一项参数，在后面的绘制方法里也会有，就不再赘述了。示例如下：</p>
 <figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">canvas.drawLine(100,200,300,400,paint);</span><br></pre></td></tr></table></figure>
-
-<p><img src="/2018/10/09/Android%E7%BB%98%E7%94%BB%E5%AD%A6%E4%B9%A0-Paint%E7%9B%B8%E5%85%B3/2.png"></p>
+<p><img src="/2018/10/09/Android%E7%BB%98%E7%94%BB%E5%AD%A6%E4%B9%A0-Paint%E7%9B%B8%E5%85%B3/2.png" alt></p>
 <h3 id="多条直线"><a href="#多条直线" class="headerlink" title="多条直线"></a>多条直线</h3><ul>
 <li>方法：drawLines (float[] pts, Paint paint)</li>
 </ul>
 <p>由于每个pts的元素，都必须是以四个数，即一组点，即一条线为单位的，所以，在写多条直线的数组时，要<strong>注意数组的元素个数是否符合标准，即数的个数是否能被4整除</strong>。示例如下：</p>
 <figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">float []opts&#x3D;&#123;10,10,100,100,200,200,300,300,400,400,500,500&#125;;</span><br><span class="line">canvas.drawLines(opts,paint);</span><br></pre></td></tr></table></figure>
-
-<p><img src="/2018/10/09/Android%E7%BB%98%E7%94%BB%E5%AD%A6%E4%B9%A0-Paint%E7%9B%B8%E5%85%B3/3.png"></p>
+<p><img src="/2018/10/09/Android%E7%BB%98%E7%94%BB%E5%AD%A6%E4%B9%A0-Paint%E7%9B%B8%E5%85%B3/3.png" alt></p>
 <ul>
 <li>方法：drawLines (float[] pts, int offset, int count, Paint paint)</li>
 </ul>
 <p>这个方法与上个方法相比，多出来两个不同的参数。offset表示跳过的数据个数，count表示实际参与绘制的数据个数。什么意思呢？就是在绘制的时候，会先跳过已设置的offset个数的点，只将接下来的count个数的点所构成的直线绘制出来。由此可以得知，两个参数均必须是4的倍数，且两者之和不超过数据的长度。示例如下：</p>
 <figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">float []opts&#x3D;&#123;10,10,100,100,200,200,300,300,400,400,500,500&#125;;</span><br><span class="line">canvas.drawLines(opts,4,8,paint);</span><br><span class="line">&#x2F;&#x2F;canvas.drawLines(opts,4,4,paint);</span><br></pre></td></tr></table></figure>
-
-<p><img src="/2018/10/09/Android%E7%BB%98%E7%94%BB%E5%AD%A6%E4%B9%A0-Paint%E7%9B%B8%E5%85%B3/4.png"></p>
-<p><img src="/2018/10/09/Android%E7%BB%98%E7%94%BB%E5%AD%A6%E4%B9%A0-Paint%E7%9B%B8%E5%85%B3/5.png"></p>
+<p><img src="/2018/10/09/Android%E7%BB%98%E7%94%BB%E5%AD%A6%E4%B9%A0-Paint%E7%9B%B8%E5%85%B3/4.png" alt></p>
+<p><img src="/2018/10/09/Android%E7%BB%98%E7%94%BB%E5%AD%A6%E4%B9%A0-Paint%E7%9B%B8%E5%85%B3/5.png" alt></p>
 <p>可以看出来，第一行的运行效果，跳过了第一条直线，显示了第二、三条直线；第二行的运行效果，跳过了第一条直线，只显示了接下来四个点，也就是第二条直线；第三条直线则不再计入绘制。</p>
 <h3 id="单个点"><a href="#单个点" class="headerlink" title="单个点"></a>单个点</h3><p>方法：drawPoint (float x, float y, Paint paint)</p>
 <figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">canvas.drawPoint(100,100,paint);</span><br></pre></td></tr></table></figure>
-
 <h3 id="多个点"><a href="#多个点" class="headerlink" title="多个点"></a>多个点</h3><ul>
 <li><p>方法：drawPoints (float[] pts, Paint paint)</p>
 </li>
@@ -316,30 +358,25 @@
 </li>
 </ul>
 <figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">canvas.drawRect(10,10,100,100,paint);</span><br><span class="line">canvas.drawRect(new Rect(120,10,210,100),paint);</span><br><span class="line">canvas.drawRect(new RectF(230,10,320,100),paint);</span><br></pre></td></tr></table></figure>
-
-<p><img src="/2018/10/09/Android%E7%BB%98%E7%94%BB%E5%AD%A6%E4%B9%A0-Paint%E7%9B%B8%E5%85%B3/6.png"></p>
+<p><img src="/2018/10/09/Android%E7%BB%98%E7%94%BB%E5%AD%A6%E4%B9%A0-Paint%E7%9B%B8%E5%85%B3/6.png" alt></p>
 <h3 id="圆角矩形"><a href="#圆角矩形" class="headerlink" title="圆角矩形"></a>圆角矩形</h3><p>方法：drawRoundRect (RectF rect, float rx, float ry, Paint paint)</p>
 <p>这里的rx与ry是指矩形四角生成的椭圆的x轴半径与y轴半径。</p>
 <figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">RectF rectF &#x3D; new RectF(100,100,300,300);</span><br><span class="line">canvas.drawRoundRect(rectF,20,20,paint);</span><br></pre></td></tr></table></figure>
-
-<p><img src="/2018/10/09/Android%E7%BB%98%E7%94%BB%E5%AD%A6%E4%B9%A0-Paint%E7%9B%B8%E5%85%B3/7.png"></p>
+<p><img src="/2018/10/09/Android%E7%BB%98%E7%94%BB%E5%AD%A6%E4%B9%A0-Paint%E7%9B%B8%E5%85%B3/7.png" alt></p>
 <h3 id="圆形"><a href="#圆形" class="headerlink" title="圆形"></a>圆形</h3><p>方法：drawCircle (float cx, float cy, float radius, Paint paint)</p>
 <p>这里的cx与cy是指圆心点的x轴与y轴坐标,radius则是圆的半径。</p>
 <figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">canvas.drawCircle(200,200,100,paint);</span><br></pre></td></tr></table></figure>
-
-<p><img src="/2018/10/09/Android%E7%BB%98%E7%94%BB%E5%AD%A6%E4%B9%A0-Paint%E7%9B%B8%E5%85%B3/8.png"></p>
+<p><img src="/2018/10/09/Android%E7%BB%98%E7%94%BB%E5%AD%A6%E4%B9%A0-Paint%E7%9B%B8%E5%85%B3/8.png" alt></p>
 <h3 id="椭圆"><a href="#椭圆" class="headerlink" title="椭圆"></a>椭圆</h3><p>椭圆是根据矩形生成的，根据矩形的左顶点与右底点坐标，决定了椭圆的x轴与y轴半径，以及中心点。</p>
 <p>方法：drawOval (RectF oval, Paint paint)</p>
 <figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">RectF rectF &#x3D; new RectF(100,100,300,200);</span><br><span class="line">canvas.drawRect(rectF,paint);</span><br><span class="line"></span><br><span class="line">paint.setColor(Color.RED);</span><br><span class="line">canvas.drawOval(rectF,paint);</span><br></pre></td></tr></table></figure>
-
 <p>为了直观些观察，这里临时将填充样式改为了描边，且将绘制第二个图形的画笔颜色改变一下。</p>
-<p><img src="/2018/10/09/Android%E7%BB%98%E7%94%BB%E5%AD%A6%E4%B9%A0-Paint%E7%9B%B8%E5%85%B3/9.png"></p>
+<p><img src="/2018/10/09/Android%E7%BB%98%E7%94%BB%E5%AD%A6%E4%B9%A0-Paint%E7%9B%B8%E5%85%B3/9.png" alt></p>
 <h3 id="弧"><a href="#弧" class="headerlink" title="弧"></a>弧</h3><p>弧是椭圆的一部分，椭圆与矩形相关，所以弧也与矩形相关。</p>
 <p>方法：drawArc (RectF oval, float startAngle, float sweepAngle, boolean useCenter, Paint paint)</p>
 <p>startAngle是弧开始的角度，sweepAngle是弧持续的角度，useCenter是是否需要弧的两边（详见例图）。<strong>注意，开始角度的起始位置是建立在Android的界面坐标系上的，而不是数学上的坐标系。</strong></p>
 <figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br></pre></td><td class="code"><pre><span class="line">paint.setStyle(Paint.Style.FILL);   &#x2F;&#x2F;填充样式</span><br><span class="line">RectF rectF &#x3D; new RectF(100,100,300,300);</span><br><span class="line">canvas.drawArc(rectF,0,70,true,paint);</span><br><span class="line"></span><br><span class="line">RectF rectF2 &#x3D; new RectF(400,100,600,300);</span><br><span class="line">canvas.drawArc(rectF2,0,70,false,paint);</span><br><span class="line"></span><br><span class="line">paint.setStyle(Paint.Style.STROKE);     &#x2F;&#x2F;描边样式</span><br><span class="line">RectF rectF3 &#x3D; new RectF(100,300,300,500);</span><br><span class="line">canvas.drawArc(rectF3,0,70,true,paint);</span><br><span class="line"></span><br><span class="line">RectF rectF4 &#x3D; new RectF(400,300,600,500);</span><br><span class="line">canvas.drawArc(rectF4,0,70,false,paint);</span><br></pre></td></tr></table></figure>
-
-<p><img src="/2018/10/09/Android%E7%BB%98%E7%94%BB%E5%AD%A6%E4%B9%A0-Paint%E7%9B%B8%E5%85%B3/10.png"></p>
+<p><img src="/2018/10/09/Android%E7%BB%98%E7%94%BB%E5%AD%A6%E4%B9%A0-Paint%E7%9B%B8%E5%85%B3/10.png" alt></p>
 <h2 id="路径绘制图形"><a href="#路径绘制图形" class="headerlink" title="路径绘制图形"></a>路径绘制图形</h2><p>除了通过canvas直接调用绘制图形的专用方法外，还可以通过对path的参数编写并调用drawPath方法，画出想要绘制的图形。其实path有很多方法的参数跟上面的方法都很相似，这下面我就不赘述参数了。</p>
 <p>方法：drawPath (Path path, Paint paint)</p>
 <h3 id="直线"><a href="#直线" class="headerlink" title="直线"></a>直线</h3><ul>
@@ -355,43 +392,35 @@
 </ul>
 <p>闭环，即将最后一条直线的终点与第一条的起点连接</p>
 <figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line">paint.setStyle(Paint.Style.FILL);   &#x2F;&#x2F;填充样式</span><br><span class="line"></span><br><span class="line">Path path &#x3D; new Path();</span><br><span class="line">path.moveTo(10,10);</span><br><span class="line">path.lineTo(10,100);</span><br><span class="line">path.lineTo(300,100);</span><br><span class="line">path.lineTo(500,50);</span><br><span class="line">path.close();</span><br><span class="line"></span><br><span class="line">canvas.drawPath(path,paint);</span><br></pre></td></tr></table></figure>
-
-<p><img src="/2018/10/09/Android%E7%BB%98%E7%94%BB%E5%AD%A6%E4%B9%A0-Paint%E7%9B%B8%E5%85%B3/11.png"></p>
+<p><img src="/2018/10/09/Android%E7%BB%98%E7%94%BB%E5%AD%A6%E4%B9%A0-Paint%E7%9B%B8%E5%85%B3/11.png" alt></p>
 <h3 id="矩形-1"><a href="#矩形-1" class="headerlink" title="矩形"></a>矩形</h3><p>方法：addRect (RectF rect, Path.Direction dir)</p>
 <p>矩形生成有两个方法，方法的区别主要在于矩形绘制的方向不同，一个是Path.Direction.CCW，为逆时针方向；另一个是Path.Direction.CW，为顺时针方向。为方便观察，可以通过绘制文字的生成路径来观察。</p>
 <figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br></pre></td><td class="code"><pre><span class="line">Path CCWpath &#x3D; new Path();</span><br><span class="line">RectF rectF1 &#x3D; new RectF(50,50,240,200);</span><br><span class="line">CCWpath.addRect(rectF1, Path.Direction.CCW);</span><br><span class="line"></span><br><span class="line">Path CWpath &#x3D; new Path();</span><br><span class="line">RectF rectF2 &#x3D; new RectF(290,50,480,200);</span><br><span class="line">CWpath.addRect(rectF2, Path.Direction.CW);</span><br><span class="line"></span><br><span class="line">canvas.drawPath(CCWpath,paint);</span><br><span class="line">canvas.drawPath(CWpath,paint);</span><br><span class="line"></span><br><span class="line">String text &#x3D; &quot;世间安得双全法，不负如来不负卿&quot;;</span><br><span class="line">paint.setColor(Color.RED);</span><br><span class="line">paint.setTextSize(35);</span><br><span class="line">canvas.drawTextOnPath(text,CCWpath,0,18,paint);</span><br><span class="line">canvas.drawTextOnPath(text,CWpath,0,18,paint);</span><br></pre></td></tr></table></figure>
-
-<p><img src="/2018/10/09/Android%E7%BB%98%E7%94%BB%E5%AD%A6%E4%B9%A0-Paint%E7%9B%B8%E5%85%B3/12.png"></p>
-<p><img src="/2018/10/09/Android%E7%BB%98%E7%94%BB%E5%AD%A6%E4%B9%A0-Paint%E7%9B%B8%E5%85%B3/13.png"></p>
+<p><img src="/2018/10/09/Android%E7%BB%98%E7%94%BB%E5%AD%A6%E4%B9%A0-Paint%E7%9B%B8%E5%85%B3/12.png" alt></p>
+<p><img src="/2018/10/09/Android%E7%BB%98%E7%94%BB%E5%AD%A6%E4%B9%A0-Paint%E7%9B%B8%E5%85%B3/13.png" alt></p>
 <h3 id="圆角矩形-1"><a href="#圆角矩形-1" class="headerlink" title="圆角矩形"></a>圆角矩形</h3><p>方法：addRoundRect (RectF rect, float[] radii, Path.Direction dir)</p>
 <p>方法：addRoundRect (RectF rect, float rx, float ry, Path.Direction dir)</p>
 <p>两个构造函数的区别主要在于第二个参数，即设定矩形的圆角大小。第一个方法可以对每个圆角进行定制，共8个数，方向则取决于绘制的方向，比如逆时针绘制圆角矩形，圆角则从左上角、左下角到右下角、右上角；而第二个方法则统一了每个圆角的大小。</p>
 <figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line">Path path &#x3D; new Path();</span><br><span class="line">RectF rectF1 &#x3D; new RectF(50,50,240,200);</span><br><span class="line">path.addRoundRect(rectF1,10,15, Path.Direction.CCW);</span><br><span class="line"></span><br><span class="line">RectF rectF2 &#x3D; new RectF(290,50,480,200);</span><br><span class="line">float radius[] &#x3D; &#123;10,10,20,20,30,30,40,40&#125;;</span><br><span class="line">path.addRoundRect(rectF2,radius, Path.Direction.CCW);</span><br><span class="line"></span><br><span class="line">canvas.drawPath(path,paint);</span><br></pre></td></tr></table></figure>
-<p><img src="/2018/10/09/Android%E7%BB%98%E7%94%BB%E5%AD%A6%E4%B9%A0-Paint%E7%9B%B8%E5%85%B3/14.png"></p>
+<p><img src="/2018/10/09/Android%E7%BB%98%E7%94%BB%E5%AD%A6%E4%B9%A0-Paint%E7%9B%B8%E5%85%B3/14.png" alt></p>
 <h3 id="圆形路径"><a href="#圆形路径" class="headerlink" title="圆形路径"></a>圆形路径</h3><p>方法：addCircle (float x, float y, float radius, Path.Direction dir)</p>
 <figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">Path path &#x3D; new Path();</span><br><span class="line">path.addCircle(200,200,100, Path.Direction.CCW);</span><br><span class="line">canvas.drawPath(path,paint);</span><br></pre></td></tr></table></figure>
-
 <h3 id="椭圆路径"><a href="#椭圆路径" class="headerlink" title="椭圆路径"></a>椭圆路径</h3><p>方法：addOval (RectF oval, Path.Direction dir)</p>
 <figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">Path path &#x3D; new Path();</span><br><span class="line">RectF rectF &#x3D; new RectF(100,100,300,500);</span><br><span class="line">path.addOval(rectF, Path.Direction.CCW);</span><br><span class="line"></span><br><span class="line">canvas.drawPath(path,paint);</span><br></pre></td></tr></table></figure>
-
-<p><img src="/2018/10/09/Android%E7%BB%98%E7%94%BB%E5%AD%A6%E4%B9%A0-Paint%E7%9B%B8%E5%85%B3/15.png"></p>
+<p><img src="/2018/10/09/Android%E7%BB%98%E7%94%BB%E5%AD%A6%E4%B9%A0-Paint%E7%9B%B8%E5%85%B3/15.png" alt></p>
 <h3 id="弧形路径"><a href="#弧形路径" class="headerlink" title="弧形路径"></a>弧形路径</h3><p>方法：addArc (RectF oval, float startAngle, float sweepAngle)</p>
 <figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">Path path &#x3D; new Path();</span><br><span class="line">RectF rectF &#x3D; new RectF(100,100,300,500);</span><br><span class="line">path.addArc(rectF,0,100);</span><br><span class="line"></span><br><span class="line">canvas.drawPath(path,paint);</span><br></pre></td></tr></table></figure>
-
 <h3 id="线段"><a href="#线段" class="headerlink" title="线段"></a>线段</h3><p>方法：quadTo (float x1, float y1, float x2, float y2)</p>
 <p>这个方法的特点是绘制的曲线遵循了“贝塞尔曲线”，所以在连续的绘制时看起来会很平滑，这里我也不多深究，也可能以后专门写个博客来描述一下区别吧。这里就贴一下别人的博客好了。</p>
 <p>参考博客：<a target="_blank" rel="noopener" href="https://blog.csdn.net/stevenhu_223/article/details/9229337">quadTo()方法与lineTo()方法的区别</a></p>
 <h2 id="文字"><a href="#文字" class="headerlink" title="文字"></a>文字</h2><p>1、Paint相关设置</p>
 <figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br></pre></td><td class="code"><pre><span class="line">paint.setColor(Color.RED);                  &#x2F;&#x2F;画笔颜色</span><br><span class="line">paint.setStrokeWidth(5);                    &#x2F;&#x2F;画笔宽度</span><br><span class="line">paint.setAntiAlias(true);                   &#x2F;&#x2F;抗锯齿</span><br><span class="line">paint.setStyle(Paint.Style.FILL);           &#x2F;&#x2F;绘图样式</span><br><span class="line">paint.setTextSize(80);                      &#x2F;&#x2F;文字大小</span><br><span class="line"></span><br><span class="line">paint.setFakeBoldText(true);                &#x2F;&#x2F;是否为粗体</span><br><span class="line">paint.setTextSkewX((float) -0.25);          &#x2F;&#x2F;字体水平倾斜度</span><br><span class="line"></span><br><span class="line">paint.setUnderlineText(true);               &#x2F;&#x2F;下划线</span><br><span class="line">paint.setStrikeThruText(true);              &#x2F;&#x2F;删除线</span><br><span class="line"></span><br><span class="line">paint.setTextAlign(Paint.Align.CENTER);     &#x2F;&#x2F;对齐方式</span><br><span class="line">paint.setTextScaleX(1);                     &#x2F;&#x2F;只会将水平方向拉伸</span><br></pre></td></tr></table></figure>
-
 <p>这就是paint绘制文字时的几个主要设置选项了。画笔颜色、宽度、抗锯齿、文字大小、下划线、删除线等这些很浅显的就不具体展示了，我只对绘图样式、是否为粗体、水平倾斜度、方向拉伸做一下展示，每行字之间至少有三个设置的不同（不包括最后两行的比较，最好两行是是否为粗体和设置阴影的区别）。示例代码及效果如下：</p>
 <figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br></pre></td><td class="code"><pre><span class="line">paint.setFakeBoldText(false);</span><br><span class="line">paint.setTextSkewX((float) -0.25);</span><br><span class="line">paint.setTextScaleX(1);</span><br><span class="line">canvas.drawText(&quot;おれはおまえが好きだ&quot;,10,100,paint);</span><br><span class="line"></span><br><span class="line">paint.setStyle(Paint.Style.STROKE);</span><br><span class="line">paint.setFakeBoldText(false);</span><br><span class="line">paint.setTextSkewX((float) 0.25);</span><br><span class="line">paint.setTextScaleX((float) 0.75);</span><br><span class="line">canvas.drawText(&quot;わたしはあなたが好きだ&quot;,10,200,paint);</span><br><span class="line"></span><br><span class="line">paint.setStyle(Paint.Style.FILL_AND_STROKE);</span><br><span class="line">paint.setFakeBoldText(false);</span><br><span class="line">paint.setTextSkewX((float) -0.25);</span><br><span class="line">paint.setTextScaleX((float) 1.3);</span><br><span class="line">canvas.drawText(&quot;君の名は。&quot;,10,300,paint);</span><br><span class="line"></span><br><span class="line">paint.setShadowLayer(1,15,15,Color.GRAY);</span><br><span class="line">paint.setStyle(Paint.Style.FILL_AND_STROKE);</span><br><span class="line">paint.setFakeBoldText(true);</span><br><span class="line">paint.setTextSkewX((float) -0.25);</span><br><span class="line">paint.setTextScaleX((float) 1.3);</span><br><span class="line">canvas.drawText(&quot;君の名は。&quot;,10,400,paint);</span><br></pre></td></tr></table></figure>
-
-<p><img src="/2018/10/09/Android%E7%BB%98%E7%94%BB%E5%AD%A6%E4%B9%A0-Paint%E7%9B%B8%E5%85%B3/16.png"></p>
+<p><img src="/2018/10/09/Android%E7%BB%98%E7%94%BB%E5%AD%A6%E4%B9%A0-Paint%E7%9B%B8%E5%85%B3/16.png" alt></p>
 <p>还有一个属性是文字对齐方式的区别。其实这里面细致的东西有很多，我在这里放上一篇讲的很细致的文章以供参考。<a target="_blank" rel="noopener" href="https://www.jianshu.com/p/8b97627b21c4">博客链接</a>。我这里就只展示一下效果。</p>
 <figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line">paint.setTextAlign(Paint.Align.LEFT);</span><br><span class="line">canvas.drawText(&quot;君の名は。&quot;,360,100,paint);</span><br><span class="line"></span><br><span class="line">paint.setTextAlign(Paint.Align.CENTER);</span><br><span class="line">canvas.drawText(&quot;君の名は。&quot;,360,200,paint);</span><br><span class="line"></span><br><span class="line">paint.setTextAlign(Paint.Align.RIGHT);</span><br><span class="line">canvas.drawText(&quot;君の名は。&quot;,360,300,paint);</span><br></pre></td></tr></table></figure>
-
-<p><img src="/2018/10/09/Android%E7%BB%98%E7%94%BB%E5%AD%A6%E4%B9%A0-Paint%E7%9B%B8%E5%85%B3/17.png"></p>
+<p><img src="/2018/10/09/Android%E7%BB%98%E7%94%BB%E5%AD%A6%E4%B9%A0-Paint%E7%9B%B8%E5%85%B3/17.png" alt></p>
 <p>根据设置的位置、属性以及效果可以看出，如果设置左对齐，则文字会以设置的原点为左基准线临界点，向右展开；如果为居中对齐，则文字以原点为基准线中心点；右对齐则为右基准线临界点。</p>
 <p>2、canvas绘制文字的函数</p>
 <ul>
@@ -409,8 +438,7 @@
 </ul>
 <p>这两个方法可以指定要绘制的文字的位置，跟上面一样，位置也是两两数字一组。</p>
 <figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">float pos[]&#x3D;new float[]&#123;10,200,60,300,110,400,160,500,210,600&#125;;</span><br><span class="line">canvas.drawPosText(&quot;君の名は。&quot;,pos,paint);</span><br></pre></td></tr></table></figure>
-
-<p><img src="/2018/10/09/Android%E7%BB%98%E7%94%BB%E5%AD%A6%E4%B9%A0-Paint%E7%9B%B8%E5%85%B3/18.png"></p>
+<p><img src="/2018/10/09/Android%E7%BB%98%E7%94%BB%E5%AD%A6%E4%B9%A0-Paint%E7%9B%B8%E5%85%B3/18.png" alt></p>
 <ul>
 <li><p>方法：void drawTextOnPath (String text, Path path, float hOffset, float vOffset, Paint paint)</p>
 </li>
@@ -419,8 +447,7 @@
 </ul>
 <p>这两个方法属于沿路径绘制，在上面的示例中也已经见过一次了。这里主要讲hOffset、vOffset，hOffset是与路径起始点的<strong>水平</strong>偏移增量，vOffset是与路径中心的垂直偏移增量。</p>
 <figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br></pre></td><td class="code"><pre><span class="line">String text &#x3D; &quot;君の名は。&quot;;</span><br><span class="line"></span><br><span class="line">Path circlePath &#x3D; new Path();</span><br><span class="line">RectF rectF &#x3D; new RectF(100,100,300,300);</span><br><span class="line">circlePath.addRoundRect(rectF,10,15,Path.Direction.CCW);</span><br><span class="line">canvas.drawPath(circlePath,paint);</span><br><span class="line"></span><br><span class="line">Path circlePath2 &#x3D; new Path();</span><br><span class="line">RectF rectF2 &#x3D; new RectF(400,100,600,300);</span><br><span class="line">circlePath2.addRoundRect(rectF2,10,15, Path.Direction.CCW);</span><br><span class="line">canvas.drawPath(circlePath2,paint);</span><br><span class="line"></span><br><span class="line">canvas.drawTextOnPath(text,circlePath,0,0,paint);</span><br><span class="line">canvas.drawTextOnPath(text,circlePath2,80,30,paint);</span><br></pre></td></tr></table></figure>
-
-<p><img src="/2018/10/09/Android%E7%BB%98%E7%94%BB%E5%AD%A6%E4%B9%A0-Paint%E7%9B%B8%E5%85%B3/19.png"></p>
+<p><img src="/2018/10/09/Android%E7%BB%98%E7%94%BB%E5%AD%A6%E4%B9%A0-Paint%E7%9B%B8%E5%85%B3/19.png" alt></p>
 <p>此外字体还有其他的样式设置等等。个人感觉暂时不会用到，就不做学习了。</p>
 <h2 id="后记"><a href="#后记" class="headerlink" title="后记"></a>后记</h2><p>妈耶，我再也不一口气写这么长的博客了。写到后边，总觉得累了，都不想写的很详细了。真佩服那些能写出一本教程书的大佬。</p>
 
@@ -524,8 +551,10 @@
         </a>
       </div>
       <div class="site-state-item site-state-categories">
-        <span class="site-state-item-count">5</span>
-        <span class="site-state-item-name">分类</span>
+            <a href="/categories/">
+          
+        <span class="site-state-item-count">4</span>
+        <span class="site-state-item-name">分类</span></a>
       </div>
   </nav>
 </div>
@@ -556,6 +585,16 @@
     <i class="fa fa-heart"></i>
   </span>
   <span class="author" itemprop="copyrightHolder">希夏</span>
+    <span class="post-meta-divider">|</span>
+    <span class="post-meta-item-icon">
+      <i class="fa fa-chart-area"></i>
+    </span>
+    <span title="站点总字数">62k</span>
+    <span class="post-meta-divider">|</span>
+    <span class="post-meta-item-icon">
+      <i class="fa fa-coffee"></i>
+    </span>
+    <span title="站点阅读时长">56 分钟</span>
 </div>
   <div class="powered-by">由 <a href="https://hexo.io/" class="theme-link" rel="noopener" target="_blank">Hexo</a> & <a href="https://mist.theme-next.org/" class="theme-link" rel="noopener" target="_blank">NexT.Mist</a> 强力驱动
   </div>
@@ -588,14 +627,16 @@
 
 <script src="/js/next-boot.js"></script>
 
-<script src="/js/bookmark.js"></script>
-
 
 
 
   
 
 
+
+
+  
+<script src="/js/local-search.js"></script>
 
 
 
