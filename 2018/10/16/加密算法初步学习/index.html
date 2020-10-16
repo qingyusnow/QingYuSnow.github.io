@@ -1,0 +1,718 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=2">
+<meta name="theme-color" content="#222">
+<meta name="generator" content="Hexo 5.2.0">
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/logo.png">
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/logo.png">
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/logo.png">
+  <link rel="mask-icon" href="/images/logo.png" color="#222">
+
+<link rel="stylesheet" href="/css/main.css">
+
+
+<link rel="stylesheet" href="/lib/font-awesome/css/all.min.css">
+
+<script id="hexo-configurations">
+    var NexT = window.NexT || {};
+    var CONFIG = {"hostname":"example.com","root":"/","scheme":"Mist","version":"7.8.0","exturl":false,"sidebar":{"position":"right","display":"post","padding":18,"offset":12,"onmobile":false},"copycode":{"enable":false,"show_result":false,"style":null},"back2top":{"enable":true,"sidebar":false,"scrollpercent":false},"bookmark":{"enable":true,"color":"#222","save":"auto"},"fancybox":false,"mediumzoom":false,"lazyload":false,"pangu":false,"comments":{"style":"tabs","active":null,"storage":true,"lazyload":false,"nav":null},"algolia":{"hits":{"per_page":10},"labels":{"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}},"localsearch":{"enable":false,"trigger":"auto","top_n_per_article":1,"unescape":false,"preload":false},"motion":{"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}}};
+  </script>
+
+  <meta name="description" content="最近发现学的东西杂七杂八的，总是看到什么，觉得有意思，就查一下看看。像这次加密算法也是，这是个我应该不会去涉及的领域，毕竟我也不做后台数据库，也不玩python去破解什么东西，可能学了也没什么用。但兴趣来了，就学一学好了，总比整日一味刷着b站无聊的视频好多了。">
+<meta property="og:type" content="article">
+<meta property="og:title" content="加密算法初步学习">
+<meta property="og:url" content="http://example.com/2018/10/16/%E5%8A%A0%E5%AF%86%E7%AE%97%E6%B3%95%E5%88%9D%E6%AD%A5%E5%AD%A6%E4%B9%A0/index.html">
+<meta property="og:site_name" content="觅希夏">
+<meta property="og:description" content="最近发现学的东西杂七杂八的，总是看到什么，觉得有意思，就查一下看看。像这次加密算法也是，这是个我应该不会去涉及的领域，毕竟我也不做后台数据库，也不玩python去破解什么东西，可能学了也没什么用。但兴趣来了，就学一学好了，总比整日一味刷着b站无聊的视频好多了。">
+<meta property="og:locale" content="zh_CN">
+<meta property="og:image" content="http://example.com/2018/10/16/%E5%8A%A0%E5%AF%86%E7%AE%97%E6%B3%95%E5%88%9D%E6%AD%A5%E5%AD%A6%E4%B9%A0/1.jpg">
+<meta property="og:image" content="http://example.com/2018/10/16/%E5%8A%A0%E5%AF%86%E7%AE%97%E6%B3%95%E5%88%9D%E6%AD%A5%E5%AD%A6%E4%B9%A0/3.jpg">
+<meta property="og:image" content="http://example.com/2018/10/16/%E5%8A%A0%E5%AF%86%E7%AE%97%E6%B3%95%E5%88%9D%E6%AD%A5%E5%AD%A6%E4%B9%A0/2.jpg">
+<meta property="og:image" content="http://example.com/2018/10/16/%E5%8A%A0%E5%AF%86%E7%AE%97%E6%B3%95%E5%88%9D%E6%AD%A5%E5%AD%A6%E4%B9%A0/4.jpg">
+<meta property="og:image" content="http://example.com/2018/10/16/%E5%8A%A0%E5%AF%86%E7%AE%97%E6%B3%95%E5%88%9D%E6%AD%A5%E5%AD%A6%E4%B9%A0/5.jpg">
+<meta property="og:image" content="http://example.com/2018/10/16/%E5%8A%A0%E5%AF%86%E7%AE%97%E6%B3%95%E5%88%9D%E6%AD%A5%E5%AD%A6%E4%B9%A0/6.jpg">
+<meta property="article:published_time" content="2018-10-16T03:19:00.000Z">
+<meta property="article:modified_time" content="2020-10-14T02:48:37.087Z">
+<meta property="article:author" content="希夏">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="http://example.com/2018/10/16/%E5%8A%A0%E5%AF%86%E7%AE%97%E6%B3%95%E5%88%9D%E6%AD%A5%E5%AD%A6%E4%B9%A0/1.jpg">
+
+<link rel="canonical" href="http://example.com/2018/10/16/%E5%8A%A0%E5%AF%86%E7%AE%97%E6%B3%95%E5%88%9D%E6%AD%A5%E5%AD%A6%E4%B9%A0/">
+
+
+<script id="page-configurations">
+  // https://hexo.io/docs/variables.html
+  CONFIG.page = {
+    sidebar: "",
+    isHome : false,
+    isPost : true,
+    lang   : 'zh-CN'
+  };
+</script>
+
+  <title>加密算法初步学习 | 觅希夏</title>
+  
+
+
+
+
+
+
+  <noscript>
+  <style>
+  .use-motion .brand,
+  .use-motion .menu-item,
+  .sidebar-inner,
+  .use-motion .post-block,
+  .use-motion .pagination,
+  .use-motion .comments,
+  .use-motion .post-header,
+  .use-motion .post-body,
+  .use-motion .collection-header { opacity: initial; }
+
+  .use-motion .site-title,
+  .use-motion .site-subtitle {
+    opacity: initial;
+    top: initial;
+  }
+
+  .use-motion .logo-line-before i { left: initial; }
+  .use-motion .logo-line-after i { right: initial; }
+  </style>
+</noscript>
+
+<!-- hexo injector head_end start -->
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.12.0/dist/katex.min.css">
+
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/hexo-math@4.0.0/dist/style.css">
+<!-- hexo injector head_end end --></head>
+
+<body itemscope itemtype="http://schema.org/WebPage">
+  <div class="container use-motion">
+    <div class="headband"></div>
+
+    <header class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-container">
+  <div class="site-nav-toggle">
+    <div class="toggle" aria-label="切换导航栏">
+      <span class="toggle-line toggle-line-first"></span>
+      <span class="toggle-line toggle-line-middle"></span>
+      <span class="toggle-line toggle-line-last"></span>
+    </div>
+  </div>
+
+  <div class="site-meta">
+
+    <a href="/" class="brand" rel="start">
+      <span class="logo-line-before"><i></i></span>
+      <h1 class="site-title">觅希夏</h1>
+      <span class="logo-line-after"><i></i></span>
+    </a>
+  </div>
+
+  <div class="site-nav-right">
+    <div class="toggle popup-trigger">
+    </div>
+  </div>
+</div>
+
+
+
+
+<nav class="site-nav">
+  <ul id="menu" class="main-menu menu">
+        <li class="menu-item menu-item-home">
+
+    <a href="/" rel="section"><i class="fa fa-home fa-fw"></i>首页</a>
+
+  </li>
+        <li class="menu-item menu-item-archives">
+
+    <a href="/archives/" rel="section"><i class="fa fa-archive fa-fw"></i>归档</a>
+
+  </li>
+  </ul>
+</nav>
+
+
+
+
+</div>
+    </header>
+
+    
+  <div class="back-to-top">
+    <i class="fa fa-arrow-up"></i>
+    <span>0%</span>
+  </div>
+  <div class="reading-progress-bar"></div>
+  <a role="button" class="book-mark-link book-mark-link-fixed"></a>
+
+
+    <main class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          
+
+          <div class="content post posts-expand">
+            
+
+    
+  
+  
+  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="zh-CN">
+    <link itemprop="mainEntityOfPage" href="http://example.com/2018/10/16/%E5%8A%A0%E5%AF%86%E7%AE%97%E6%B3%95%E5%88%9D%E6%AD%A5%E5%AD%A6%E4%B9%A0/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar.jpg">
+      <meta itemprop="name" content="希夏">
+      <meta itemprop="description" content="我还在幻想着，能找到一个喜欢的人">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="觅希夏">
+    </span>
+      <header class="post-header">
+        <h1 class="post-title" itemprop="name headline">
+          加密算法初步学习
+        </h1>
+
+        <div class="post-meta">
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-calendar"></i>
+              </span>
+              <span class="post-meta-item-text">发表于</span>
+
+              <time title="创建时间：2018-10-16 11:19:00" itemprop="dateCreated datePublished" datetime="2018-10-16T11:19:00+08:00">2018-10-16</time>
+            </span>
+              <span class="post-meta-item">
+                <span class="post-meta-item-icon">
+                  <i class="far fa-calendar-check"></i>
+                </span>
+                <span class="post-meta-item-text">更新于</span>
+                <time title="修改时间：2020-10-14 10:48:37" itemprop="dateModified" datetime="2020-10-14T10:48:37+08:00">2020-10-14</time>
+              </span>
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-folder"></i>
+              </span>
+              <span class="post-meta-item-text">分类于</span>
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/Android/" itemprop="url" rel="index"><span itemprop="name">Android</span></a>
+                </span>
+            </span>
+
+          
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+        <p>最近发现学的东西杂七杂八的，总是看到什么，觉得有意思，就查一下看看。像这次加密算法也是，这是个我应该不会去涉及的领域，毕竟我也不做后台数据库，也不玩python去破解什么东西，可能学了也没什么用。但兴趣来了，就学一学好了，总比整日一味刷着b站无聊的视频好多了。</p>
+<a id="more"></a>
+
+<p>最初用到加密算法，是和锎锎他们做一个英语学习平台应用，在对用户密码进行申请提交的时候，考虑到信息流安全性的问题，对密码进行了一个简单的MD5加密算法加密。我们在加密之前先在密码末尾加一串内部约定的字符串，再对密码进行加密，最后截取其中一部分字符串进行密码提交与登录匹配。这是我第一次对加密算法有了接触。后来在使用支付宝支付SDK集成的过程中，我又知道了Base64、RSA、SHA1、SHA2加密算法，前者是在提交支付信息时有进行加密，后三个则是对商户私钥公钥等的计算加密。不过，我完全不了解这些算法的加密原理和使用领域，今天来了兴趣，就查一下吧。至于加密算法代码的实现，以后再说。</p>
+<h1 id="前言"><a href="#前言" class="headerlink" title="前言"></a>前言</h1><p>加密算法主要分为以下三类：</p>
+<ul>
+<li>对称加密算法</li>
+</ul>
+<p>包括AES、DES、3DES等。加密和解密用到的密钥相同，加密速度快，适合经常发送数据的场所，但密钥传输需要格外注意。</p>
+<ul>
+<li>非对称加密\公钥加密算法</li>
+</ul>
+<p>包括RSA、DSA、ECC等。加密和解密的密钥不同，加密方式通常采用数学难题所构造，加密速度慢，适合偶尔发送数据的场所，密钥传输方便。</p>
+<ul>
+<li>安全散列算法</li>
+</ul>
+<p>包括MD5、SHA1、HMAC等。严格意义来说，加密算法需要满足加密与解密两个条件；而安全散列算法是不可逆的算法计算，所以其实不是加密算法之流。</p>
+<h1 id="Base64加密算法"><a href="#Base64加密算法" class="headerlink" title="Base64加密算法"></a>Base64加密算法</h1><p>第二次碰到Base64加密算法，是在金云天的个人简历博客看到的。当时不太懂，只是觉得联系方式那串字符串末尾有一个熟悉的”=”号，在查找加密算法的时候歪打正着的查到了Base64加密算法，也就有了初步的认识。起因说完了，现在就来学习一下加密原理。</p>
+<h2 id="加密原理"><a href="#加密原理" class="headerlink" title="加密原理"></a>加密原理</h2><p>我们先拿到一个要加密的字符串，将单个字符先按照ASCII码表转换为对应的数字，再将数字转换为8位的二进制数。得到全部的二进制数后，按6位划分开来，得到一个6位二进制数的全新数列，此时，再将数列转换为10进制。转换完毕后，按照Base64索引表，将数字转换为对应的字符，这样就完成了转换。</p>
+<p>下面我附上Base64的索引表：</p>
+<p><img src="/2018/10/16/%E5%8A%A0%E5%AF%86%E7%AE%97%E6%B3%95%E5%88%9D%E6%AD%A5%E5%AD%A6%E4%B9%A0/1.jpg"></p>
+<h2 id="加密过程"><a href="#加密过程" class="headerlink" title="加密过程"></a>加密过程</h2><p>举例，以我的博客名称“QingMi”为要加密的字符串。我们先将QingMi转换为ASCII码表对应的数字：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">81 105 110 103 77 105</span><br></pre></td></tr></table></figure>
+
+<p>再转换为二进制：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">01010001 01101001 01101110 01100111 01001101 01101001</span><br></pre></td></tr></table></figure>
+
+<p>将这个数列按6位一组划分开来：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">010100 010110 100101 101110 011001 110100 110101 101001</span><br></pre></td></tr></table></figure>
+
+<p>转为十进制：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">20 22 37 46 25 52 53 41</span><br></pre></td></tr></table></figure>
+
+<p>按照Base64索引表转换为字符：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">UWluZ01p</span><br></pre></td></tr></table></figure>
+
+<p>跟在线转换的网站的结果对比了一下，没有问题。</p>
+<p>但是，这个转换过程存在一个问题：8位的二进制按6位划分的时候，最后的末尾不足6位怎么办。不急，这里还是有解决方案的。我们还是拿“QingM”来举例，接着走一遍刚才的步骤：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">81 105 110 103 77</span><br></pre></td></tr></table></figure>
+
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">01010001 01101001 01101110 01100111 01001101</span><br></pre></td></tr></table></figure>
+
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">010100 010110 100101 101110 011001 110100 1101</span><br></pre></td></tr></table></figure>
+
+<p>走到这一步的时候，我们就需要在末尾补足0了。</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">010100 010110 100101 101110 011001 110100 110100</span><br></pre></td></tr></table></figure>
+
+<p><strong>但是，还没有结束。</strong>我们还需要对加密的字符串的长度进行一下除3求余计算。这里长度是5，除3余2。如果余2，则在补足0后，<strong>在数列后加一个000000，但此数列不参与索引表转换，在最后只转换为”=”号</strong>；如果余1，<strong>则加两个000000</strong>。</p>
+<p>那么此时，应当添加一个000000：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">010100 010110 100101 101110 011001 110100 110100 000000</span><br></pre></td></tr></table></figure>
+
+<p>转换为：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">20 22 37 46 25 52 52</span><br></pre></td></tr></table></figure>
+
+<p>末尾不参与索引表字符转换，直接在末尾添加一个”=”：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">UWluZ00&#x3D;</span><br></pre></td></tr></table></figure>
+
+<p>ok，转换完成。</p>
+<h2 id="用途"><a href="#用途" class="headerlink" title="用途"></a>用途</h2><p><del>（我本不想讲用途的，但一想到以后若是与人谈论加密算法，却不知道用途，未免也太尴尬了些）</del></p>
+<p>Base64编码在Java的Hibernate中有应用，也可用于HTTP环境下传递标识信息，但碍于”/“与”+”号在URL中会发生形式变化，不利于数据库数据的存储，所以有一些改进的Base64编码将最后的”/“与”+”号替换为”-“与”_”等。</p>
+<h1 id="RSA加密算法"><a href="#RSA加密算法" class="headerlink" title="RSA加密算法"></a>RSA加密算法</h1><p>在查RSA加密算法之前，我绝没有想到它竟然是如此重量级的安全加密算法。它的加密原理，跟我上一个查过的Base64加密算法原理相差如此之大，涉及了很多高数的算法，让我这个高数一般的人学起来简直头大的不行。但既然已经查了，那我就把看来的东西整理一下。</p>
+<p>首先要学习RSA用到的四个数学概念。</p>
+<h2 id="理论知识准备"><a href="#理论知识准备" class="headerlink" title="理论知识准备"></a>理论知识准备</h2><p>1、<strong>互质</strong></p>
+<p>如果两个正整数，没有除1以外的公约数，则这两个数是互质关系。并不一定只有质数之间才是互质关系，比如8和9，也是互质关系。</p>
+<p>2、<strong>欧拉函数</strong></p>
+<p>给定一个正整数n，求在小于等于n的正整数之中，与n构成互质关系的数的个数。计算这个数的函数称作欧拉函数，公式用Φ(n)表示。</p>
+<ul>
+<li><p>n=1时，$Φ(n)=1$</p>
+</li>
+<li><p>n是质数，则$Φ(n)=n-1$</p>
+</li>
+<li><p>n是质数的某一个次方，则$Φ(p^k)=p^k-p^{k-1}=p^k(1-\cfrac{1}{p})$</p>
+</li>
+<li><p>n可以分解为两互质整数之积，如$n=p_1p_2$，则$Φ(n)=Φ(p_1p_2)=Φ(p_1)Φ(p_2)$</p>
+</li>
+<li><p>因为任意一个大于1的正整数，都可以写成一系列质数的积，即$n=p_1p_2……p_r$;</p>
+</li>
+</ul>
+<p>转换为$Φ(n)=Φ(p_1)Φ(p_2)……Φ(p_r)$；</p>
+<p>最后得出$Φ(n)=n(1-\cfrac{1}{p_1})(1-\cfrac{1}{p_2})……(1-\cfrac{1}{p_r})$。</p>
+<p>such as:$Φ(1323)=Φ(3^3*7^2)=1323(1-\cfrac{1}{3})(1-\cfrac{1}{7})=756$</p>
+<p>3、<strong>欧拉定理</strong></p>
+<p>如果两个正整数a与n互质，则满足以下等式：</p>
+<p>$a^{Φ(n)}≡1\pmod n$</p>
+<p>这个等式的意思是，a的Φ(n)次方被n除的余数为1，或者说，a的Φ(n)次方减去1可以被n整除。</p>
+<p>当两者互质，且n为质数的时候，欧拉定理又可以写成：</p>
+<p>$a^{p-1}≡1\pmod p$</p>
+<p>这个等式又可以成为费马小定理。</p>
+<p>4、<strong>模反元素</strong></p>
+<p>如果两个正整数a和n互质，那么一定可以找到整数b，使得ab-1被n整除，即：</p>
+<p>$ab≡1\pmod n$</p>
+<p>此时b就成为a的模反元素。比如4与7互质，那么4的模反元素就是2+7k（k为整数）。欧拉定理有计算函数如下：</p>
+<p>$a^{Φ(n)}=a*a^{Φ(n)-1}≡1\pmod n$</p>
+<p>所以，$a^{Φ(n)-1}$就是a的模反元素。</p>
+<h2 id="秘钥生成步骤"><a href="#秘钥生成步骤" class="headerlink" title="秘钥生成步骤"></a>秘钥生成步骤</h2><p>1、随机选择两个不相等的质数，p与q</p>
+<p>此处取59和83</p>
+<p>2、计算这两个数的乘积n</p>
+<p>59 * 83 = 4897</p>
+<p>3、计算乘积的欧拉函数Φ(n)</p>
+<p>Φ(4897)=58 * 82 = 4756</p>
+<p>4、随机选择一个整数e，条件是<strong>1&lt;e&lt;Φ(n)，且e与Φ(n)互质</strong></p>
+<p>此处取23</p>
+<p>5、计算e与Φ(n)的模反元素d</p>
+<p>$ed≡1\pmod Φ(n)$</p>
+<p>等价于 $ed - 1 = kΦ(n)$</p>
+<p>得到 $ed + kΦ(n) = 1$ （不用在意k转换前后的符号，计算的时候代入符号转换即可）</p>
+<p>代入数，得到 23d + 4756k = 1</p>
+<p>采用<a target="_blank" rel="noopener" href="https://zh.wikipedia.org/wiki/%E6%89%A9%E5%B1%95%E6%AC%A7%E5%87%A0%E9%87%8C%E5%BE%97%E7%AE%97%E6%B3%95">扩展欧几里得算法</a>求解，过程如下：</p>
+<p>先用类似辗转相除法，做以下计算：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">4756&#x3D;23*206+18</span><br><span class="line">23&#x3D;18*1+5</span><br><span class="line">18&#x3D;5*3+3</span><br><span class="line">5&#x3D;3*1+2</span><br><span class="line">3&#x3D;2*1+1</span><br></pre></td></tr></table></figure>
+
+<p>然后改写成“余数等于”的形式：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">18&#x3D;4756+23*(-206)	&#x2F;&#x2F;式1</span><br><span class="line">5&#x3D;23+18*(-1)		&#x2F;&#x2F;式2</span><br><span class="line">3&#x3D;18+5*(-3)			&#x2F;&#x2F;式3</span><br><span class="line">2&#x3D;5+3*(-1)			&#x2F;&#x2F;式4</span><br><span class="line">1&#x3D;3+2*(-1)</span><br></pre></td></tr></table></figure>
+
+<p>然后开始“倒回来：计算：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line">1&#x3D;3+2*(-1)</span><br><span class="line"> &#x3D;3+[5+3*(-1)]*(-1)				&#x2F;&#x2F;代入式4</span><br><span class="line"> &#x3D;3*2+5*(-1)</span><br><span class="line"> &#x3D;[18+5*(-3)]*2+5*(-1)			&#x2F;&#x2F;代入式3</span><br><span class="line"> &#x3D;18*2+5*(-7)</span><br><span class="line"> &#x3D;18*2+[23+18*(-1)]*(-7)		&#x2F;&#x2F;代入式2</span><br><span class="line"> &#x3D;18*9+23*(-1)</span><br><span class="line"> &#x3D;[4756+23*(-206)]*9+23*(-7)	&#x2F;&#x2F;代入式1</span><br><span class="line"> &#x3D;4756*9+23*(-1861)</span><br></pre></td></tr></table></figure>
+
+<p>到此可以得出，d=-1861,k=9。</p>
+<p><del>（这方法对整数形式的二元一次方程真是一个万能解，流弊）</del></p>
+<p>6、将n和e封装成公钥，n和d封装成私钥</p>
+<p>先回顾一下我们算过的所有有用的数：p=59,q=83,n=4897,Φ(4897)=4756,e=23,d=-1861</p>
+<p>公钥用(n,e)表达，私钥用(n,d)表达，那么计算出来的公钥就是(4897,23)，私钥为(4897,-1861)</p>
+<p>7、加密与解密</p>
+<p>费心费力的算了半天，还不知道这公钥私钥怎么用，我都感觉自己差不多白学了，所以这里就讲一下怎么用。</p>
+<ul>
+<li>加密</li>
+</ul>
+<p>假设A向B发送信息m，A用公钥(n,e)进行加密。注意，m必须是证书且m&lt;n。而加密，就是要算出下式的c：</p>
+<p>$m^e=c\pmod n$</p>
+<p>公钥是(4897,23),取m为7,则式为： $7^{23}≡c\pmod {4897}$</p>
+<p>计算得出：c=3855。那么3855就是加密后的数字，A把它给了B。</p>
+<p><del>(这里我只能取个比较小的数。最开始取了个101，然后，101的23次方，计算器炸了，，，，，)</del></p>
+<ul>
+<li>解密</li>
+</ul>
+<p>B拿到了3855，又有私钥(4897,-1861)，那要怎么解密呢？代入以下等式计算：</p>
+<p>$c^d=m\pmod n$</p>
+<p>代入得 $3855^{-1861}≡m\pmod {4897}$</p>
+<p>emmmmmmm，等等，3855的-1861次方，这尼玛怎么算，等等，参考的博客是2790的2753次方，他怎么算的？芽儿哟，这怎么解啊。。。。。。这特么尴尬了，举了个例子结果有私钥都没法算，嗯……这大概就是RSA的安全性所在吧。。。。。</p>
+<p>8、RSA的算法可靠性</p>
+<p>维基百科这样说：“对极大整数做因数分解的难度决定了RSA算法的可靠性。换言之，对一极大整数做因数分解愈困难，RSA算法愈可靠。”但维基百科又报道，到目前为止，并没有一种固定可靠的算法可以破解RSA算法。尽管如此，曾有暴力破解的方式破解过768位的秘钥，但花费时间漫长，从破解512位到768位花了漫长的10年。不过，普遍建议应将秘钥从1024位升级到2048位。</p>
+<p>至于算法的安全性证明，我就不看了，光是上面这个次方计算都有点头疼。我知道有些算法可以优化次方运算，不过那是以后学习其他算法的事情了。原理明白就行了。想看安全性证明的，我在这里挂上参考博客链接：</p>
+<p><a target="_blank" rel="noopener" href="http://www.ruanyifeng.com/blog/2013/07/rsa_algorithm_part_two.html">RSA算法原理</a></p>
+<h1 id="MD5摘要算法"><a href="#MD5摘要算法" class="headerlink" title="MD5摘要算法"></a>MD5摘要算法</h1><p>好吧，看来是Base64算法过于简单，让我产生了一部分算法都是简单的符号映射的错觉。在查阅MD5加密算法的资料过程中，MD5算法的过程运算让我更加头大。嘛，行吧，加密算法不难的话怎么能称为加密算法呢。</p>
+<p>MD5算法是经由MD2、MD3、MD4发展而来。它的最大特点是，可以将任意长度的字节串变换成定长的字符串，现目前流行的有16位与32位。</p>
+<h2 id="原理"><a href="#原理" class="headerlink" title="原理"></a>原理</h2><p>MD5算法是将输入的不定长度信息，输出固定长度为128-bits的算法。</p>
+<h3 id="数据填充"><a href="#数据填充" class="headerlink" title="数据填充"></a>数据填充</h3><p>MD5算法对数据填充分两个步骤：</p>
+<ul>
+<li>1、<strong>填充信息至信息长度对512取模得448</strong></li>
+</ul>
+<p>填充方法：在信息后面填充一个1与无数个0，直至满足第一个条件</p>
+<ul>
+<li>2、<strong>在信息末尾添加信息长度的信息</strong></li>
+</ul>
+<p>看起来很绕，其实就是在上一步填充完的信息后，添加一个64位长度的二进制位数信息。这样一来，448+64=512，整个信息的长度还是可以被512整除的。这样做的话，在后面处理信息的时候也比较方便。</p>
+<p>MD5会把信息以512位分组，再将每一分组划分为16个32位子分组。</p>
+<h3 id="数据计算"><a href="#数据计算" class="headerlink" title="数据计算"></a>数据计算</h3><ul>
+<li>四个被称作链接变量的常数：A=0x67452301,B=0xEFCDAB89,C=0x98BADCFE,D=0x10325476</li>
+</ul>
+<p>分别赋予小写a、b、c、d</p>
+<p><del>(常数值与部分博客有出入，但观察一下，发现四个常数值的数字顺序是有规律的颠倒放置，至于原因还不知道)</del></p>
+<ul>
+<li>四个非线性函数</li>
+</ul>
+<p>F(X,Y,Z) = (X &amp; Y) | (~X &amp; Z)</p>
+<p>G(X,Y,Z) = (X &amp; Z) | (Y &amp; ~Z)</p>
+<p>H(X,Y,Z) = X ^ Y ^ Z</p>
+<p>I(X,Y,Z) = Y ^ (X | ~Z)</p>
+<p>准备完毕，下面就开始讲计算过程。</p>
+<p>计算过程主要是四轮循环运算；每轮循环运算的次数，是512位信息分组的数目，即多少个32位信息组；每次运算，对a、b、c和d的其中三个做一次非线性函数运算，然后将所得结果加上第四个变量，文本信息的一个子分组，一个常数，将结果向右移一个不定的数，加上a、b、c、d其中之一，并用结果取代a、b、c、d之一。听起来很糊涂，那就看一下算式：</p>
+<p>$F(a,b,c,d,M_j,s,t_i)表示a=b+(a+F(b,c,d)+M_j+t_i)&lt;&lt;$</p>
+<p>其中$M_j$指文本信息子分组，$t_i$是常数，至于s，我猜是位移的数吧</p>
+<p>这样经过几轮计算之后，将最后计算出来的a、b、c、d输出，就是最后的MD5值了。32位的MD5值是完整的计算结果，而16位的MD5值是截取的32位值的9~24位。</p>
+<h2 id="用途-1"><a href="#用途-1" class="headerlink" title="用途"></a>用途</h2><p>1、常用作文件下载的核对，用于校验文件在下载过程中是否遭到不法程序篡改。</p>
+<p>2、很多网站用来存储用户的密码，鉴于MD5算法的不可逆性，很难算出密码原文内容，所以经常用来做用户注册时密码的存储与登录时密码的核对。</p>
+<p>3、数字签名。MD5也经常用作第三方认证机构的文件摘要信息比对，称“数字签名”。</p>
+<p>PS：MD5算法现在已经不再完全可靠，已经有国内的科学院研究者破解了MD5的碰撞抵抗。</p>
+<h1 id="AES加密算法"><a href="#AES加密算法" class="headerlink" title="AES加密算法"></a>AES加密算法</h1><p>查阅资料的时候，发现DES算法因已遭到破解，不再是安全的加密算法，所以又改换成学习AES加密算法。因为我实在看的有些困难，所以先贴上我参考的两篇比较好的详解博客：</p>
+<p><a target="_blank" rel="noopener" href="https://blog.csdn.net/qq_28205153/article/details/55798628">AES加密算法的详细介绍与实现</a></p>
+<p><a target="_blank" rel="noopener" href="https://www.cnblogs.com/luop/p/4334160.html">密码算法详解——AES</a></p>
+<h2 id="加密原理-1"><a href="#加密原理-1" class="headerlink" title="加密原理"></a>加密原理</h2><p>AES是一种区块加密算法，即分组加密，将明文分成多个等长的模块，直至加密完所有明文。AES标准规范中，分组只能是128位，即每个分组为16个字节。但密钥的长度可以选择128位、192位或256位，每个选择对应的推荐加密轮数也不同，如下所示：</p>
+<p><img src="/2018/10/16/%E5%8A%A0%E5%AF%86%E7%AE%97%E6%B3%95%E5%88%9D%E6%AD%A5%E5%AD%A6%E4%B9%A0/3.jpg"></p>
+<h2 id="加密步骤"><a href="#加密步骤" class="headerlink" title="加密步骤"></a>加密步骤</h2><p>因为过程很长，所以我先对整个过程做一个概要阐述：以AES-128举例，AES算法先将明文分组，每组被分为16个字节，用4x4的明文矩阵表示；然后将每组的明文矩阵转换为状态矩阵；然后进入AES的10轮加密，每轮加密均需要依次进行4个步骤，字节代换、行移位、列混合、轮密钥加（第一轮加密之前需先进行一次轮密钥加，最后一轮加密不需进行列混合）；最后，将输出的加密过后的状态矩阵替换为字符串，得到的即是密文。解密的过程，则是将上述的加密过程逆向进行即可。流程如下图所示：</p>
+<p><img src="/2018/10/16/%E5%8A%A0%E5%AF%86%E7%AE%97%E6%B3%95%E5%88%9D%E6%AD%A5%E5%AD%A6%E4%B9%A0/2.jpg"></p>
+<h3 id="矩阵预处理"><a href="#矩阵预处理" class="headerlink" title="矩阵预处理"></a>矩阵预处理</h3><p>假设明文已被分好，第一组如下所示：</p>
+<p>$$<br>  \left[<br>  \begin{matrix}<br>   a &amp; e &amp; i &amp; m \<br>   b &amp; f &amp; j &amp; n \<br>   c &amp; g &amp; k &amp; o \<br>   d &amp; h &amp; l &amp; p<br>  \end{matrix}<br>  \right] \tag{1}<br>$$</p>
+<p>先将矩阵转换为状态矩阵，方法是只需将字符串转换为对应的十六进制即可：</p>
+<p>$$<br>  \left[<br>  \begin{matrix}<br>   0x61 &amp; 0x65 &amp; 0x69 &amp; 0x6D \<br>   0x62 &amp; 0x66 &amp; 0x6A &amp; 0x6E \<br>   0x63 &amp; 0x67 &amp; 0x6B &amp; 0x6F \<br>   0x64 &amp; 0x68 &amp; 0x6C &amp; 0x70<br>  \end{matrix}<br>  \right] \tag{2}<br>$$</p>
+<p>接下来该进行轮密钥加了。但考虑到我没办法进行10次加密运算，只能将每个步骤的计算方法讲清楚就行了，所以我把轮密钥加放在每轮的加密步骤中讲解。</p>
+<h3 id="字节代换"><a href="#字节代换" class="headerlink" title="字节代换"></a>字节代换</h3><p>字节代换其实是一个查表替换字符的操作，AES算法为此定义了一个S盒和逆S盒（S盒与逆S盒的字符位置是固定的，是按照公式$$GF(2^8) = GF(2)[x]/(x^8 + x^4 + x^3 + x + 1)$$计算来的，有兴趣的可以去查一下）。表如下所示：</p>
+<p><img src="/2018/10/16/%E5%8A%A0%E5%AF%86%E7%AE%97%E6%B3%95%E5%88%9D%E6%AD%A5%E5%AD%A6%E4%B9%A0/4.jpg"></p>
+<p><img src="/2018/10/16/%E5%8A%A0%E5%AF%86%E7%AE%97%E6%B3%95%E5%88%9D%E6%AD%A5%E5%AD%A6%E4%B9%A0/5.jpg"></p>
+<p>替换规则其实很简单：将原文的高4位作为行值，低4位作为列值，找到对应的元素，输出即可：</p>
+<p>$$<br>  \left[<br>  \begin{matrix}<br>   0xEF &amp; 0x4D &amp; 0xF9 &amp; 0x3C \<br>   0xAA &amp; 0x33 &amp; 0x02 &amp; 0x9F \<br>   0xFB &amp; 0x85 &amp; 0x7F &amp; 0xA8 \<br>   0x43 &amp; 0x45 &amp; 0x50 &amp; 0x51<br>  \end{matrix}<br>  \right] \tag{3}<br>$$</p>
+<p>逆向解密则从逆S盒取值即可。</p>
+<h3 id="行移位"><a href="#行移位" class="headerlink" title="行移位"></a>行移位</h3><p>行移位是一个左循环移位操作。密钥长度为128位时，加密时，矩阵第0行左移0位，第1行左移1位，第2行左移2位，第3行左移3位。同理，解密时逆向即可。</p>
+<p>$$<br>  \left[<br>  \begin{matrix}<br>   0xEF &amp; 0x4D &amp; 0xF9 &amp; 0x3C \<br>   0x33 &amp; 0x02 &amp; 0x9F &amp; 0xAA \<br>   0x7F &amp; 0xA8 &amp; 0xFB &amp; 0x85 \<br>   0x51 &amp; 0x43 &amp; 0x45 &amp; 0x50<br>  \end{matrix}<br>  \right] \tag{4}<br>$$</p>
+<h3 id="列混合"><a href="#列混合" class="headerlink" title="列混合"></a>列混合</h3><p>列混合运算是将移位后的状态矩阵与固定的壶镇相乘，得到计算后的状态矩阵。固定矩阵如下：</p>
+<p>$$<br>  \left[<br>  \begin{matrix}<br>   02 &amp; 03 &amp; 01 &amp; 01 \<br>   01 &amp; 02 &amp; 03 &amp; 01 \<br>   01 &amp; 01 &amp; 02 &amp; 03 \<br>   03 &amp; 01 &amp; 01 &amp; 02<br>  \end{matrix}<br>  \right] \tag{5}<br>$$</p>
+<p>比如第一行第一列的元素的计算：</p>
+<p>S=(2<em>0xEF)^0x4D^0xF9^(3</em>0x3C)</p>
+<p>运算规则：1、对于2进制来说，乘以2即是将数左移一位。如果原数最高位为1，则需要在移位后再同（0001 1011）进行异或运算，比如2*0xEF:</p>
+<p>EF转换为二进制即为：1110 1111</p>
+<p>乘2左移一位：1101 1110</p>
+<p>因原最高位为1，故与0001 1011进行异或运算，得到：</p>
+<p>1100 0101</p>
+<p>这就是2*0xEF的运算结果。</p>
+<p>2、对于乘3运算，需要用分配率来进行运算，如3*0x3C：</p>
+<p>3*0x3C=(2+1)*0011 1100=0111 1000^0011 1100=0100 0100</p>
+<p>3、这样一来，就只剩下异或运算了，这就不用多说了吧：</p>
+<p>1100 0101<br>0100 1101<br>1111 1001<br>0100 0100</p>
+<p>得到结果：0011 0101</p>
+<p>转换为十六进制即为：0x35</p>
+<p>计算的过程如果手算那就太麻烦了，所以尽管可能多花了点时间，我还是写了点Java代码来实现计算：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br><span class="line">63</span><br><span class="line">64</span><br><span class="line">65</span><br><span class="line">66</span><br><span class="line">67</span><br><span class="line">68</span><br><span class="line">69</span><br><span class="line">70</span><br><span class="line">71</span><br><span class="line">72</span><br></pre></td><td class="code"><pre><span class="line">public class Main &#123;</span><br><span class="line"></span><br><span class="line">    public static void main(String[] args) &#123;</span><br><span class="line"></span><br><span class="line">		&#x2F;&#x2F;存放状态矩阵</span><br><span class="line">        int a[][] &#x3D; new int[][]&#123;&#123;0xEF,0x4D,0xF9,0x3C&#125;,&#123;0x33,0x02,0x9F,0xAA&#125;,&#123;0x7F,0xA8,0xFB,0x85&#125;,&#123;0x51,0x43,0x45,0x50&#125;&#125;;</span><br><span class="line"></span><br><span class="line">		&#x2F;&#x2F;存放要相乘的固定矩阵</span><br><span class="line">        int b[][] &#x3D; new int[][]&#123;&#123;2,3,1,1&#125;,&#123;1,2,3,1&#125;,&#123;1,1,2,3&#125;,&#123;3,1,1,2&#125;&#125;;</span><br><span class="line"></span><br><span class="line">		&#x2F;&#x2F;存放计算后的状态矩阵</span><br><span class="line">        int c[][] &#x3D; new int[4][4];</span><br><span class="line"></span><br><span class="line">		&#x2F;&#x2F;先将后状态矩阵赋值为0</span><br><span class="line">        for(int i&#x3D;0;i&lt;4;i++)&#123;</span><br><span class="line">            for(int j&#x3D;0;j&lt;4;j++)&#123;</span><br><span class="line">                c[i][j]&#x3D;0;</span><br><span class="line">            &#125;</span><br><span class="line">        &#125;</span><br><span class="line"></span><br><span class="line">        Main main &#x3D; new Main();</span><br><span class="line"></span><br><span class="line">        for(int i&#x3D;0;i&lt;4;i++)&#123;</span><br><span class="line">            for(int j&#x3D;0;j&lt;4;j++)&#123;</span><br><span class="line">                &#x2F;&#x2F;为方便理解下面的循环，在这里列出16次计算时每次计算的公式</span><br><span class="line">				&#x2F;&#x2F;c[i][j]&#x3D;a[i][0]*b[0][j]+a[i][1]*b[1][j]+a[i][2]*c[2][j]+a[i][3]*b[3][j];</span><br><span class="line">                int res &#x3D; 0;</span><br><span class="line">                for(int k&#x3D;0;k&lt;4;k++)&#123;</span><br><span class="line">                    if(b[k][j]&#x3D;&#x3D;2)&#123;</span><br><span class="line">                        res &#x3D; res ^ main.doubleCal(a[i][k]);</span><br><span class="line">                    &#125;else if(b[k][j]&#x3D;&#x3D;3)&#123;</span><br><span class="line">                        res &#x3D; res ^ main.tripleCal(a[i][k]);</span><br><span class="line">                    &#125;else &#123;</span><br><span class="line">                        res &#x3D; res ^ a[i][k];</span><br><span class="line">                    &#125;</span><br><span class="line">                &#125;</span><br><span class="line">                c[i][j]&#x3D;res;</span><br><span class="line">            &#125;</span><br><span class="line">        &#125;</span><br><span class="line"></span><br><span class="line">		&#x2F;&#x2F;输出计算后的状态矩阵</span><br><span class="line">        for(int i&#x3D;0;i&lt;4;i++)&#123;</span><br><span class="line">            for(int j&#x3D;0;j&lt;4;j++)&#123;</span><br><span class="line">				&#x2F;&#x2F;Integer.toHexString方法，可将十进制转化为十六进制输出；十六进制转化为十进制则为Integer.parseInt方法</span><br><span class="line">                System.out.print(Integer.toHexString(c[i][j])+&quot;  &quot;);</span><br><span class="line">            &#125;</span><br><span class="line">            System.out.println(&quot;\n&quot;);</span><br><span class="line">        &#125;</span><br><span class="line"></span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">	&#x2F;&#x2F;乘2运算的情况处理</span><br><span class="line">    public int doubleCal(int a)&#123;</span><br><span class="line">		&#x2F;&#x2F;若a的最高位为1，即a大于127，则先移位，但移位不减值，故再减去超出8位的值，再与0001 1011，即27，进行异或运算</span><br><span class="line">        if(a&gt;127)&#123;</span><br><span class="line">            a &#x3D; a &lt;&lt; 1;</span><br><span class="line">            a -&#x3D; 256;</span><br><span class="line">            a &#x3D; a ^ 27;</span><br><span class="line">            return a;</span><br><span class="line">        &#125;else &#123;</span><br><span class="line">            a &#x3D; a &lt;&lt; 1;</span><br><span class="line">            return a;</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">	&#x2F;&#x2F;乘3运算的情况处理</span><br><span class="line">    public int tripleCal(int a)&#123;</span><br><span class="line">        a &#x3D; doubleCal(a) ^ a;</span><br><span class="line">        return a;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>最后计算出的结果是：</p>
+<p>$$<br>  \left[<br>  \begin{matrix}<br>   0x35 &amp; 0x75 &amp; 0xED &amp; 0xCA \<br>   0x1E &amp; 0x64 &amp; 0xBA &amp; 0xC4 \<br>   0x39 &amp; 0xB4 &amp; 0xF4 &amp; 0xD0 \<br>   0x54 &amp; 0x60 &amp; 0x4E &amp; 0x7D<br>  \end{matrix}<br>  \right] \tag{6}<br>$$</p>
+<p>逆运算的话，则是乘以上述固定矩阵的逆矩阵即可，该逆矩阵如下：</p>
+<p>$$<br>  \left[<br>  \begin{matrix}<br>   0x0E &amp; 0x0B &amp; 0x0D &amp; 0x09 \<br>   0x09 &amp; 0x0E &amp; 0x0B &amp; 0x0D \<br>   0x0D &amp; 0x09 &amp; 0x0E &amp; 0x0B \<br>   0x0B &amp; 0x0D &amp; 0x09 &amp; 0x0E<br>  \end{matrix}<br>  \right] \tag{7}<br>$$</p>
+<h3 id="轮密钥加"><a href="#轮密钥加" class="headerlink" title="轮密钥加"></a>轮密钥加</h3><p>轮密钥加则是将128位轮密钥同状态矩阵中的数据进行异或运算。密钥分成4组，每组32位字，状态矩阵取每列四个元素组成的32位字，依次对应进行异或运算，得到加密后的新状态矩阵。</p>
+<p>在逆运算时，密钥不需改变，因为异或运算的特性，再次运算即可得到加密前的矩阵。</p>
+<h3 id="密钥扩展"><a href="#密钥扩展" class="headerlink" title="密钥扩展"></a>密钥扩展</h3><p>有一项事情需要注意：每一轮异或运算的密钥是在不断变化的。接下来就是了解一下，密钥变化的规律。</p>
+<p>假设密钥Key为”abcdefghijklmnop”，则有W[0]=”abcd”,W[1]=”efgh”,W[2]=”ijkl”,w[3]=”mnop”。这是在进行10轮加密之前，最初的加密密钥。而接下来10轮所用到的40个新列W[i]，则以以下的规律计算：</p>
+<p>1、如果i不是4的倍数</p>
+<p>W[i]=W[i-4]^W[i-1]</p>
+<p>2、如果i是4的倍数</p>
+<p>W[i]=w[i-4]^T(W[i-1])</p>
+<p>这里，T是一个由3部分组成的函数，包括字循环、字节代换和轮常量异或，分别如下：</p>
+<p>a.字循环：将字节循环左移1个字节，如”abcd”变为”bcda”。</p>
+<p>b.字节代换：这个不用多说，使用表为S盒。</p>
+<p>c.轮常量异或：将值与轮常量进行异或，每一轮异或的值均不同，其表如下：</p>
+<p><img src="/2018/10/16/%E5%8A%A0%E5%AF%86%E7%AE%97%E6%B3%95%E5%88%9D%E6%AD%A5%E5%AD%A6%E4%B9%A0/6.jpg"></p>
+<p>比如上述密钥可转化为”61 62 63 64 65 66 67 68 69 6A 6B 6C 6D 6E 6F 70”。那么4个初始值为：</p>
+<p>W[0]=61 62 63 64</p>
+<p>W[1]=65 66 67 68</p>
+<p>W[2]=69 6A 6B 6C</p>
+<p>W[3]=6D 6E 6F 70</p>
+<p>求W[4]、W[5]、W[6]、W[7]</p>
+<p>W[4]=w[0]^T(W[3])</p>
+<p>T(W[3])计算步骤：</p>
+<p>1、6D 6E 6F 70输出变为6E 6F 70 6D</p>
+<p>2、在S盒中找到对应字节，输出9F A8 51 3C</p>
+<p>3、第一轮加密异或的数组为01 00 00 00,运算后输出9E A8 51 3C。</p>
+<p>所以T(W[3])=9E A8 51 3C。</p>
+<p>所以 W[4]=61 62 63 64 ^ 9E A8 51 3C=FF CA 32 58</p>
+<p>W[5]=W[1]^W[4]=65 66 67 68 ^ FF CA 32 58=99 AC 55 30</p>
+<p>W[6]=W[2]^W[5]=69 6A 6B 6C ^ 99 AC 55 30=F0 C6 3E 5C</p>
+<p>W[7]=W[3]^W[6]=6D 6E 6F 70 ^ F0 C6 3E 5C=9D A8 51 2C</p>
+<p>将所有结果组合起来，即为第一轮的密钥:FF CA 32 58 99 AC 55 30 F0 C6 3E 5C 9D A8 51 2C</p>
+<h2 id="用途-2"><a href="#用途-2" class="headerlink" title="用途"></a>用途</h2><p>介于DES算法已被破解的事实，很多文件开始向3DES和AES加密靠拢。AES加密算法也并非牢不可破，目前已有成功的对AES算法的尝试攻击，不过距离算法的正式破解，还有一些难度。此外也有一些不针对算法，而针对算法系统或是安全系统的旁道攻击，不过这些攻击，就都是算法研究的题外话了。</p>
+<p><del>（哇，终于把这个AES写完了，累死了。）</del></p>
+<h1 id="后记"><a href="#后记" class="headerlink" title="后记"></a>后记</h1><p>这几章算法我均只讲解了初步原理。在查询及亲自使用在线加密算法的时候，深感每个算法均有很多不同的模式，而这些模式在原理讲解的博客中均未提及，可能是在代码实现的过程中有所差异？不过鉴于目前我还不会过度深入代码的实现，所以就点到为止。</p>
+
+    </div>
+
+    
+    
+    
+
+      <footer class="post-footer">
+
+        
+
+
+        
+    <div class="post-nav">
+      <div class="post-nav-item">
+    <a href="/2018/10/09/Android%E7%BB%98%E7%94%BB%E5%AD%A6%E4%B9%A0-Paint%E7%9B%B8%E5%85%B3/" rel="prev" title="Android绘画学习-Paint相关">
+      <i class="fa fa-chevron-left"></i> Android绘画学习-Paint相关
+    </a></div>
+      <div class="post-nav-item">
+    <a href="/2018/11/21/Android%E6%97%B6%E9%92%9F%E5%8A%A8%E7%94%BB%E5%AE%9E%E7%8E%B0/" rel="next" title="Android时钟动画实现">
+      Android时钟动画实现 <i class="fa fa-chevron-right"></i>
+    </a></div>
+    </div>
+      </footer>
+    
+  </article>
+  
+  
+  
+
+
+
+          </div>
+          
+
+<script>
+  window.addEventListener('tabs:register', () => {
+    let { activeClass } = CONFIG.comments;
+    if (CONFIG.comments.storage) {
+      activeClass = localStorage.getItem('comments_active') || activeClass;
+    }
+    if (activeClass) {
+      let activeTab = document.querySelector(`a[href="#comment-${activeClass}"]`);
+      if (activeTab) {
+        activeTab.click();
+      }
+    }
+  });
+  if (CONFIG.comments.storage) {
+    window.addEventListener('tabs:click', event => {
+      if (!event.target.matches('.tabs-comment .tab-content .tab-pane')) return;
+      let commentClass = event.target.classList[1];
+      localStorage.setItem('comments_active', commentClass);
+    });
+  }
+</script>
+
+        </div>
+          
+  
+  <div class="toggle sidebar-toggle">
+    <span class="toggle-line toggle-line-first"></span>
+    <span class="toggle-line toggle-line-middle"></span>
+    <span class="toggle-line toggle-line-last"></span>
+  </div>
+
+  <aside class="sidebar">
+    <div class="sidebar-inner">
+
+      <ul class="sidebar-nav motion-element">
+        <li class="sidebar-nav-toc">
+          文章目录
+        </li>
+        <li class="sidebar-nav-overview">
+          站点概览
+        </li>
+      </ul>
+
+      <!--noindex-->
+      <div class="post-toc-wrap sidebar-panel">
+          <div class="post-toc motion-element"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#%E5%89%8D%E8%A8%80"><span class="nav-number">1.</span> <span class="nav-text">前言</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#Base64%E5%8A%A0%E5%AF%86%E7%AE%97%E6%B3%95"><span class="nav-number">2.</span> <span class="nav-text">Base64加密算法</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#%E5%8A%A0%E5%AF%86%E5%8E%9F%E7%90%86"><span class="nav-number">2.1.</span> <span class="nav-text">加密原理</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E5%8A%A0%E5%AF%86%E8%BF%87%E7%A8%8B"><span class="nav-number">2.2.</span> <span class="nav-text">加密过程</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E7%94%A8%E9%80%94"><span class="nav-number">2.3.</span> <span class="nav-text">用途</span></a></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#RSA%E5%8A%A0%E5%AF%86%E7%AE%97%E6%B3%95"><span class="nav-number">3.</span> <span class="nav-text">RSA加密算法</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#%E7%90%86%E8%AE%BA%E7%9F%A5%E8%AF%86%E5%87%86%E5%A4%87"><span class="nav-number">3.1.</span> <span class="nav-text">理论知识准备</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E7%A7%98%E9%92%A5%E7%94%9F%E6%88%90%E6%AD%A5%E9%AA%A4"><span class="nav-number">3.2.</span> <span class="nav-text">秘钥生成步骤</span></a></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#MD5%E6%91%98%E8%A6%81%E7%AE%97%E6%B3%95"><span class="nav-number">4.</span> <span class="nav-text">MD5摘要算法</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#%E5%8E%9F%E7%90%86"><span class="nav-number">4.1.</span> <span class="nav-text">原理</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#%E6%95%B0%E6%8D%AE%E5%A1%AB%E5%85%85"><span class="nav-number">4.1.1.</span> <span class="nav-text">数据填充</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E6%95%B0%E6%8D%AE%E8%AE%A1%E7%AE%97"><span class="nav-number">4.1.2.</span> <span class="nav-text">数据计算</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E7%94%A8%E9%80%94-1"><span class="nav-number">4.2.</span> <span class="nav-text">用途</span></a></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#AES%E5%8A%A0%E5%AF%86%E7%AE%97%E6%B3%95"><span class="nav-number">5.</span> <span class="nav-text">AES加密算法</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#%E5%8A%A0%E5%AF%86%E5%8E%9F%E7%90%86-1"><span class="nav-number">5.1.</span> <span class="nav-text">加密原理</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E5%8A%A0%E5%AF%86%E6%AD%A5%E9%AA%A4"><span class="nav-number">5.2.</span> <span class="nav-text">加密步骤</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#%E7%9F%A9%E9%98%B5%E9%A2%84%E5%A4%84%E7%90%86"><span class="nav-number">5.2.1.</span> <span class="nav-text">矩阵预处理</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E5%AD%97%E8%8A%82%E4%BB%A3%E6%8D%A2"><span class="nav-number">5.2.2.</span> <span class="nav-text">字节代换</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E8%A1%8C%E7%A7%BB%E4%BD%8D"><span class="nav-number">5.2.3.</span> <span class="nav-text">行移位</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E5%88%97%E6%B7%B7%E5%90%88"><span class="nav-number">5.2.4.</span> <span class="nav-text">列混合</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E8%BD%AE%E5%AF%86%E9%92%A5%E5%8A%A0"><span class="nav-number">5.2.5.</span> <span class="nav-text">轮密钥加</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E5%AF%86%E9%92%A5%E6%89%A9%E5%B1%95"><span class="nav-number">5.2.6.</span> <span class="nav-text">密钥扩展</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E7%94%A8%E9%80%94-2"><span class="nav-number">5.3.</span> <span class="nav-text">用途</span></a></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#%E5%90%8E%E8%AE%B0"><span class="nav-number">6.</span> <span class="nav-text">后记</span></a></li></ol></div>
+      </div>
+      <!--/noindex-->
+
+      <div class="site-overview-wrap sidebar-panel">
+        <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+    <img class="site-author-image" itemprop="image" alt="希夏"
+      src="/images/avatar.jpg">
+  <p class="site-author-name" itemprop="name">希夏</p>
+  <div class="site-description" itemprop="description">我还在幻想着，能找到一个喜欢的人</div>
+</div>
+<div class="site-state-wrap motion-element">
+  <nav class="site-state">
+      <div class="site-state-item site-state-posts">
+          <a href="/archives/">
+        
+          <span class="site-state-item-count">12</span>
+          <span class="site-state-item-name">日志</span>
+        </a>
+      </div>
+      <div class="site-state-item site-state-categories">
+        <span class="site-state-item-count">5</span>
+        <span class="site-state-item-name">分类</span>
+      </div>
+  </nav>
+</div>
+
+
+
+      </div>
+
+    </div>
+  </aside>
+  <div id="sidebar-dimmer"></div>
+
+
+      </div>
+    </main>
+
+    <footer class="footer">
+      <div class="footer-inner">
+        
+
+        
+
+<div class="copyright">
+  
+  &copy; 
+  <span itemprop="copyrightYear">2020</span>
+  <span class="with-love">
+    <i class="fa fa-heart"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">希夏</span>
+</div>
+  <div class="powered-by">由 <a href="https://hexo.io/" class="theme-link" rel="noopener" target="_blank">Hexo</a> & <a href="https://mist.theme-next.org/" class="theme-link" rel="noopener" target="_blank">NexT.Mist</a> 强力驱动
+  </div>
+
+        
+
+
+
+
+
+
+
+
+      </div>
+    </footer>
+  </div>
+
+  
+  <script src="/lib/anime.min.js"></script>
+  <script src="/lib/velocity/velocity.min.js"></script>
+  <script src="/lib/velocity/velocity.ui.min.js"></script>
+
+<script src="/js/utils.js"></script>
+
+<script src="/js/motion.js"></script>
+
+
+<script src="/js/schemes/muse.js"></script>
+
+
+<script src="/js/next-boot.js"></script>
+
+<script src="/js/bookmark.js"></script>
+
+
+
+
+  
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+
+  
+      
+
+<script>
+  if (typeof MathJax === 'undefined') {
+    window.MathJax = {
+      loader: {
+        source: {
+          '[tex]/amsCd': '[tex]/amscd',
+          '[tex]/AMScd': '[tex]/amscd'
+        }
+      },
+      tex: {
+        inlineMath: {'[+]': [['$', '$']]},
+        tags: 'ams'
+      },
+      options: {
+        renderActions: {
+          findScript: [10, doc => {
+            document.querySelectorAll('script[type^="math/tex"]').forEach(node => {
+              const display = !!node.type.match(/; *mode=display/);
+              const math = new doc.options.MathItem(node.textContent, doc.inputJax[0], display);
+              const text = document.createTextNode('');
+              node.parentNode.replaceChild(text, node);
+              math.start = {node: text, delim: '', n: 0};
+              math.end = {node: text, delim: '', n: 0};
+              doc.math.push(math);
+            });
+          }, '', false],
+          insertedScript: [200, () => {
+            document.querySelectorAll('mjx-container').forEach(node => {
+              let target = node.parentNode;
+              if (target.nodeName.toLowerCase() === 'li') {
+                target.parentNode.classList.add('has-jax');
+              }
+            });
+          }, '', false]
+        }
+      }
+    };
+    (function () {
+      var script = document.createElement('script');
+      script.src = '//cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js';
+      script.defer = true;
+      document.head.appendChild(script);
+    })();
+  } else {
+    MathJax.startup.document.state(0);
+    MathJax.texReset();
+    MathJax.typeset();
+  }
+</script>
+
+    
+
+  
+
+</body>
+</html>

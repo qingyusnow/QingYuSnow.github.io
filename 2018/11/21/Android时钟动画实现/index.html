@@ -1,0 +1,529 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=2">
+<meta name="theme-color" content="#222">
+<meta name="generator" content="Hexo 5.2.0">
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/logo.png">
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/logo.png">
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/logo.png">
+  <link rel="mask-icon" href="/images/logo.png" color="#222">
+
+<link rel="stylesheet" href="/css/main.css">
+
+
+<link rel="stylesheet" href="/lib/font-awesome/css/all.min.css">
+
+<script id="hexo-configurations">
+    var NexT = window.NexT || {};
+    var CONFIG = {"hostname":"example.com","root":"/","scheme":"Mist","version":"7.8.0","exturl":false,"sidebar":{"position":"right","display":"post","padding":18,"offset":12,"onmobile":false},"copycode":{"enable":false,"show_result":false,"style":null},"back2top":{"enable":true,"sidebar":false,"scrollpercent":false},"bookmark":{"enable":true,"color":"#222","save":"auto"},"fancybox":false,"mediumzoom":false,"lazyload":false,"pangu":false,"comments":{"style":"tabs","active":null,"storage":true,"lazyload":false,"nav":null},"algolia":{"hits":{"per_page":10},"labels":{"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}},"localsearch":{"enable":false,"trigger":"auto","top_n_per_article":1,"unescape":false,"preload":false},"motion":{"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}}};
+  </script>
+
+  <meta name="description" content="依自己的使用来看，小米手机的自身很多应用在动画处理和界面处理上都很圆滑舒服，所以估计在未来一段时间内，我都会以小米应用作为模仿练手的目标，这次就先模仿实现一下小米时钟的动画。小米时钟有很多动画，我暂时只完成了一个界面，而且还不完善，所以还会持续改进。">
+<meta property="og:type" content="article">
+<meta property="og:title" content="Android时钟动画实现">
+<meta property="og:url" content="http://example.com/2018/11/21/Android%E6%97%B6%E9%92%9F%E5%8A%A8%E7%94%BB%E5%AE%9E%E7%8E%B0/index.html">
+<meta property="og:site_name" content="觅希夏">
+<meta property="og:description" content="依自己的使用来看，小米手机的自身很多应用在动画处理和界面处理上都很圆滑舒服，所以估计在未来一段时间内，我都会以小米应用作为模仿练手的目标，这次就先模仿实现一下小米时钟的动画。小米时钟有很多动画，我暂时只完成了一个界面，而且还不完善，所以还会持续改进。">
+<meta property="og:locale" content="zh_CN">
+<meta property="og:image" content="http://example.com/2018/11/21/Android%E6%97%B6%E9%92%9F%E5%8A%A8%E7%94%BB%E5%AE%9E%E7%8E%B0/1.gif">
+<meta property="og:image" content="http://example.com/2018/11/21/Android%E6%97%B6%E9%92%9F%E5%8A%A8%E7%94%BB%E5%AE%9E%E7%8E%B0/2.jpg">
+<meta property="og:image" content="http://example.com/2018/11/21/Android%E6%97%B6%E9%92%9F%E5%8A%A8%E7%94%BB%E5%AE%9E%E7%8E%B0/3.jpg">
+<meta property="og:image" content="http://example.com/2018/11/21/Android%E6%97%B6%E9%92%9F%E5%8A%A8%E7%94%BB%E5%AE%9E%E7%8E%B0/4.jpg">
+<meta property="og:image" content="http://example.com/2018/11/21/Android%E6%97%B6%E9%92%9F%E5%8A%A8%E7%94%BB%E5%AE%9E%E7%8E%B0/8.gif">
+<meta property="og:image" content="http://example.com/2018/11/21/Android%E6%97%B6%E9%92%9F%E5%8A%A8%E7%94%BB%E5%AE%9E%E7%8E%B0/9.gif">
+<meta property="article:published_time" content="2018-11-21T07:42:26.000Z">
+<meta property="article:modified_time" content="2020-10-14T03:11:17.818Z">
+<meta property="article:author" content="希夏">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="http://example.com/2018/11/21/Android%E6%97%B6%E9%92%9F%E5%8A%A8%E7%94%BB%E5%AE%9E%E7%8E%B0/1.gif">
+
+<link rel="canonical" href="http://example.com/2018/11/21/Android%E6%97%B6%E9%92%9F%E5%8A%A8%E7%94%BB%E5%AE%9E%E7%8E%B0/">
+
+
+<script id="page-configurations">
+  // https://hexo.io/docs/variables.html
+  CONFIG.page = {
+    sidebar: "",
+    isHome : false,
+    isPost : true,
+    lang   : 'zh-CN'
+  };
+</script>
+
+  <title>Android时钟动画实现 | 觅希夏</title>
+  
+
+
+
+
+
+
+  <noscript>
+  <style>
+  .use-motion .brand,
+  .use-motion .menu-item,
+  .sidebar-inner,
+  .use-motion .post-block,
+  .use-motion .pagination,
+  .use-motion .comments,
+  .use-motion .post-header,
+  .use-motion .post-body,
+  .use-motion .collection-header { opacity: initial; }
+
+  .use-motion .site-title,
+  .use-motion .site-subtitle {
+    opacity: initial;
+    top: initial;
+  }
+
+  .use-motion .logo-line-before i { left: initial; }
+  .use-motion .logo-line-after i { right: initial; }
+  </style>
+</noscript>
+
+<!-- hexo injector head_end start -->
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.12.0/dist/katex.min.css">
+
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/hexo-math@4.0.0/dist/style.css">
+<!-- hexo injector head_end end --></head>
+
+<body itemscope itemtype="http://schema.org/WebPage">
+  <div class="container use-motion">
+    <div class="headband"></div>
+
+    <header class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-container">
+  <div class="site-nav-toggle">
+    <div class="toggle" aria-label="切换导航栏">
+      <span class="toggle-line toggle-line-first"></span>
+      <span class="toggle-line toggle-line-middle"></span>
+      <span class="toggle-line toggle-line-last"></span>
+    </div>
+  </div>
+
+  <div class="site-meta">
+
+    <a href="/" class="brand" rel="start">
+      <span class="logo-line-before"><i></i></span>
+      <h1 class="site-title">觅希夏</h1>
+      <span class="logo-line-after"><i></i></span>
+    </a>
+  </div>
+
+  <div class="site-nav-right">
+    <div class="toggle popup-trigger">
+    </div>
+  </div>
+</div>
+
+
+
+
+<nav class="site-nav">
+  <ul id="menu" class="main-menu menu">
+        <li class="menu-item menu-item-home">
+
+    <a href="/" rel="section"><i class="fa fa-home fa-fw"></i>首页</a>
+
+  </li>
+        <li class="menu-item menu-item-archives">
+
+    <a href="/archives/" rel="section"><i class="fa fa-archive fa-fw"></i>归档</a>
+
+  </li>
+  </ul>
+</nav>
+
+
+
+
+</div>
+    </header>
+
+    
+  <div class="back-to-top">
+    <i class="fa fa-arrow-up"></i>
+    <span>0%</span>
+  </div>
+  <div class="reading-progress-bar"></div>
+  <a role="button" class="book-mark-link book-mark-link-fixed"></a>
+
+
+    <main class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          
+
+          <div class="content post posts-expand">
+            
+
+    
+  
+  
+  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="zh-CN">
+    <link itemprop="mainEntityOfPage" href="http://example.com/2018/11/21/Android%E6%97%B6%E9%92%9F%E5%8A%A8%E7%94%BB%E5%AE%9E%E7%8E%B0/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar.jpg">
+      <meta itemprop="name" content="希夏">
+      <meta itemprop="description" content="我还在幻想着，能找到一个喜欢的人">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="觅希夏">
+    </span>
+      <header class="post-header">
+        <h1 class="post-title" itemprop="name headline">
+          Android时钟动画实现
+        </h1>
+
+        <div class="post-meta">
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-calendar"></i>
+              </span>
+              <span class="post-meta-item-text">发表于</span>
+
+              <time title="创建时间：2018-11-21 15:42:26" itemprop="dateCreated datePublished" datetime="2018-11-21T15:42:26+08:00">2018-11-21</time>
+            </span>
+              <span class="post-meta-item">
+                <span class="post-meta-item-icon">
+                  <i class="far fa-calendar-check"></i>
+                </span>
+                <span class="post-meta-item-text">更新于</span>
+                <time title="修改时间：2020-10-14 11:11:17" itemprop="dateModified" datetime="2020-10-14T11:11:17+08:00">2020-10-14</time>
+              </span>
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-folder"></i>
+              </span>
+              <span class="post-meta-item-text">分类于</span>
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/Android%E5%8A%A8%E7%94%BB/" itemprop="url" rel="index"><span itemprop="name">Android动画</span></a>
+                </span>
+            </span>
+
+          
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+        <p>依自己的使用来看，小米手机的自身很多应用在动画处理和界面处理上都很圆滑舒服，所以估计在未来一段时间内，我都会以小米应用作为模仿练手的目标，这次就先模仿实现一下小米时钟的动画。小米时钟有很多动画，我暂时只完成了一个界面，而且还不完善，所以还会持续改进。</p>
+<a id="more"></a>
+
+<p>先放上我已经实现的效果图<del>(录制采用的是免费版的icecream，功能很不错，就是水印有点大）</del>。</p>
+<p><img src="/2018/11/21/Android%E6%97%B6%E9%92%9F%E5%8A%A8%E7%94%BB%E5%AE%9E%E7%8E%B0/1.gif"></p>
+<h1 id="实现思路"><a href="#实现思路" class="headerlink" title="实现思路"></a>实现思路</h1><p>这个动画中需要绘制的一共有6个部分：中心环，时针，分针，秒针，内环，外环刻度盘，如下图：</p>
+<p><img src="/2018/11/21/Android%E6%97%B6%E9%92%9F%E5%8A%A8%E7%94%BB%E5%AE%9E%E7%8E%B0/2.jpg"></p>
+<p>在这6个部分中，中心环、内环属于静态，一经绘制便不需要再作处理；时针、分针、秒针和外环刻度盘则是属于时时刻刻都在运动的部分，是需要重点处理的部分。</p>
+<h1 id="代码实现部分"><a href="#代码实现部分" class="headerlink" title="代码实现部分"></a>代码实现部分</h1><h2 id="时间"><a href="#时间" class="headerlink" title="时间"></a>时间</h2><p>既然是要绘制时钟，就一定需要获取到时间。时间的精度一定要高，要以毫秒为单位，这样才能使动画的变化更加圆滑一些，而不是一秒一跳那样的动画。</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br></pre></td><td class="code"><pre><span class="line">&#x2F;&#x2F;获取当前总时间（超出1970年1月1日的时间）</span><br><span class="line">long time &#x3D; System.currentTimeMilllis();</span><br><span class="line">&#x2F;&#x2F;获取当前时间（超出当天0点的时间）</span><br><span class="line">long overtime;</span><br><span class="line">&#x2F;&#x2F;获取当前系统时间</span><br><span class="line">SimpleDateFormat simpleDateFormat &#x3D; new SimpleDateFormat(&quot;yyyy-MM-dd&quot;);</span><br><span class="line">&#x2F;&#x2F;除以1000，得到的会是以秒为单位的时间；不除，则以毫秒为单位</span><br><span class="line">try &#123;</span><br><span class="line">	overtime &#x3D; (time - (simpleDateFormat.parse(simpleDateFormat.format(time)).getTime()));</span><br><span class="line">&#125;catch (Exception e)&#123;</span><br><span class="line">	e.printStackTrace();</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">&#x2F;&#x2F;时钟最多展示12个小时的时间，所以只需要留下一个小于12个小时的数据；一天共有12x60x60&#x3D;86400秒，半天则为43200秒</span><br><span class="line">if(overtime &gt;&#x3D; 43200000) &#123;</span><br><span class="line">	overtime &#x3D; overtime - 43200000;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<h2 id="中心环与内环"><a href="#中心环与内环" class="headerlink" title="中心环与内环"></a>中心环与内环</h2><p>中心环与内环的实现很简单，只需要绘制两个中心圆就可以了，一个半径小一些且画笔宽度粗一些，一个半径大一些且画笔宽度细一些：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br></pre></td><td class="code"><pre><span class="line">&#x2F;&#x2F;绘制中心环画笔</span><br><span class="line">paints[0].setStyle(Paint.Style.STROKE);</span><br><span class="line">paints[0].setStrokeWidth(centerCircleWidth);</span><br><span class="line">paints[0].setColor(Color.WHITE);</span><br><span class="line">paints[0].setAntiAlias(true);</span><br><span class="line"></span><br><span class="line">&#x2F;&#x2F;绘制内环画笔</span><br><span class="line">paints[1].setStyle(Paint.Style.STROKE);</span><br><span class="line">paints[1].setStrokeWidth(innerCircleWidth);</span><br><span class="line">paints[1].setColor(Color.WHITE);</span><br><span class="line">paints[1].setAntiAlias(true);</span><br><span class="line"></span><br><span class="line">······</span><br><span class="line"></span><br><span class="line">&#x2F;&#x2F;绘制中心环</span><br><span class="line">canvas.drawCircle(centerX,centerY,centerCircleRadius,paints[0]);</span><br><span class="line">&#x2F;&#x2F;绘制内环</span><br><span class="line">canvas.drawCircle(centerX,centerY,innerCircleRadius,paints[1]);</span><br></pre></td></tr></table></figure>
+
+<p><img src="/2018/11/21/Android%E6%97%B6%E9%92%9F%E5%8A%A8%E7%94%BB%E5%AE%9E%E7%8E%B0/3.jpg"></p>
+<h2 id="时针"><a href="#时针" class="headerlink" title="时针"></a>时针</h2><p>时针的实现有两点：1、时针的形状绘制；2、时针的指向角度绘制</p>
+<p>时针的形状，我采用了一个等腰三角形来绘制。绘制等腰三角形，需要计算出三个点的位置。考虑到点的位置是时刻都在变化的，所以要先计算出指针应当指向的角度。</p>
+<p><img src="/2018/11/21/Android%E6%97%B6%E9%92%9F%E5%8A%A8%E7%94%BB%E5%AE%9E%E7%8E%B0/4.jpg"></p>
+<p>如图所示，A点是左底点，B点是右底点，C点是顶点。其中，∠β是偏差角度，我设定为60度，∠α是时针整体的指向角度，底距是两个底点距原点的距离，时针的臂长则是顶点C距原点的距离。有了这些参数，计算各个点的变化规律就简单多了。比如：</p>
+<p>$A_x = O_x + 底距 * sin(∠α - ∠β)$</p>
+<p>$A_y = O_y + 底距 * cos(∠α - ∠β)$</p>
+<p><strong>但是，Android界面的坐标系y轴与数学系的y轴在正方向上是相反的。所以，第二个算式中，要把”+”变为”-“。</strong></p>
+<p>底点的计算已经有了，顶点的计算更简单了，自不用说。不过，计算中的∠β是个未知数，是需要我们自己去计算的。</p>
+<p>前面代码中已经给过了overtime这个变量的计算，它代表的是超出当天0点的时间。计算时针的角度，只需要计算overtime能占到一个表格所表示的最大时间的比例，即占12个小时的比例。要注意的是，这里的比例计算要以毫秒为考虑角度，才能使计算出的角度尽可能的细致入微，而不是每过一个小时，跳格30度。代码实现如下：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br></pre></td><td class="code"><pre><span class="line">&#x2F;&#x2F;绘制时针底部时用到的偏差角度，用于计算底部点</span><br><span class="line">hourHandDeviation &#x3D; 60;</span><br><span class="line">······</span><br><span class="line">&#x2F;&#x2F;绘制时针</span><br><span class="line">&#x2F;&#x2F;以下是简化的公式，原公式为overtime&#x2F;(12 * 3600 * 1000) * (360 &#x2F; 1000)</span><br><span class="line">&#x2F;&#x2F;即先计算当前时间（单位为秒）占12个小时的总时间的多少，再乘以整个圈的度数，即可得到当前时针应该指向的角度</span><br><span class="line">double degree &#x3D; Math.toRadians(((double)overtime) &#x2F; 120000.00);</span><br><span class="line">double leftPointX &#x3D; centerX + handRadius * Math.sin(degree - Math.toRadians(hourHandDeviation));</span><br><span class="line">double leftPointY &#x3D; centerY - handRadius * Math.cos(degree - Math.toRadians(hourHandDeviation));</span><br><span class="line">double rightPointX &#x3D; centerX + handRadius * Math.sin(degree + Math.toRadians(hourHandDeviation));</span><br><span class="line">double rightPointY &#x3D; centerY - handRadius * Math.cos(degree + Math.toRadians(hourHandDeviation));</span><br><span class="line">double topPointX &#x3D; centerX + hourHandLength * Math.sin(degree);</span><br><span class="line">double topPointY &#x3D; centerY - hourHandLength * Math.cos(degree);</span><br><span class="line">&#x2F;&#x2F;通过绘制一个等腰三角形的类似图形来绘制时针</span><br><span class="line">Path path &#x3D; new Path();</span><br><span class="line">path.moveTo((float)leftPointX,(float)leftPointY);</span><br><span class="line">path.lineTo((float)topPointX,(float)topPointY);</span><br><span class="line">path.lineTo((float)rightPointX,(float)rightPointY);</span><br><span class="line">path.close();</span><br><span class="line">canvas.drawPath(path,paints[3]);</span><br></pre></td></tr></table></figure>
+
+<h2 id="分针"><a href="#分针" class="headerlink" title="分针"></a>分针</h2><p>分针的绘制如同时针，只不过偏差角度小一些，臂长长一些，原理上都是一样的。代码实现如下：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br></pre></td><td class="code"><pre><span class="line">&#x2F;&#x2F;绘制分针</span><br><span class="line">&#x2F;&#x2F;以下为简化的公式，原公式为overtime mod (3600 * 1000) &#x2F; 3600 * (360 &#x2F; 1000)，计算当前时间除去小时后，剩余时间占一个小时的多少，再乘以总度数</span><br><span class="line">degree &#x3D; Math.toRadians(overtime % 3600000 * 0.0001);</span><br><span class="line">leftPointX &#x3D; centerX + handRadius * Math.sin(degree - Math.toRadians(minuteHandDeviation));</span><br><span class="line">leftPointY &#x3D; centerY - handRadius * Math.cos(degree - Math.toRadians(minuteHandDeviation));</span><br><span class="line">rightPointX &#x3D; centerX + handRadius * Math.sin(degree + Math.toRadians(minuteHandDeviation));</span><br><span class="line">rightPointY &#x3D; centerY - handRadius * Math.cos(degree + Math.toRadians(minuteHandDeviation));</span><br><span class="line">topPointX &#x3D; centerX + minuteHandLength * Math.sin(degree);</span><br><span class="line">topPointY &#x3D; centerY - minuteHandLength * Math.cos(degree);</span><br><span class="line">path &#x3D; new Path();</span><br><span class="line">path.moveTo((float)leftPointX,(float)leftPointY);</span><br><span class="line">path.lineTo((float)topPointX,(float)topPointY);</span><br><span class="line">path.lineTo((float)rightPointX,(float)rightPointY);</span><br><span class="line">path.close();</span><br><span class="line">canvas.drawPath(path,paints[4]);</span><br></pre></td></tr></table></figure>
+
+<h2 id="秒针"><a href="#秒针" class="headerlink" title="秒针"></a>秒针</h2><p>秒针的绘制实际上也可以跟以上两个是一样的，不过我为了绘制一个等边三角形，本可以直接给定值的底距，在这里我是通过给定的秒针三角形的高secondHandHeight和底边中心到原点的距离secondHandRadius，间接计算而得出。这样的计算比较麻烦，但能得到一个等边三角形，我觉得还是可以的。</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br></pre></td><td class="code"><pre><span class="line">&#x2F;&#x2F;绘制一个三角形指针</span><br><span class="line">&#x2F;&#x2F;以下为简化的公式，原公式为overtime mod (60 * 1000) &#x2F; 60 * (360 &#x2F; 1000)</span><br><span class="line">degree &#x3D; Math.toRadians(overtime % 60000 * 0.006);</span><br><span class="line">&#x2F;&#x2F;计算三角形另外两顶点的偏差角度</span><br><span class="line">double deviation &#x3D; Math.atan(Math.tan(Math.toRadians(30))*secondHandHeight&#x2F;secondHandRadius);</span><br><span class="line">&#x2F;&#x2F;计算三个顶点的坐标变化</span><br><span class="line">topPointX &#x3D; centerX + (secondHandRadius + secondHandHeight) * Math.sin(degree);</span><br><span class="line">topPointY &#x3D; centerY - (secondHandRadius + secondHandHeight) * Math.cos(degree);</span><br><span class="line">double secondRadius &#x3D; Math.tan(Math.toRadians(30))*secondHandHeight&#x2F;Math.sin(deviation);</span><br><span class="line">leftPointX &#x3D; centerX + secondRadius * Math.sin(degree - deviation);</span><br><span class="line">leftPointY &#x3D; centerY - secondRadius * Math.cos(degree - deviation);</span><br><span class="line">rightPointX &#x3D; centerX + secondRadius * Math.sin(degree + deviation);</span><br><span class="line">rightPointY &#x3D; centerY - secondRadius * Math.cos(degree + deviation);</span><br><span class="line">path &#x3D; new Path();</span><br><span class="line">path.moveTo((float)topPointX,(float)topPointY);</span><br><span class="line">path.lineTo((float)leftPointX,(float)leftPointY);</span><br><span class="line">path.lineTo((float)rightPointX,(float)rightPointY);</span><br><span class="line">path.close();</span><br></pre></td></tr></table></figure>
+
+<p>这里有一个小插曲：我这里直接简化了公式，得到的角度是精度很高，类型为double的度数，所以动画看起来很平滑，但最开始的时候，我的算式是这样的:overtime % 60000 * 6 / 1000 ，得到的是这样的：</p>
+<p><img src="/2018/11/21/Android%E6%97%B6%E9%92%9F%E5%8A%A8%E7%94%BB%E5%AE%9E%E7%8E%B0/8.gif"></p>
+<p>由于gif的丢帧问题，这里表现的不是很明显，但可以告知的是，因为这样的算式最后计算出的值类型为int，所以表现上会是那种持续跳动的动画，而不是圆滑过渡的动画。这给了我一个教训：<strong>动画的过渡要想平滑，数值的精度一定要高</strong>。</p>
+<h2 id="外环刻度盘"><a href="#外环刻度盘" class="headerlink" title="外环刻度盘"></a>外环刻度盘</h2><p>外环刻度盘有两种实现方法，一是通过设定绘制区域不变，边旋转画布边绘制刻度的方法；二是通过计算每个刻度的起点和终点并绘制来实现。讲道理按实现容易度来讲，应该按第一种来实现比较简单，不过因为我前几个实现全采用的三角函数计算，所以这里我的思维还是采用三角函数的。</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br></pre></td><td class="code"><pre><span class="line">&#x2F;&#x2F;绘制外环刻度</span><br><span class="line">for(float i &#x3D;0;i&lt;360;i&#x3D;i+2)&#123;</span><br><span class="line">	degree &#x3D; Math.toRadians(i);</span><br><span class="line">    double x1 &#x3D; centerX + outerCircleRadius * Math.sin(degree);</span><br><span class="line">    double y1 &#x3D; centerY - outerCircleRadius * Math.cos(degree);</span><br><span class="line">    double x2 &#x3D; centerX + (outerCircleRadius - outerCircleWidth) * Math.sin(degree);</span><br><span class="line">    double y2 &#x3D; centerY - (outerCircleRadius - outerCircleWidth) * Math.cos(degree);</span><br><span class="line">    if(i &gt;&#x3D; 270 &amp;&amp; i &lt;&#x3D; 360)&#123;</span><br><span class="line">    	paints[2].setAlpha((int)((i-270)*1.5+100));</span><br><span class="line">	&#125;else if(i &#x3D;&#x3D; 0)&#123;</span><br><span class="line">    	paints[2].setAlpha(240);</span><br><span class="line">	&#125;else &#123;</span><br><span class="line">    	paints[2].setAlpha(100);</span><br><span class="line">	&#125;</span><br><span class="line">    canvas.drawLine((float)x1,(float)y1,(float)x2,(float)y2,paints[2]);</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>这样就可以绘制出来一个静态的刻度盘，这个刻度盘有180道刻度，且为了赋予刻度盘一个动画的效果，最后的45道刻度以及第一道刻度赋予不同的透明度，造成淡化的效果。那么接下来，只要让刻度盘转起来就行了。</p>
+<p>在最开始我想仿制分针的转动实现，但想了想，计算量大，考虑的东西有点多，后来就转为了转动画布的想法。不过，刻度盘的绘制以及转动的实现一定要放在其他三个指针的实现之前，不然会带动三个指针一起转动，这样，指针的指向就与当前时间不符了。</p>
+<p>有了方向，实现转动效果就可以了。转动效果包括两点：1、每秒转动3次，即每333ms为一次转动契机；2、每次都比上次的转动角度大2度。所以，角度计算如下：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">&#x2F;&#x2F;计算当前时间是（几时几分）几秒</span><br><span class="line">long overSecond &#x3D; overtime % 60000;</span><br><span class="line">&#x2F;&#x2F;每秒跨格6度，每333ms跨格2度</span><br><span class="line">double degree &#x3D; overSecond &#x2F; 1000 * 6 + overSecond % 1000 &#x2F; 333 * 2;</span><br></pre></td></tr></table></figure>
+
+<p>计算完了，就是画布的旋转。画布的旋转跟想象中的很不一样，但我也不会在这里详解，只贴出来使用流程。</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line">canvas.save();</span><br><span class="line"></span><br><span class="line">&#x2F;&#x2F;计算角度</span><br><span class="line">&#x2F;&#x2F;以圆心为中心旋转</span><br><span class="line">canvas.rotate((float)degree,centerX,centerY);</span><br><span class="line"></span><br><span class="line">&#x2F;&#x2F;绘制刻度盘</span><br><span class="line"></span><br><span class="line">canvas.restore();</span><br></pre></td></tr></table></figure>
+
+<p>这样就可以实现刻度盘的转动了。</p>
+<p><del>（神特么这个转动角度让我钻了牛角尖，想了整整一天才想出来怎么计算）</del></p>
+<h2 id="3D视角的转动"><a href="#3D视角的转动" class="headerlink" title="3D视角的转动"></a>3D视角的转动</h2><p>3D视角的转动主要借助于camera和matrix的结合实现。这个部分的动画功能设想是，当点击时钟周围，时钟会侧向点击方向；手指松开屏幕时，时钟会重新回到原来的位置，实现效果如下：</p>
+<p><img src="/2018/11/21/Android%E6%97%B6%E9%92%9F%E5%8A%A8%E7%94%BB%E5%AE%9E%E7%8E%B0/9.gif"></p>
+<p>实现思路：给view类添加点击事件的监听，当手指按下时，获取点击点的坐标，与中心点对比后判断时钟旋转方向并旋转；手指松开时，加一个时钟恢复原位的动画，这样就算完成了。</p>
+<p>代码实现如下：</p>
+<p>1、添加点击事件监听。</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br></pre></td><td class="code"><pre><span class="line">private ValueAnimator shakeAnim;</span><br><span class="line">...</span><br><span class="line">@Override</span><br><span class="line">public boolean onTouchEvent(MotionEvent event) &#123;</span><br><span class="line">	switch (event.getAction())&#123;</span><br><span class="line">    	case MotionEvent.ACTION_DOWN:       &#x2F;&#x2F;手指按下时，而非向下的手势</span><br><span class="line">        	if(shakeAnim !&#x3D; null &amp;&amp; shakeAnim.isRunning())&#123;</span><br><span class="line">            	shakeAnim.cancel();</span><br><span class="line">            &#125;</span><br><span class="line">			&#x2F;&#x2F;获取点击点的坐标并进行处理</span><br><span class="line">            getCameraRotate(event);</span><br><span class="line">            break;</span><br><span class="line">        case MotionEvent.ACTION_MOVE:       &#x2F;&#x2F;手指移动时</span><br><span class="line">            getCameraRotate(event);</span><br><span class="line">            break;</span><br><span class="line">        case MotionEvent.ACTION_UP:         &#x2F;&#x2F;手指抬起时，而非向上的手势</span><br><span class="line">			&#x2F;&#x2F;抬起后进行时钟恢复原位的动画</span><br><span class="line">            startShakeAnim();</span><br><span class="line">            break;</span><br><span class="line">    &#125;</span><br><span class="line">    return true;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>2、获取点击点坐标并进行角度判断。与中心点坐标进行对比，为防止时钟偏移角度过大，设定最大旋转角度为30度，最后获取到角度后，在onDraw()方法中对视图进行视角的旋转操作。</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br></pre></td><td class="code"><pre><span class="line">private float cameraRotateX;				&#x2F;&#x2F;camera视角中x轴转动的角度</span><br><span class="line">private float cameraRotateY;				&#x2F;&#x2F;camera视角中y轴转动的角度</span><br><span class="line">private final maxCameraRotate &#x3D; 30;			&#x2F;&#x2F;最大旋转角度</span><br><span class="line">...</span><br><span class="line">&#x2F;&#x2F;获取点击点</span><br><span class="line">private void getCameraRotate(MotionEvent event)&#123;</span><br><span class="line">	if(shakeAnim !&#x3D; null &amp;&amp; shakeAnim.isRunning())&#123;</span><br><span class="line">    	shakeAnim.cancel();</span><br><span class="line">	&#125;</span><br><span class="line">	&#x2F;&#x2F;与中心点坐标进行对比</span><br><span class="line">    float rotateX &#x3D; -(event.getY() - 640);</span><br><span class="line">    float rotateY &#x3D; (event.getX() - 360);</span><br><span class="line">    &#x2F;&#x2F;求出此时旋转的大小与半径之比</span><br><span class="line">    float percentX &#x3D; rotateX &#x2F; outerCircleRadius;</span><br><span class="line">    float percentY &#x3D; rotateY &#x2F; outerCircleRadius;</span><br><span class="line">    if(percentX &gt; 1)&#123;</span><br><span class="line">    	percentX &#x3D; 1;</span><br><span class="line">	&#125;else if(percentX &lt; -1)&#123;</span><br><span class="line">    	percentX &#x3D; -1;</span><br><span class="line">	&#125;</span><br><span class="line">    if(percentY &gt; 1)&#123;</span><br><span class="line">    	percentX &#x3D; 1;</span><br><span class="line">	&#125;else if(percentY &lt; -1)&#123;</span><br><span class="line">    	percentY &#x3D; -1;</span><br><span class="line">	&#125;</span><br><span class="line">    &#x2F;&#x2F;最终旋转的大小按比例匀称改变</span><br><span class="line">    cameraRotateX &#x3D; percentX * maxCameraRotate;</span><br><span class="line">    cameraRotateY &#x3D; percentY * maxCameraRotate;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">&#x2F;&#x2F;设置3D时钟效果</span><br><span class="line">private void setCameraRotate()&#123;</span><br><span class="line">    cameraMatrix.reset();</span><br><span class="line">	&#x2F;&#x2F;camera的旋转与canvas的旋转用法很相似，先save()再旋转最后restore()</span><br><span class="line">    camera.save();</span><br><span class="line">    camera.rotateX(cameraRotateX);</span><br><span class="line">    camera.rotateY(cameraRotateY);</span><br><span class="line">    camera.getMatrix(cameraMatrix);</span><br><span class="line">    camera.restore();</span><br><span class="line"></span><br><span class="line">    &#x2F;&#x2F;时钟旋转后视图会发生很大的视角偏差，所以需要通过平移来设定旋转后的时钟中心点</span><br><span class="line">    cameraMatrix.preTranslate(-getWidth()&#x2F;2,-getHeight()&#x2F;2);</span><br><span class="line">    cameraMatrix.postTranslate(getWidth()&#x2F;2,getHeight()&#x2F;2);</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>3、时钟恢复原位的动画。</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br></pre></td><td class="code"><pre><span class="line">private void startShakeAnim()&#123;</span><br><span class="line">    PropertyValuesHolder cameraRotateXHolder &#x3D; PropertyValuesHolder.ofFloat(&quot;cameraRotateX&quot;,cameraRotateX,0);</span><br><span class="line">    PropertyValuesHolder cameraRotateYHolder &#x3D; PropertyValuesHolder.ofFloat(&quot;cameraRotateY&quot;,cameraRotateY,0);</span><br><span class="line">    shakeAnim &#x3D; ValueAnimator.ofPropertyValuesHolder(cameraRotateXHolder,cameraRotateYHolder);</span><br><span class="line">    shakeAnim.setInterpolator(new OvershootInterpolator(10));</span><br><span class="line">    shakeAnim.setDuration(500);</span><br><span class="line">    shakeAnim.addUpdateListener(new ValueAnimator.AnimatorUpdateListener() &#123;</span><br><span class="line">        @Override</span><br><span class="line">        public void onAnimationUpdate(ValueAnimator animation) &#123;</span><br><span class="line">            cameraRotateX &#x3D; (float) animation.getAnimatedValue(&quot;cameraRotateX&quot;);</span><br><span class="line">            cameraRotateY &#x3D; (float) animation.getAnimatedValue(&quot;cameraRotateY&quot;);</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;);</span><br><span class="line">    shakeAnim.start();</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>这里的ValueAnimator.ofPropertyValuesHolder(PropertyValuesHolder… values)方法可以同时管理多个动画属性，比起之前的分散式管理，代码量少，也更好阅读。</p>
+<h1 id="后记"><a href="#后记" class="headerlink" title="后记"></a>后记</h1><p>终于把3D效果的实现部分补上了。沉迷了几天的Win10 UWP应用，这才回来补上没写完的部分。</p>
+<p>哦对了，PPT的绘画真好用，以后就用PPT画图好了。</p>
+
+    </div>
+
+    
+    
+    
+
+      <footer class="post-footer">
+
+        
+
+
+        
+    <div class="post-nav">
+      <div class="post-nav-item">
+    <a href="/2018/10/16/%E5%8A%A0%E5%AF%86%E7%AE%97%E6%B3%95%E5%88%9D%E6%AD%A5%E5%AD%A6%E4%B9%A0/" rel="prev" title="加密算法初步学习">
+      <i class="fa fa-chevron-left"></i> 加密算法初步学习
+    </a></div>
+      <div class="post-nav-item">
+    <a href="/2019/12/31/2019%E6%80%BB%E7%BB%93/" rel="next" title="2019总结">
+      2019总结 <i class="fa fa-chevron-right"></i>
+    </a></div>
+    </div>
+      </footer>
+    
+  </article>
+  
+  
+  
+
+
+
+          </div>
+          
+
+<script>
+  window.addEventListener('tabs:register', () => {
+    let { activeClass } = CONFIG.comments;
+    if (CONFIG.comments.storage) {
+      activeClass = localStorage.getItem('comments_active') || activeClass;
+    }
+    if (activeClass) {
+      let activeTab = document.querySelector(`a[href="#comment-${activeClass}"]`);
+      if (activeTab) {
+        activeTab.click();
+      }
+    }
+  });
+  if (CONFIG.comments.storage) {
+    window.addEventListener('tabs:click', event => {
+      if (!event.target.matches('.tabs-comment .tab-content .tab-pane')) return;
+      let commentClass = event.target.classList[1];
+      localStorage.setItem('comments_active', commentClass);
+    });
+  }
+</script>
+
+        </div>
+          
+  
+  <div class="toggle sidebar-toggle">
+    <span class="toggle-line toggle-line-first"></span>
+    <span class="toggle-line toggle-line-middle"></span>
+    <span class="toggle-line toggle-line-last"></span>
+  </div>
+
+  <aside class="sidebar">
+    <div class="sidebar-inner">
+
+      <ul class="sidebar-nav motion-element">
+        <li class="sidebar-nav-toc">
+          文章目录
+        </li>
+        <li class="sidebar-nav-overview">
+          站点概览
+        </li>
+      </ul>
+
+      <!--noindex-->
+      <div class="post-toc-wrap sidebar-panel">
+          <div class="post-toc motion-element"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#%E5%AE%9E%E7%8E%B0%E6%80%9D%E8%B7%AF"><span class="nav-number">1.</span> <span class="nav-text">实现思路</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#%E4%BB%A3%E7%A0%81%E5%AE%9E%E7%8E%B0%E9%83%A8%E5%88%86"><span class="nav-number">2.</span> <span class="nav-text">代码实现部分</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#%E6%97%B6%E9%97%B4"><span class="nav-number">2.1.</span> <span class="nav-text">时间</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E4%B8%AD%E5%BF%83%E7%8E%AF%E4%B8%8E%E5%86%85%E7%8E%AF"><span class="nav-number">2.2.</span> <span class="nav-text">中心环与内环</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E6%97%B6%E9%92%88"><span class="nav-number">2.3.</span> <span class="nav-text">时针</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E5%88%86%E9%92%88"><span class="nav-number">2.4.</span> <span class="nav-text">分针</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E7%A7%92%E9%92%88"><span class="nav-number">2.5.</span> <span class="nav-text">秒针</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E5%A4%96%E7%8E%AF%E5%88%BB%E5%BA%A6%E7%9B%98"><span class="nav-number">2.6.</span> <span class="nav-text">外环刻度盘</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#3D%E8%A7%86%E8%A7%92%E7%9A%84%E8%BD%AC%E5%8A%A8"><span class="nav-number">2.7.</span> <span class="nav-text">3D视角的转动</span></a></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#%E5%90%8E%E8%AE%B0"><span class="nav-number">3.</span> <span class="nav-text">后记</span></a></li></ol></div>
+      </div>
+      <!--/noindex-->
+
+      <div class="site-overview-wrap sidebar-panel">
+        <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+    <img class="site-author-image" itemprop="image" alt="希夏"
+      src="/images/avatar.jpg">
+  <p class="site-author-name" itemprop="name">希夏</p>
+  <div class="site-description" itemprop="description">我还在幻想着，能找到一个喜欢的人</div>
+</div>
+<div class="site-state-wrap motion-element">
+  <nav class="site-state">
+      <div class="site-state-item site-state-posts">
+          <a href="/archives/">
+        
+          <span class="site-state-item-count">12</span>
+          <span class="site-state-item-name">日志</span>
+        </a>
+      </div>
+      <div class="site-state-item site-state-categories">
+        <span class="site-state-item-count">5</span>
+        <span class="site-state-item-name">分类</span>
+      </div>
+  </nav>
+</div>
+
+
+
+      </div>
+
+    </div>
+  </aside>
+  <div id="sidebar-dimmer"></div>
+
+
+      </div>
+    </main>
+
+    <footer class="footer">
+      <div class="footer-inner">
+        
+
+        
+
+<div class="copyright">
+  
+  &copy; 
+  <span itemprop="copyrightYear">2020</span>
+  <span class="with-love">
+    <i class="fa fa-heart"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">希夏</span>
+</div>
+  <div class="powered-by">由 <a href="https://hexo.io/" class="theme-link" rel="noopener" target="_blank">Hexo</a> & <a href="https://mist.theme-next.org/" class="theme-link" rel="noopener" target="_blank">NexT.Mist</a> 强力驱动
+  </div>
+
+        
+
+
+
+
+
+
+
+
+      </div>
+    </footer>
+  </div>
+
+  
+  <script src="/lib/anime.min.js"></script>
+  <script src="/lib/velocity/velocity.min.js"></script>
+  <script src="/lib/velocity/velocity.ui.min.js"></script>
+
+<script src="/js/utils.js"></script>
+
+<script src="/js/motion.js"></script>
+
+
+<script src="/js/schemes/muse.js"></script>
+
+
+<script src="/js/next-boot.js"></script>
+
+<script src="/js/bookmark.js"></script>
+
+
+
+
+  
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+
+  
+      
+
+<script>
+  if (typeof MathJax === 'undefined') {
+    window.MathJax = {
+      loader: {
+        source: {
+          '[tex]/amsCd': '[tex]/amscd',
+          '[tex]/AMScd': '[tex]/amscd'
+        }
+      },
+      tex: {
+        inlineMath: {'[+]': [['$', '$']]},
+        tags: 'ams'
+      },
+      options: {
+        renderActions: {
+          findScript: [10, doc => {
+            document.querySelectorAll('script[type^="math/tex"]').forEach(node => {
+              const display = !!node.type.match(/; *mode=display/);
+              const math = new doc.options.MathItem(node.textContent, doc.inputJax[0], display);
+              const text = document.createTextNode('');
+              node.parentNode.replaceChild(text, node);
+              math.start = {node: text, delim: '', n: 0};
+              math.end = {node: text, delim: '', n: 0};
+              doc.math.push(math);
+            });
+          }, '', false],
+          insertedScript: [200, () => {
+            document.querySelectorAll('mjx-container').forEach(node => {
+              let target = node.parentNode;
+              if (target.nodeName.toLowerCase() === 'li') {
+                target.parentNode.classList.add('has-jax');
+              }
+            });
+          }, '', false]
+        }
+      }
+    };
+    (function () {
+      var script = document.createElement('script');
+      script.src = '//cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js';
+      script.defer = true;
+      document.head.appendChild(script);
+    })();
+  } else {
+    MathJax.startup.document.state(0);
+    MathJax.texReset();
+    MathJax.typeset();
+  }
+</script>
+
+    
+
+  
+
+</body>
+</html>

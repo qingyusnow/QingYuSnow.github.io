@@ -1,0 +1,435 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=2">
+<meta name="theme-color" content="#222">
+<meta name="generator" content="Hexo 5.2.0">
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/logo.png">
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/logo.png">
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/logo.png">
+  <link rel="mask-icon" href="/images/logo.png" color="#222">
+
+<link rel="stylesheet" href="/css/main.css">
+
+
+<link rel="stylesheet" href="/lib/font-awesome/css/all.min.css">
+
+<script id="hexo-configurations">
+    var NexT = window.NexT || {};
+    var CONFIG = {"hostname":"example.com","root":"/","scheme":"Mist","version":"7.8.0","exturl":false,"sidebar":{"position":"right","display":"post","padding":18,"offset":12,"onmobile":false},"copycode":{"enable":false,"show_result":false,"style":null},"back2top":{"enable":true,"sidebar":false,"scrollpercent":false},"bookmark":{"enable":true,"color":"#222","save":"auto"},"fancybox":false,"mediumzoom":false,"lazyload":false,"pangu":false,"comments":{"style":"tabs","active":null,"storage":true,"lazyload":false,"nav":null},"algolia":{"hits":{"per_page":10},"labels":{"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}},"localsearch":{"enable":false,"trigger":"auto","top_n_per_article":1,"unescape":false,"preload":false},"motion":{"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}}};
+  </script>
+
+  <meta name="description" content="了解任务与返回堆栈的内容，对于合适地设置activity的启动模式，有很大的启发作用。">
+<meta property="og:type" content="article">
+<meta property="og:title" content="任务和返回堆栈">
+<meta property="og:url" content="http://example.com/2020/07/08/%E4%BB%BB%E5%8A%A1%E5%92%8C%E8%BF%94%E5%9B%9E%E5%A0%86%E6%A0%88/index.html">
+<meta property="og:site_name" content="觅希夏">
+<meta property="og:description" content="了解任务与返回堆栈的内容，对于合适地设置activity的启动模式，有很大的启发作用。">
+<meta property="og:locale" content="zh_CN">
+<meta property="og:image" content="http://example.com/2020/07/08/%E4%BB%BB%E5%8A%A1%E5%92%8C%E8%BF%94%E5%9B%9E%E5%A0%86%E6%A0%88/1.png">
+<meta property="article:published_time" content="2020-07-08T07:15:02.000Z">
+<meta property="article:modified_time" content="2020-07-13T05:41:07.673Z">
+<meta property="article:author" content="希夏">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="http://example.com/2020/07/08/%E4%BB%BB%E5%8A%A1%E5%92%8C%E8%BF%94%E5%9B%9E%E5%A0%86%E6%A0%88/1.png">
+
+<link rel="canonical" href="http://example.com/2020/07/08/%E4%BB%BB%E5%8A%A1%E5%92%8C%E8%BF%94%E5%9B%9E%E5%A0%86%E6%A0%88/">
+
+
+<script id="page-configurations">
+  // https://hexo.io/docs/variables.html
+  CONFIG.page = {
+    sidebar: "",
+    isHome : false,
+    isPost : true,
+    lang   : 'zh-CN'
+  };
+</script>
+
+  <title>任务和返回堆栈 | 觅希夏</title>
+  
+
+
+
+
+
+
+  <noscript>
+  <style>
+  .use-motion .brand,
+  .use-motion .menu-item,
+  .sidebar-inner,
+  .use-motion .post-block,
+  .use-motion .pagination,
+  .use-motion .comments,
+  .use-motion .post-header,
+  .use-motion .post-body,
+  .use-motion .collection-header { opacity: initial; }
+
+  .use-motion .site-title,
+  .use-motion .site-subtitle {
+    opacity: initial;
+    top: initial;
+  }
+
+  .use-motion .logo-line-before i { left: initial; }
+  .use-motion .logo-line-after i { right: initial; }
+  </style>
+</noscript>
+
+<!-- hexo injector head_end start -->
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.12.0/dist/katex.min.css">
+
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/hexo-math@4.0.0/dist/style.css">
+<!-- hexo injector head_end end --></head>
+
+<body itemscope itemtype="http://schema.org/WebPage">
+  <div class="container use-motion">
+    <div class="headband"></div>
+
+    <header class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-container">
+  <div class="site-nav-toggle">
+    <div class="toggle" aria-label="切换导航栏">
+      <span class="toggle-line toggle-line-first"></span>
+      <span class="toggle-line toggle-line-middle"></span>
+      <span class="toggle-line toggle-line-last"></span>
+    </div>
+  </div>
+
+  <div class="site-meta">
+
+    <a href="/" class="brand" rel="start">
+      <span class="logo-line-before"><i></i></span>
+      <h1 class="site-title">觅希夏</h1>
+      <span class="logo-line-after"><i></i></span>
+    </a>
+  </div>
+
+  <div class="site-nav-right">
+    <div class="toggle popup-trigger">
+    </div>
+  </div>
+</div>
+
+
+
+
+<nav class="site-nav">
+  <ul id="menu" class="main-menu menu">
+        <li class="menu-item menu-item-home">
+
+    <a href="/" rel="section"><i class="fa fa-home fa-fw"></i>首页</a>
+
+  </li>
+        <li class="menu-item menu-item-archives">
+
+    <a href="/archives/" rel="section"><i class="fa fa-archive fa-fw"></i>归档</a>
+
+  </li>
+  </ul>
+</nav>
+
+
+
+
+</div>
+    </header>
+
+    
+  <div class="back-to-top">
+    <i class="fa fa-arrow-up"></i>
+    <span>0%</span>
+  </div>
+  <div class="reading-progress-bar"></div>
+  <a role="button" class="book-mark-link book-mark-link-fixed"></a>
+
+
+    <main class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          
+
+          <div class="content post posts-expand">
+            
+
+    
+  
+  
+  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="zh-CN">
+    <link itemprop="mainEntityOfPage" href="http://example.com/2020/07/08/%E4%BB%BB%E5%8A%A1%E5%92%8C%E8%BF%94%E5%9B%9E%E5%A0%86%E6%A0%88/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar.jpg">
+      <meta itemprop="name" content="希夏">
+      <meta itemprop="description" content="我还在幻想着，能找到一个喜欢的人">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="觅希夏">
+    </span>
+      <header class="post-header">
+        <h1 class="post-title" itemprop="name headline">
+          任务和返回堆栈
+        </h1>
+
+        <div class="post-meta">
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-calendar"></i>
+              </span>
+              <span class="post-meta-item-text">发表于</span>
+
+              <time title="创建时间：2020-07-08 15:15:02" itemprop="dateCreated datePublished" datetime="2020-07-08T15:15:02+08:00">2020-07-08</time>
+            </span>
+              <span class="post-meta-item">
+                <span class="post-meta-item-icon">
+                  <i class="far fa-calendar-check"></i>
+                </span>
+                <span class="post-meta-item-text">更新于</span>
+                <time title="修改时间：2020-07-13 13:41:07" itemprop="dateModified" datetime="2020-07-13T13:41:07+08:00">2020-07-13</time>
+              </span>
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-folder"></i>
+              </span>
+              <span class="post-meta-item-text">分类于</span>
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/Android/" itemprop="url" rel="index"><span itemprop="name">Android</span></a>
+                </span>
+            </span>
+
+          
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+        <p>了解任务与返回堆栈的内容，对于合适地设置activity的启动模式，有很大的启发作用。</p>
+<a id="more"></a>
+
+<h1 id="前言"><a href="#前言" class="headerlink" title="前言"></a>前言</h1><p><strong>任务</strong>，是用户在使用时，产生的一系列activity的集合。一般来说，当启动一个新的activity时，系统会创建一个activity的新实例，并将这个实例放到一个堆栈中，这个堆栈即是<strong>返回堆栈</strong>。一般情况下，在第一次启动应用时，一个应用会创建一个相对应的任务和返回堆栈；同时，该应用的主activity也会作为返回堆栈的根activity。</p>
+<p>返回堆栈的特点是，activity遵循<strong>“先进后出”（也可为“后进先出”）</strong>的原则，而且不会被重新排列。</p>
+<p><img src="/2020/07/08/%E4%BB%BB%E5%8A%A1%E5%92%8C%E8%BF%94%E5%9B%9E%E5%A0%86%E6%A0%88/1.png"></p>
+<p>图示即演示了新activity是如何添加到返回堆栈的。当用户按返回按钮时，当前activity会销毁，上一个activity将恢复。当堆栈中所有activity被移除后，任务也将不复存在。</p>
+<p>Activity和任务的默认行为总结如下：（这段官网的描述很详细）</p>
+<ul>
+<li><p>当 Activity A 启动 Activity B 时，Activity A 会停止，但系统会保留其状态（例如滚动位置和输入到表单中的文本）。如果用户在 Activity B 中按返回按钮，系统会恢复 Activity A 及其状态。</p>
+</li>
+<li><p>当用户通过按主屏幕按钮离开任务时，当前 Activity 会停止，其任务会转到后台。系统会保留任务中每个 Activity 的状态。如果用户稍后通过点按该任务的启动器图标来恢复该任务，该任务会进入前台并恢复堆栈顶部的 Activity。</p>
+</li>
+<li><p>如果用户按返回按钮，当前 Activity 将从堆栈中退出并销毁。堆栈中的上一个 Activity 将恢复。Activity 被销毁后，系统不会保留该 Activity 的状态。</p>
+</li>
+<li><p>Activity 可以多次实例化，甚至是从其他任务对其进行实例化。</p>
+</li>
+</ul>
+<h1 id="launchMode"><a href="#launchMode" class="headerlink" title="launchMode"></a>launchMode</h1><h2 id="standard"><a href="#standard" class="headerlink" title="standard"></a>standard</h2><p><strong>Activity的默认模式</strong>，这种模式下activity可以多次实例化。<strong>每个实例可以属于不同的任务，一个任务可以拥有多个实例。</strong></p>
+<p>适用场景：大多数应用场景</p>
+<h2 id="singleTop"><a href="#singleTop" class="headerlink" title="singleTop"></a>singleTop</h2><p><strong>栈顶复用模式</strong>。若堆栈的顶部已为当前activity实例，系统则会调用onNewIntent()方法获取已有实例；若栈顶不为当前activity实例，则会创建新的activity实例。</p>
+<p>适用场景：通知消息打开的页面；登录页面等。</p>
+<p>反面教材：<strong>微博</strong>：在A用户主页，<em>不进入单条微博详情</em>，点击任意一条微博的A用户头像，都会再次进入A用户主页，即生成新的Activity实例，进入一种“俄罗斯套娃”的怪圈。</p>
+<p>正面教材：<strong>QQ</strong>和<strong>微博国际版</strong>：同样是在主页进行以上操作，QQ不会再次进入用户主页，微博国际版更是有屏幕抖动的效果来提醒当前已是目标用户主页。</p>
+<h2 id="singleTask"><a href="#singleTask" class="headerlink" title="singleTask"></a>singleTask</h2><p><strong>栈内复用模式</strong>。与singleTop不同的是，此模式会检索栈内所有activity实例，而非仅限于栈顶。若存在对应实例，则调用onNewIntent()方法获取已有实例，并将其之上的所有activity实例出栈；若不存在对应实例，则新建实例。</p>
+<p>适用场景：大多数APP的主页。这样的话，在退至主页时，之上的activity都会出栈，保证了退出应用时所有activity都会被销毁。</p>
+<h2 id="singleInstance"><a href="#singleInstance" class="headerlink" title="singleInstance"></a>singleInstance</h2><p><strong>单一实例模式</strong>。这种模式下，activity实例会<strong>单独占用一个栈</strong>，在系统中具有全局唯一性。与前两者的区别在于，此模式的检索范围要扩大至整个系统。</p>
+<p>适用场景：呼叫来电、闹钟响铃等界面。</p>
+
+    </div>
+
+    
+    
+    
+
+      <footer class="post-footer">
+
+        
+
+
+        
+    <div class="post-nav">
+      <div class="post-nav-item">
+    <a href="/2020/06/24/lemon/" rel="prev" title="lemon">
+      <i class="fa fa-chevron-left"></i> lemon
+    </a></div>
+      <div class="post-nav-item">
+    <a href="/2020/08/25/%E9%87%8D%E8%81%9A%E7%9F%BF%E7%9F%B3%E9%95%87/" rel="next" title="牧场物语：重聚矿石镇个人记">
+      牧场物语：重聚矿石镇个人记 <i class="fa fa-chevron-right"></i>
+    </a></div>
+    </div>
+      </footer>
+    
+  </article>
+  
+  
+  
+
+
+
+          </div>
+          
+
+<script>
+  window.addEventListener('tabs:register', () => {
+    let { activeClass } = CONFIG.comments;
+    if (CONFIG.comments.storage) {
+      activeClass = localStorage.getItem('comments_active') || activeClass;
+    }
+    if (activeClass) {
+      let activeTab = document.querySelector(`a[href="#comment-${activeClass}"]`);
+      if (activeTab) {
+        activeTab.click();
+      }
+    }
+  });
+  if (CONFIG.comments.storage) {
+    window.addEventListener('tabs:click', event => {
+      if (!event.target.matches('.tabs-comment .tab-content .tab-pane')) return;
+      let commentClass = event.target.classList[1];
+      localStorage.setItem('comments_active', commentClass);
+    });
+  }
+</script>
+
+        </div>
+          
+  
+  <div class="toggle sidebar-toggle">
+    <span class="toggle-line toggle-line-first"></span>
+    <span class="toggle-line toggle-line-middle"></span>
+    <span class="toggle-line toggle-line-last"></span>
+  </div>
+
+  <aside class="sidebar">
+    <div class="sidebar-inner">
+
+      <ul class="sidebar-nav motion-element">
+        <li class="sidebar-nav-toc">
+          文章目录
+        </li>
+        <li class="sidebar-nav-overview">
+          站点概览
+        </li>
+      </ul>
+
+      <!--noindex-->
+      <div class="post-toc-wrap sidebar-panel">
+          <div class="post-toc motion-element"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#%E5%89%8D%E8%A8%80"><span class="nav-number">1.</span> <span class="nav-text">前言</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#launchMode"><span class="nav-number">2.</span> <span class="nav-text">launchMode</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#standard"><span class="nav-number">2.1.</span> <span class="nav-text">standard</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#singleTop"><span class="nav-number">2.2.</span> <span class="nav-text">singleTop</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#singleTask"><span class="nav-number">2.3.</span> <span class="nav-text">singleTask</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#singleInstance"><span class="nav-number">2.4.</span> <span class="nav-text">singleInstance</span></a></li></ol></li></ol></div>
+      </div>
+      <!--/noindex-->
+
+      <div class="site-overview-wrap sidebar-panel">
+        <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+    <img class="site-author-image" itemprop="image" alt="希夏"
+      src="/images/avatar.jpg">
+  <p class="site-author-name" itemprop="name">希夏</p>
+  <div class="site-description" itemprop="description">我还在幻想着，能找到一个喜欢的人</div>
+</div>
+<div class="site-state-wrap motion-element">
+  <nav class="site-state">
+      <div class="site-state-item site-state-posts">
+          <a href="/archives/">
+        
+          <span class="site-state-item-count">12</span>
+          <span class="site-state-item-name">日志</span>
+        </a>
+      </div>
+      <div class="site-state-item site-state-categories">
+        <span class="site-state-item-count">5</span>
+        <span class="site-state-item-name">分类</span>
+      </div>
+  </nav>
+</div>
+
+
+
+      </div>
+
+    </div>
+  </aside>
+  <div id="sidebar-dimmer"></div>
+
+
+      </div>
+    </main>
+
+    <footer class="footer">
+      <div class="footer-inner">
+        
+
+        
+
+<div class="copyright">
+  
+  &copy; 
+  <span itemprop="copyrightYear">2020</span>
+  <span class="with-love">
+    <i class="fa fa-heart"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">希夏</span>
+</div>
+  <div class="powered-by">由 <a href="https://hexo.io/" class="theme-link" rel="noopener" target="_blank">Hexo</a> & <a href="https://mist.theme-next.org/" class="theme-link" rel="noopener" target="_blank">NexT.Mist</a> 强力驱动
+  </div>
+
+        
+
+
+
+
+
+
+
+
+      </div>
+    </footer>
+  </div>
+
+  
+  <script src="/lib/anime.min.js"></script>
+  <script src="/lib/velocity/velocity.min.js"></script>
+  <script src="/lib/velocity/velocity.ui.min.js"></script>
+
+<script src="/js/utils.js"></script>
+
+<script src="/js/motion.js"></script>
+
+
+<script src="/js/schemes/muse.js"></script>
+
+
+<script src="/js/next-boot.js"></script>
+
+<script src="/js/bookmark.js"></script>
+
+
+
+
+  
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+
+  
+
+  
+
+</body>
+</html>

@@ -1,0 +1,544 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=2">
+<meta name="theme-color" content="#222">
+<meta name="generator" content="Hexo 5.2.0">
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/logo.png">
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/logo.png">
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/logo.png">
+  <link rel="mask-icon" href="/images/logo.png" color="#222">
+
+<link rel="stylesheet" href="/css/main.css">
+
+
+<link rel="stylesheet" href="/lib/font-awesome/css/all.min.css">
+
+<script id="hexo-configurations">
+    var NexT = window.NexT || {};
+    var CONFIG = {"hostname":"example.com","root":"/","scheme":"Mist","version":"7.8.0","exturl":false,"sidebar":{"position":"right","display":"post","padding":18,"offset":12,"onmobile":false},"copycode":{"enable":false,"show_result":false,"style":null},"back2top":{"enable":true,"sidebar":false,"scrollpercent":false},"bookmark":{"enable":true,"color":"#222","save":"auto"},"fancybox":false,"mediumzoom":false,"lazyload":false,"pangu":false,"comments":{"style":"tabs","active":null,"storage":true,"lazyload":false,"nav":null},"algolia":{"hits":{"per_page":10},"labels":{"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}},"localsearch":{"enable":false,"trigger":"auto","top_n_per_article":1,"unescape":false,"preload":false},"motion":{"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}}};
+  </script>
+
+  <meta name="description" content="毕设做完这么久了，我终于回来填我自己挖下的第一个坑了。话不多说，直奔主题。">
+<meta property="og:type" content="article">
+<meta property="og:title" content="Android盖章动画实现">
+<meta property="og:url" content="http://example.com/2018/08/02/Android%E7%9B%96%E7%AB%A0%E5%8A%A8%E7%94%BB%E5%AE%9E%E7%8E%B0/index.html">
+<meta property="og:site_name" content="觅希夏">
+<meta property="og:description" content="毕设做完这么久了，我终于回来填我自己挖下的第一个坑了。话不多说，直奔主题。">
+<meta property="og:locale" content="zh_CN">
+<meta property="og:image" content="http://example.com/2018/08/02/Android%E7%9B%96%E7%AB%A0%E5%8A%A8%E7%94%BB%E5%AE%9E%E7%8E%B0/lol_match_data.png">
+<meta property="og:image" content="http://example.com/2018/08/02/Android%E7%9B%96%E7%AB%A0%E5%8A%A8%E7%94%BB%E5%AE%9E%E7%8E%B0/sample.gif">
+<meta property="og:image" content="http://example.com/2018/08/02/Android%E7%9B%96%E7%AB%A0%E5%8A%A8%E7%94%BB%E5%AE%9E%E7%8E%B0/1.png">
+<meta property="og:image" content="http://example.com/2018/08/02/Android%E7%9B%96%E7%AB%A0%E5%8A%A8%E7%94%BB%E5%AE%9E%E7%8E%B0/2.gif">
+<meta property="og:image" content="http://example.com/2018/08/02/Android%E7%9B%96%E7%AB%A0%E5%8A%A8%E7%94%BB%E5%AE%9E%E7%8E%B0/3.gif">
+<meta property="og:image" content="http://example.com/2018/08/02/Android%E7%9B%96%E7%AB%A0%E5%8A%A8%E7%94%BB%E5%AE%9E%E7%8E%B0/4.jpg">
+<meta property="og:image" content="http://example.com/2018/08/02/Android%E7%9B%96%E7%AB%A0%E5%8A%A8%E7%94%BB%E5%AE%9E%E7%8E%B0/5.gif">
+<meta property="og:image" content="http://example.com/2018/08/02/Android%E7%9B%96%E7%AB%A0%E5%8A%A8%E7%94%BB%E5%AE%9E%E7%8E%B0/6.gif">
+<meta property="og:image" content="http://example.com/2018/08/02/Android%E7%9B%96%E7%AB%A0%E5%8A%A8%E7%94%BB%E5%AE%9E%E7%8E%B0/7.gif">
+<meta property="article:published_time" content="2018-08-02T03:54:39.000Z">
+<meta property="article:modified_time" content="2020-10-14T03:41:45.768Z">
+<meta property="article:author" content="希夏">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="http://example.com/2018/08/02/Android%E7%9B%96%E7%AB%A0%E5%8A%A8%E7%94%BB%E5%AE%9E%E7%8E%B0/lol_match_data.png">
+
+<link rel="canonical" href="http://example.com/2018/08/02/Android%E7%9B%96%E7%AB%A0%E5%8A%A8%E7%94%BB%E5%AE%9E%E7%8E%B0/">
+
+
+<script id="page-configurations">
+  // https://hexo.io/docs/variables.html
+  CONFIG.page = {
+    sidebar: "",
+    isHome : false,
+    isPost : true,
+    lang   : 'zh-CN'
+  };
+</script>
+
+  <title>Android盖章动画实现 | 觅希夏</title>
+  
+
+
+
+
+
+
+  <noscript>
+  <style>
+  .use-motion .brand,
+  .use-motion .menu-item,
+  .sidebar-inner,
+  .use-motion .post-block,
+  .use-motion .pagination,
+  .use-motion .comments,
+  .use-motion .post-header,
+  .use-motion .post-body,
+  .use-motion .collection-header { opacity: initial; }
+
+  .use-motion .site-title,
+  .use-motion .site-subtitle {
+    opacity: initial;
+    top: initial;
+  }
+
+  .use-motion .logo-line-before i { left: initial; }
+  .use-motion .logo-line-after i { right: initial; }
+  </style>
+</noscript>
+
+<!-- hexo injector head_end start -->
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.12.0/dist/katex.min.css">
+
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/hexo-math@4.0.0/dist/style.css">
+<!-- hexo injector head_end end --></head>
+
+<body itemscope itemtype="http://schema.org/WebPage">
+  <div class="container use-motion">
+    <div class="headband"></div>
+
+    <header class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-container">
+  <div class="site-nav-toggle">
+    <div class="toggle" aria-label="切换导航栏">
+      <span class="toggle-line toggle-line-first"></span>
+      <span class="toggle-line toggle-line-middle"></span>
+      <span class="toggle-line toggle-line-last"></span>
+    </div>
+  </div>
+
+  <div class="site-meta">
+
+    <a href="/" class="brand" rel="start">
+      <span class="logo-line-before"><i></i></span>
+      <h1 class="site-title">觅希夏</h1>
+      <span class="logo-line-after"><i></i></span>
+    </a>
+  </div>
+
+  <div class="site-nav-right">
+    <div class="toggle popup-trigger">
+    </div>
+  </div>
+</div>
+
+
+
+
+<nav class="site-nav">
+  <ul id="menu" class="main-menu menu">
+        <li class="menu-item menu-item-home">
+
+    <a href="/" rel="section"><i class="fa fa-home fa-fw"></i>首页</a>
+
+  </li>
+        <li class="menu-item menu-item-archives">
+
+    <a href="/archives/" rel="section"><i class="fa fa-archive fa-fw"></i>归档</a>
+
+  </li>
+  </ul>
+</nav>
+
+
+
+
+</div>
+    </header>
+
+    
+  <div class="back-to-top">
+    <i class="fa fa-arrow-up"></i>
+    <span>0%</span>
+  </div>
+  <div class="reading-progress-bar"></div>
+  <a role="button" class="book-mark-link book-mark-link-fixed"></a>
+
+
+    <main class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          
+
+          <div class="content post posts-expand">
+            
+
+    
+  
+  
+  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="zh-CN">
+    <link itemprop="mainEntityOfPage" href="http://example.com/2018/08/02/Android%E7%9B%96%E7%AB%A0%E5%8A%A8%E7%94%BB%E5%AE%9E%E7%8E%B0/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar.jpg">
+      <meta itemprop="name" content="希夏">
+      <meta itemprop="description" content="我还在幻想着，能找到一个喜欢的人">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="觅希夏">
+    </span>
+      <header class="post-header">
+        <h1 class="post-title" itemprop="name headline">
+          Android盖章动画实现
+        </h1>
+
+        <div class="post-meta">
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-calendar"></i>
+              </span>
+              <span class="post-meta-item-text">发表于</span>
+
+              <time title="创建时间：2018-08-02 11:54:39" itemprop="dateCreated datePublished" datetime="2018-08-02T11:54:39+08:00">2018-08-02</time>
+            </span>
+              <span class="post-meta-item">
+                <span class="post-meta-item-icon">
+                  <i class="far fa-calendar-check"></i>
+                </span>
+                <span class="post-meta-item-text">更新于</span>
+                <time title="修改时间：2020-10-14 11:41:45" itemprop="dateModified" datetime="2020-10-14T11:41:45+08:00">2020-10-14</time>
+              </span>
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-folder"></i>
+              </span>
+              <span class="post-meta-item-text">分类于</span>
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/Android/" itemprop="url" rel="index"><span itemprop="name">Android</span></a>
+                </span>
+            </span>
+
+          
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+        <p>毕设做完这么久了，我终于回来填我自己挖下的第一个坑了。话不多说，直奔主题。</p>
+<a id="more"></a>
+
+<p>在毕设中，有一个模块是赛程数据模块,如下图：</p>
+<div style="width:320px;margin:auto">![](Android盖章动画实现/lol_match_data.png)</div>
+
+<p><img src="/2018/08/02/Android%E7%9B%96%E7%AB%A0%E5%8A%A8%E7%94%BB%E5%AE%9E%E7%8E%B0/lol_match_data.png"></p>
+<p>那个胜利图标的显示，其实我是想用一个章印落下的动画来实现的，只不过那时忙于后台，没来得及去细看动画方面的学习。不过这几天得了些兴致，就回来填一下坑。</p>
+<p>先贴效果图，如下：</p>
+<p><img src="/2018/08/02/Android%E7%9B%96%E7%AB%A0%E5%8A%A8%E7%94%BB%E5%AE%9E%E7%8E%B0/sample.gif"></p>
+<p>接下来就讲一下实现的过程。</p>
+<h1 id="前言"><a href="#前言" class="headerlink" title="前言"></a>前言</h1><p>Android动画分为视图动画与属性动画，视图动画又分为逐帧动画与补间动画。逐帧动画的工作原理类似于动画片，将一张张拆分开来的动画通过连续播放的操作，形成动画的效果。补间动画则是对view进行一系列动画操作，包括平移（Translate）、透明度（Alpha）、旋转度（Rotate）与缩放（Scale）。属性动画与补间动画类似，但是这两者有一个最大的不同。比如说，一个仅占手机界面中间一部分的按钮，我们对它进行两种动画操作：一，补间动画，将按钮放大至铺满屏幕，点击屏幕边缘，发现并没有触发按钮点击事件，这是因为补间动画仅仅是将按钮绘制为铺满屏幕而已，按钮本身的大小、位置属性并没有发生变化；而第二种，属性动画，就是为了弥补补间动画的这一缺点，属性动画放大的按钮，大小和位置属性也会发生变化，铺满屏幕后仍然可以点击。</p>
+<p>除此之外，补间动画只能实现上述的四种操作，且对象仅针对于可写于布局中的view对象。属性动画可以实现背景颜色的渐变等，且对canvas、point等有一定的支持。所以，说属性动画在一定程度上可以代替补间动画。</p>
+<h1 id="实现思路"><a href="#实现思路" class="headerlink" title="实现思路"></a>实现思路</h1><p>先搞清楚这个动画过程中都用到了什么操作，操作的顺序或触发时机是怎样的。</p>
+<ul>
+<li><p>章印本身是从无到有的，即透明度是从透明过渡到不透明的。</p>
+</li>
+<li><p>章印是从大到小落下去的，即用到了缩放。</p>
+</li>
+<li><p>章印在这个过程中有一定角度的旋转。</p>
+</li>
+<li><p>章印落下后，为给人一种有力的感觉，整个页面布局需要有一定的抖动效果实现，而抖动，就是多个方向的平移的组合实现。</p>
+</li>
+</ul>
+<p>这下就很清楚了。章印在落下的过程中，调用了透明度、缩放、旋转的属性动画；落下后，整个布局调用了平移的属性动画。那么接下来，只要搞清楚每个属性动画怎么实现就行了。</p>
+<h1 id="属性动画"><a href="#属性动画" class="headerlink" title="属性动画"></a>属性动画</h1><h2 id="ValueAnimator"><a href="#ValueAnimator" class="headerlink" title="ValueAnimator"></a>ValueAnimator</h2><p>这个类是Android的属性动画机制中最核心的一个类。属性动画的运行机制，是通过对变化属性的值进行不断的运算，并赋予视图属性来实现的。它使得整个动画过程过渡得比较平滑，使人看起来很舒服。我们可以通过调用这个类，来观察值的变化规律。</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line">ValueAnimator anim &#x3D; ValueAnimator.ofFloat(0f, 1f);</span><br><span class="line">                anim.setDuration(500);</span><br><span class="line">                anim.addUpdateListener(new ValueAnimator.AnimatorUpdateListener() &#123;</span><br><span class="line">                    @Override</span><br><span class="line">                    public void onAnimationUpdate(ValueAnimator animation) &#123;</span><br><span class="line">                        float currentValue &#x3D; (float) animation.getAnimatedValue();</span><br><span class="line">                        Log.d(&quot;TAG&quot;, &quot;cuurent value is &quot; + currentValue);</span><br><span class="line">                    &#125;</span><br><span class="line">                &#125;);</span><br><span class="line">                anim.start();</span><br></pre></td></tr></table></figure>
+
+<p>值的变化如下：</p>
+<p><img src="/2018/08/02/Android%E7%9B%96%E7%AB%A0%E5%8A%A8%E7%94%BB%E5%AE%9E%E7%8E%B0/1.png"></p>
+<p>通过值的变化可以看出，类似于正弦函数y=sinx位于-π/2到π/2之间的曲线图的变化，很贴近，起步缓，中期变化快，最后缓。不过，ofFloat方法中不止可以只传入两个值，大家可以自行传入更多的值观察变化。</p>
+<p>这个类相比于表层的ObjectAnimator类，我们对后者会接触的更多一些。下面就会对效果做一些实现和演示。</p>
+<h2 id="透明度-Alpha"><a href="#透明度-Alpha" class="headerlink" title="透明度 Alpha"></a>透明度 Alpha</h2><p>代码如下：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">ObjectAnimator animator &#x3D; ObjectAnimator.ofFloat(vicImg,&quot;alpha&quot;,1f,0f,1f,0f,1f);</span><br><span class="line">animator.setDuration(5000);</span><br><span class="line">animator.start();</span><br></pre></td></tr></table></figure>
+
+<p>实现效果：</p>
+<p><img src="/2018/08/02/Android%E7%9B%96%E7%AB%A0%E5%8A%A8%E7%94%BB%E5%AE%9E%E7%8E%B0/2.gif"></p>
+<p>可以看到，这里通过调用ofFloat()方法创建了一个ObjectAnimator的实例，其他效果的实现也大多与此类似。对于alpha属性来说，0表示透明，1表示不透明。对于ofFloat来说，属性后的数值个数传入是没有限制的。这里传入三个值是可以的，传入五个或者更多也是可以的。setDuration方法设置整个动画的时长，注意，是整个，而不是每个变化之间的时长。</p>
+<p>还有，在这次实现效果中，可以看到第一次隐去和第二次显现的过程较长，而第一次显示和第二次隐去的过程较短。这就与上面提到的ValueAnimator的值的变化规律有关了。</p>
+<h2 id="旋转-rotation"><a href="#旋转-rotation" class="headerlink" title="旋转 rotation"></a>旋转 rotation</h2><p>接下来的其他属性动画代码，不一样的大概就是关键字了。</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">ObjectAnimator animator &#x3D; ObjectAnimator.ofFloat(vicImg,&quot;rotation&quot;,0f,360f);</span><br><span class="line">                animator.setDuration(5000);</span><br><span class="line">                animator.start();</span><br></pre></td></tr></table></figure>
+
+<p>实现效果：</p>
+<p><img src="/2018/08/02/Android%E7%9B%96%E7%AB%A0%E5%8A%A8%E7%94%BB%E5%AE%9E%E7%8E%B0/3.gif"></p>
+<h2 id="平移-translation"><a href="#平移-translation" class="headerlink" title="平移 translation"></a>平移 translation</h2><p>这就要先说一下Android的坐标系了，如下：</p>
+<p><img src="/2018/08/02/Android%E7%9B%96%E7%AB%A0%E5%8A%A8%E7%94%BB%E5%AE%9E%E7%8E%B0/4.jpg"></p>
+<p>以我们要操作的view控件为中心，向右x增加，向下y增加。掌握这个规律后，对view操作就比较好用了。</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line">float curTranslationX &#x3D; vicImg.getTranslationX();</span><br><span class="line">                float curTranslationY &#x3D; vicImg.getTranslationY();</span><br><span class="line">                ObjectAnimator animatorX &#x3D; ObjectAnimator.ofFloat(vicImg, &quot;translationX&quot;, curTranslationX, -500f, curTranslationX);</span><br><span class="line">                ObjectAnimator animatorY &#x3D; ObjectAnimator.ofFloat(vicImg,&quot;translationY&quot;, curTranslationY, -500f,curTranslationY);</span><br><span class="line">                animatorX.setDuration(5000);</span><br><span class="line">                animatorY.setDuration(5000);</span><br><span class="line">                animatorX.start();</span><br><span class="line">                animatorY.start();</span><br></pre></td></tr></table></figure>
+
+<p>实现效果：</p>
+<p><img src="/2018/08/02/Android%E7%9B%96%E7%AB%A0%E5%8A%A8%E7%94%BB%E5%AE%9E%E7%8E%B0/5.gif"></p>
+<h2 id="缩放-scale"><a href="#缩放-scale" class="headerlink" title="缩放 scale"></a>缩放 scale</h2><p>缩放也同平移一样，也有x方向和y方向上的缩放。</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">ObjectAnimator animatorX &#x3D; ObjectAnimator.ofFloat(vicImg, &quot;scaleX&quot;, 1f,3f,1f);</span><br><span class="line">                ObjectAnimator animatorY &#x3D; ObjectAnimator.ofFloat(vicImg,&quot;scaleY&quot;, 1f,3f,1f);</span><br><span class="line">                animatorX.setDuration(2000);</span><br><span class="line">                animatorY.setDuration(2000);</span><br><span class="line">                animatorX.start();</span><br><span class="line">                animatorY.start();</span><br></pre></td></tr></table></figure>
+
+<p>实现效果：</p>
+<p><img src="/2018/08/02/Android%E7%9B%96%E7%AB%A0%E5%8A%A8%E7%94%BB%E5%AE%9E%E7%8E%B0/6.gif"></p>
+<p>这样，基本就学到了每个属性动画的简单用法。</p>
+<h2 id="动画组合"><a href="#动画组合" class="headerlink" title="动画组合"></a>动画组合</h2><p>独立的属性动画很难出彩，但如果将多个结合到一起，那就很不错了。而AnimatorSet类整合实现了组合动画的功能。它主要包括了以下四个方法：</p>
+<ul>
+<li><p>after(Animator anim)：将现有动画插入到传入的动画之后执行</p>
+</li>
+<li><p>after(long delay)：将现有动画延迟指定时间后执行</p>
+</li>
+<li><p>before(Animator anim)：将现有动画插入到传入的动画之前执行</p>
+</li>
+<li><p>with(Animator anim)：将现有动画与传入动画同时执行</p>
+</li>
+</ul>
+<p>有了这个类，我们就可以完成组合动画了。如下：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line">ObjectAnimator animatorAlpha &#x3D; ObjectAnimator.ofFloat(vicImg,&quot;alpha&quot;,1f,0f,1f);</span><br><span class="line">                ObjectAnimator rotationAnimator &#x3D; ObjectAnimator.ofFloat(vicImg,&quot;rotation&quot;,0f,360f);</span><br><span class="line">                ObjectAnimator animatorX &#x3D; ObjectAnimator.ofFloat(vicImg, &quot;scaleX&quot;, 1f,3f,1f);</span><br><span class="line">                ObjectAnimator animatorY &#x3D; ObjectAnimator.ofFloat(vicImg,&quot;scaleY&quot;, 1f,3f,1f);</span><br><span class="line">                AnimatorSet animatorSet &#x3D; new AnimatorSet();</span><br><span class="line">                animatorSet.play(animatorX).with(animatorY).with(animatorAlpha).before(rotationAnimator);</span><br><span class="line">                animatorSet.setDuration(2000);</span><br><span class="line">                animatorSet.start();</span><br></pre></td></tr></table></figure>
+
+<p>代码可以看出来，组合出来的动画是，x方向和y方向同时放大3倍再缩小回原大小，同时还由不透明变为透明再变为不透明。这三个动画组合播放结束后，再旋转360度。<strong>注意，before和after是相对play和with的动画而言的，传入before的动画，会在最后执行，传入after的动画，会在最开始执行。</strong></p>
+<p>效果如下：</p>
+<p><img src="/2018/08/02/Android%E7%9B%96%E7%AB%A0%E5%8A%A8%E7%94%BB%E5%AE%9E%E7%8E%B0/7.gif"></p>
+<h2 id="Xml动画配置"><a href="#Xml动画配置" class="headerlink" title="Xml动画配置"></a>Xml动画配置</h2><p>通过ObjectAnimator类可以完成动画编写，xml格式也可以完成。对于属性配置，我们优先选择xml文件进行编写。我们也可以写动画静态类，不过一般静态类我们用来写业务方面的方法。所以，xml格式的配置学习也是必要的。</p>
+<ul>
+<li>scale</li>
+</ul>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line">&lt;set xmlns:android&#x3D;&quot;http:&#x2F;&#x2F;schemas.android.com&#x2F;apk&#x2F;res&#x2F;android&quot;&gt;</span><br><span class="line">    &lt;scale android:duration&#x3D;&quot;2000&quot;</span><br><span class="line">        android:fromXScale&#x3D;&quot;1.0&quot;</span><br><span class="line">        android:fromYScale&#x3D;&quot;1.0&quot;</span><br><span class="line">        android:toXScale&#x3D;&quot;2.0&quot;</span><br><span class="line">        android:toYScale&#x3D;&quot;2.0&quot; &#x2F;&gt;</span><br><span class="line">&lt;&#x2F;set&gt;</span><br></pre></td></tr></table></figure>
+
+<ul>
+<li>rotate</li>
+</ul>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">&lt;set xmlns:android&#x3D;&quot;http:&#x2F;&#x2F;schemas.android.com&#x2F;apk&#x2F;res&#x2F;android&quot;&gt;</span><br><span class="line">    &lt;rotate android:duration&#x3D;&quot;2000&quot;</span><br><span class="line">        android:fromDegrees&#x3D;&quot;0&quot;</span><br><span class="line">        android:toDegrees&#x3D;&quot;30&quot;&#x2F;&gt;</span><br><span class="line">&lt;&#x2F;set&gt;</span><br></pre></td></tr></table></figure>
+
+<ul>
+<li>translate</li>
+</ul>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line">&lt;set xmlns:android&#x3D;&quot;http:&#x2F;&#x2F;schemas.android.com&#x2F;apk&#x2F;res&#x2F;android&quot;&gt;</span><br><span class="line">    &lt;translate android:duration&#x3D;&quot;2000&quot;</span><br><span class="line">        android:fromXDelta&#x3D;&quot;-50&quot;</span><br><span class="line">        android:fromYDelta&#x3D;&quot;-50&quot;</span><br><span class="line">        android:toXDelta&#x3D;&quot;50&quot;</span><br><span class="line">        android:toYDelta&#x3D;&quot;50&quot;&#x2F;&gt;</span><br><span class="line">&lt;&#x2F;set&gt;</span><br></pre></td></tr></table></figure>
+
+<ul>
+<li>alpha</li>
+</ul>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line">&lt;set xmlns:android&#x3D;&quot;http:&#x2F;&#x2F;schemas.android.com&#x2F;apk&#x2F;res&#x2F;android&quot;&gt;</span><br><span class="line">    &lt;translate android:duration&#x3D;&quot;2000&quot;</span><br><span class="line">        android:fromXDelta&#x3D;&quot;-50&quot;</span><br><span class="line">        android:fromYDelta&#x3D;&quot;-50&quot;</span><br><span class="line">        android:toXDelta&#x3D;&quot;50&quot;</span><br><span class="line">        android:toYDelta&#x3D;&quot;50&quot;&#x2F;&gt;</span><br><span class="line">&lt;&#x2F;set&gt;</span><br></pre></td></tr></table></figure>
+
+<p>四种标签属性的代码的基本属性代码如上所示（效果图我就不贴出了，太麻烦了，录制MP4还得转换在线格式）。</p>
+<p>不过，在查资料的过程中，还有这么一个基本属性：pivotX、pivotY</p>
+<p>这个属性的值有三种：数值、百分数、百分数p，分别比如：50、50%、50%p。当为数值时，表示在当前View的左上角，即原点处加上50px，做为起始缩放点；如果是50%，表示在当前View的左上角加上自己宽度的50%做为起始点；如果是50%p，那么就是表示在当前的左上角加上父控件宽度的50%做为起始点x轴坐标，这个父控件，可以是整个布局，也可以只是一个横行布局等。</p>
+<p>标签属性毕竟是跟Animation类一样的，所以它也有如下属性：</p>
+<ul>
+<li><p>duration：动画时长，单位毫秒</p>
+</li>
+<li><p>fillAfter：可设置，若为true，则动画结束时，保持动画的结束状态</p>
+</li>
+<li><p>fillBefore：可设置，若为true，则动画结束时，还原到动画开始前的状态</p>
+</li>
+<li><p>repeatMode：重复类型，有reverse和restart两个值，前者表示倒序回放，后者表示重放一遍。</p>
+</li>
+<li><p>interpolator：设定插值器，即指定的动画效果。在此处只用到了CycleInterpolator，用于指定动画循环次数。</p>
+</li>
+</ul>
+<p>其他博客上挂出来的其他属性，我在当前版本的AndroidStudio上是没办法使用的。这种情况遇到过很多次了，很多别人挂出来的代码并不能用，自己还得去找新的实现办法。所以以后如果我觉得有必要的话，挂一下开发环境，省的自己和别人为不能重用代码的问题烦恼。</p>
+<p>话题说远了，不过用到的知识差不多也就剩下CycleInterpolator和别的一点东西了。它的用法也很简单：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">&lt;cycleInterpolator xmlns:android&#x3D;&quot;http:&#x2F;&#x2F;schemas.android.com&#x2F;apk&#x2F;res&#x2F;android&quot;</span><br><span class="line">    android:cycles&#x3D;&quot;2&quot; &#x2F;&gt;</span><br></pre></td></tr></table></figure>
+
+<p>一目了然。cycles属性指定重复动作次数，且这个插值器使用时，动画的值会按照正弦函数一样变化。以后若是需要用到其他的插值器，我再去做深入的了解。</p>
+<p>对了，差点忘记了set标签。在单个动画动作xml文件中，其实可以存放多组动作标签，而set就负责对它们的执行顺序进行排列和组合。主要属性：ordering，值有两种：Sequentially（顺序执行）和together（同时执行）。用法也很简单，会直接在实现代码中贴出来。</p>
+<h1 id="实现代码"><a href="#实现代码" class="headerlink" title="实现代码"></a>实现代码</h1><p>我采用了两种代码结合的办法。<del>别问我为什么，我也想只用xml，但特喵的就是不抖动，只好还是用原来的两种形式结合的代码了</del></p>
+<p>Activity.java:</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br></pre></td><td class="code"><pre><span class="line">private void gaizhang()&#123;</span><br><span class="line">        &#x2F;&#x2F;透明度渐变动画</span><br><span class="line">        ObjectAnimator alphaAnimator &#x3D; ObjectAnimator.ofFloat(vicImg,&quot;alpha&quot;,0f,1f,1f);</span><br><span class="line">        alphaAnimator.setDuration(1000);</span><br><span class="line">        alphaAnimator.start();</span><br><span class="line"></span><br><span class="line">        &#x2F;&#x2F;旋转渐变动画</span><br><span class="line">        ObjectAnimator rotationAnimator &#x3D; ObjectAnimator.ofFloat(vicImg,&quot;rotation&quot;,-30f,0f);</span><br><span class="line">        rotationAnimator.setDuration(500);</span><br><span class="line">        rotationAnimator.start();</span><br><span class="line"></span><br><span class="line">        &#x2F;&#x2F;大小变化动画</span><br><span class="line">        ObjectAnimator yAnimator &#x3D; ObjectAnimator.ofFloat(vicImg,&quot;scaleY&quot;,5f,1f,1f);</span><br><span class="line">        ObjectAnimator xAnimator &#x3D; ObjectAnimator.ofFloat(vicImg,&quot;scaleX&quot;,5f,1f,1f);</span><br><span class="line">        yAnimator.setDuration(1000);</span><br><span class="line">        xAnimator.setDuration(1000);</span><br><span class="line">        yAnimator.start();</span><br><span class="line">        xAnimator.start();</span><br><span class="line"></span><br><span class="line">        &#x2F;&#x2F;界面抖动动画</span><br><span class="line">        new Thread(new Runnable() &#123;</span><br><span class="line">            @Override</span><br><span class="line">            public void run() &#123;</span><br><span class="line">                try &#123;</span><br><span class="line">                    Thread.sleep(500);</span><br><span class="line">                &#125;catch (Exception e)&#123;</span><br><span class="line">                    e.printStackTrace();</span><br><span class="line">                &#125;</span><br><span class="line">                handler.sendEmptyMessage(20);</span><br><span class="line">            &#125;</span><br><span class="line">        &#125;).start();</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">private Handler handler &#x3D; new Handler()&#123;</span><br><span class="line">        @Override</span><br><span class="line">        public void handleMessage(Message msg) &#123;</span><br><span class="line">            switch (msg.what)&#123;</span><br><span class="line">                case 20:</span><br><span class="line">                    &#x2F;&#x2F;界面抖动动画</span><br><span class="line">                    Animation shake &#x3D; AnimationUtils.loadAnimation(getApplicationContext(),R.anim.myanim);</span><br><span class="line">                    constraintLayout.startAnimation(shake);</span><br><span class="line">                    break;</span><br><span class="line">            &#125;</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;;</span><br></pre></td></tr></table></figure>
+
+<p>shake_anim.xml:</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br></pre></td><td class="code"><pre><span class="line">&lt;?xml version&#x3D;&quot;1.0&quot; encoding&#x3D;&quot;utf-8&quot;?&gt;</span><br><span class="line">&lt;set xmlns:android&#x3D;&quot;http:&#x2F;&#x2F;schemas.android.com&#x2F;apk&#x2F;res&#x2F;android&quot;</span><br><span class="line">    android:interpolator&#x3D;&quot;@anim&#x2F;cycle_2&quot;&gt;</span><br><span class="line"></span><br><span class="line">    &lt;translate</span><br><span class="line">        android:duration&#x3D;&quot;100&quot;</span><br><span class="line">        android:fromXDelta&#x3D;&quot;-10&quot;</span><br><span class="line">        android:fromYDelta&#x3D;&quot;0&quot;</span><br><span class="line">        android:toXDelta&#x3D;&quot;0&quot;</span><br><span class="line">        android:toYDelta&#x3D;&quot;-10&quot; &#x2F;&gt;&lt;!--向上十个单位--&gt;</span><br><span class="line">    &lt;translate</span><br><span class="line">        android:duration&#x3D;&quot;100&quot;</span><br><span class="line">        android:fromXDelta&#x3D;&quot;0&quot;</span><br><span class="line">        android:fromYDelta&#x3D;&quot;-10&quot;</span><br><span class="line">        android:startOffset&#x3D;&quot;100&quot;</span><br><span class="line">        android:toXDelta&#x3D;&quot;10&quot;</span><br><span class="line">        android:toYDelta&#x3D;&quot;0&quot; &#x2F;&gt;&lt;!--向右十个单位--&gt;</span><br><span class="line">    &lt;translate</span><br><span class="line">        android:duration&#x3D;&quot;100&quot;</span><br><span class="line">        android:fromXDelta&#x3D;&quot;10&quot;</span><br><span class="line">        android:fromYDelta&#x3D;&quot;0&quot;</span><br><span class="line">        android:startOffset&#x3D;&quot;200&quot;</span><br><span class="line">        android:toXDelta&#x3D;&quot;0&quot;</span><br><span class="line">        android:toYDelta&#x3D;&quot;10&quot; &#x2F;&gt;&lt;!--向下十个单位--&gt;</span><br><span class="line">    &lt;translate</span><br><span class="line">        android:duration&#x3D;&quot;100&quot;</span><br><span class="line">        android:fromXDelta&#x3D;&quot;0&quot;</span><br><span class="line">        android:fromYDelta&#x3D;&quot;10&quot;</span><br><span class="line">        android:startOffset&#x3D;&quot;300&quot;</span><br><span class="line">        android:toXDelta&#x3D;&quot;-10&quot;</span><br><span class="line">        android:toYDelta&#x3D;&quot;0&quot; &#x2F;&gt;&lt;!--向左是个单位--&gt;</span><br><span class="line"></span><br><span class="line">&lt;&#x2F;set&gt;</span><br></pre></td></tr></table></figure>
+
+<p>cycleIntepolator.xml：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">&lt;?xml version&#x3D;&quot;1.0&quot; encoding&#x3D;&quot;utf-8&quot;?&gt;</span><br><span class="line">&lt;cycleInterpolator xmlns:android&#x3D;&quot;http:&#x2F;&#x2F;schemas.android.com&#x2F;apk&#x2F;res&#x2F;android&quot;</span><br><span class="line">android:cycles&#x3D;&quot;2&quot; &#x2F;&gt;</span><br></pre></td></tr></table></figure>
+
+<h1 id="后记"><a href="#后记" class="headerlink" title="后记"></a>后记</h1><p>这篇博客前半部分，即xml属性章节之前，我花了一天就写出来了，但因为个人极度讨厌网页标签这种代码（布局代码还行，但属性xml就特别烦），xml一直拖着不想写，9号了才耐着性子把它写出来。希望，之后的动画学习，不会有太多的xml文件代码。</p>
+<p>参考博客：<a target="_blank" rel="noopener" href="https://blog.csdn.net/guolin_blog/article/details/43536355">Android属性动画完全解析(上)，初识属性动画的基本用法</a></p>
+
+    </div>
+
+    
+    
+    
+
+      <footer class="post-footer">
+
+        
+
+
+        
+    <div class="post-nav">
+      <div class="post-nav-item">
+    <a href="/2018/01/13/%E6%8E%92%E5%BA%8F%E7%AE%97%E6%B3%95%E6%80%BB%E7%BB%93/" rel="prev" title="排序算法总结">
+      <i class="fa fa-chevron-left"></i> 排序算法总结
+    </a></div>
+      <div class="post-nav-item">
+    <a href="/2018/09/22/%E3%80%8A%E5%B0%8F%E6%83%85%E6%AD%8C%E3%80%8B%E8%AF%BB%E5%90%8E%E6%84%9F/" rel="next" title="《小情歌》读后感">
+      《小情歌》读后感 <i class="fa fa-chevron-right"></i>
+    </a></div>
+    </div>
+      </footer>
+    
+  </article>
+  
+  
+  
+
+
+
+          </div>
+          
+
+<script>
+  window.addEventListener('tabs:register', () => {
+    let { activeClass } = CONFIG.comments;
+    if (CONFIG.comments.storage) {
+      activeClass = localStorage.getItem('comments_active') || activeClass;
+    }
+    if (activeClass) {
+      let activeTab = document.querySelector(`a[href="#comment-${activeClass}"]`);
+      if (activeTab) {
+        activeTab.click();
+      }
+    }
+  });
+  if (CONFIG.comments.storage) {
+    window.addEventListener('tabs:click', event => {
+      if (!event.target.matches('.tabs-comment .tab-content .tab-pane')) return;
+      let commentClass = event.target.classList[1];
+      localStorage.setItem('comments_active', commentClass);
+    });
+  }
+</script>
+
+        </div>
+          
+  
+  <div class="toggle sidebar-toggle">
+    <span class="toggle-line toggle-line-first"></span>
+    <span class="toggle-line toggle-line-middle"></span>
+    <span class="toggle-line toggle-line-last"></span>
+  </div>
+
+  <aside class="sidebar">
+    <div class="sidebar-inner">
+
+      <ul class="sidebar-nav motion-element">
+        <li class="sidebar-nav-toc">
+          文章目录
+        </li>
+        <li class="sidebar-nav-overview">
+          站点概览
+        </li>
+      </ul>
+
+      <!--noindex-->
+      <div class="post-toc-wrap sidebar-panel">
+          <div class="post-toc motion-element"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#%E5%89%8D%E8%A8%80"><span class="nav-number">1.</span> <span class="nav-text">前言</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#%E5%AE%9E%E7%8E%B0%E6%80%9D%E8%B7%AF"><span class="nav-number">2.</span> <span class="nav-text">实现思路</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#%E5%B1%9E%E6%80%A7%E5%8A%A8%E7%94%BB"><span class="nav-number">3.</span> <span class="nav-text">属性动画</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#ValueAnimator"><span class="nav-number">3.1.</span> <span class="nav-text">ValueAnimator</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E9%80%8F%E6%98%8E%E5%BA%A6-Alpha"><span class="nav-number">3.2.</span> <span class="nav-text">透明度 Alpha</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E6%97%8B%E8%BD%AC-rotation"><span class="nav-number">3.3.</span> <span class="nav-text">旋转 rotation</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E5%B9%B3%E7%A7%BB-translation"><span class="nav-number">3.4.</span> <span class="nav-text">平移 translation</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E7%BC%A9%E6%94%BE-scale"><span class="nav-number">3.5.</span> <span class="nav-text">缩放 scale</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E5%8A%A8%E7%94%BB%E7%BB%84%E5%90%88"><span class="nav-number">3.6.</span> <span class="nav-text">动画组合</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#Xml%E5%8A%A8%E7%94%BB%E9%85%8D%E7%BD%AE"><span class="nav-number">3.7.</span> <span class="nav-text">Xml动画配置</span></a></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#%E5%AE%9E%E7%8E%B0%E4%BB%A3%E7%A0%81"><span class="nav-number">4.</span> <span class="nav-text">实现代码</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#%E5%90%8E%E8%AE%B0"><span class="nav-number">5.</span> <span class="nav-text">后记</span></a></li></ol></div>
+      </div>
+      <!--/noindex-->
+
+      <div class="site-overview-wrap sidebar-panel">
+        <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+    <img class="site-author-image" itemprop="image" alt="希夏"
+      src="/images/avatar.jpg">
+  <p class="site-author-name" itemprop="name">希夏</p>
+  <div class="site-description" itemprop="description">我还在幻想着，能找到一个喜欢的人</div>
+</div>
+<div class="site-state-wrap motion-element">
+  <nav class="site-state">
+      <div class="site-state-item site-state-posts">
+          <a href="/archives/">
+        
+          <span class="site-state-item-count">12</span>
+          <span class="site-state-item-name">日志</span>
+        </a>
+      </div>
+      <div class="site-state-item site-state-categories">
+        <span class="site-state-item-count">5</span>
+        <span class="site-state-item-name">分类</span>
+      </div>
+  </nav>
+</div>
+
+
+
+      </div>
+
+    </div>
+  </aside>
+  <div id="sidebar-dimmer"></div>
+
+
+      </div>
+    </main>
+
+    <footer class="footer">
+      <div class="footer-inner">
+        
+
+        
+
+<div class="copyright">
+  
+  &copy; 
+  <span itemprop="copyrightYear">2020</span>
+  <span class="with-love">
+    <i class="fa fa-heart"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">希夏</span>
+</div>
+  <div class="powered-by">由 <a href="https://hexo.io/" class="theme-link" rel="noopener" target="_blank">Hexo</a> & <a href="https://mist.theme-next.org/" class="theme-link" rel="noopener" target="_blank">NexT.Mist</a> 强力驱动
+  </div>
+
+        
+
+
+
+
+
+
+
+
+      </div>
+    </footer>
+  </div>
+
+  
+  <script src="/lib/anime.min.js"></script>
+  <script src="/lib/velocity/velocity.min.js"></script>
+  <script src="/lib/velocity/velocity.ui.min.js"></script>
+
+<script src="/js/utils.js"></script>
+
+<script src="/js/motion.js"></script>
+
+
+<script src="/js/schemes/muse.js"></script>
+
+
+<script src="/js/next-boot.js"></script>
+
+<script src="/js/bookmark.js"></script>
+
+
+
+
+  
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+
+  
+
+  
+
+</body>
+</html>
