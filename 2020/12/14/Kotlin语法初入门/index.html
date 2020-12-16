@@ -1,0 +1,570 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=2">
+<meta name="theme-color" content="#222">
+<meta name="generator" content="Hexo 5.2.0">
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/logo.png">
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/logo.png">
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/logo.png">
+  <link rel="mask-icon" href="/images/logo.png" color="#222">
+
+<link rel="stylesheet" href="/css/main.css">
+
+
+<link rel="stylesheet" href="/lib/font-awesome/css/all.min.css">
+
+<script id="hexo-configurations">
+    var NexT = window.NexT || {};
+    var CONFIG = {"hostname":"example.com","root":"/","scheme":"Mist","version":"7.8.0","exturl":false,"sidebar":{"position":"right","display":"post","padding":18,"offset":12,"onmobile":false},"copycode":{"enable":false,"show_result":false,"style":null},"back2top":{"enable":true,"sidebar":false,"scrollpercent":false},"bookmark":{"enable":false,"color":"#222","save":"auto"},"fancybox":false,"mediumzoom":false,"lazyload":false,"pangu":false,"comments":{"style":"tabs","active":null,"storage":true,"lazyload":false,"nav":null},"algolia":{"hits":{"per_page":10},"labels":{"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}},"localsearch":{"enable":true,"trigger":"auto","top_n_per_article":1,"unescape":false,"preload":false},"motion":{"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}},"path":"search.xml"};
+  </script>
+
+  <meta name="description" content="从 Java 来初入 Kotlin ，因目前在学习阶段，还没有投入到项目中去使用，很多语法规则在学过之后慢慢地忘记了，所以写一写学到的语法，以便回顾。 本文内容来源于《第一行代码》第三版第二章内容，仅仅做一些粗略概括罢了。">
+<meta property="og:type" content="article">
+<meta property="og:title" content="Kotlin语法初入门">
+<meta property="og:url" content="http://example.com/2020/12/14/Kotlin%E8%AF%AD%E6%B3%95%E5%88%9D%E5%85%A5%E9%97%A8/index.html">
+<meta property="og:site_name" content="觅希夏">
+<meta property="og:description" content="从 Java 来初入 Kotlin ，因目前在学习阶段，还没有投入到项目中去使用，很多语法规则在学过之后慢慢地忘记了，所以写一写学到的语法，以便回顾。 本文内容来源于《第一行代码》第三版第二章内容，仅仅做一些粗略概括罢了。">
+<meta property="og:locale" content="zh_CN">
+<meta property="article:published_time" content="2020-12-14T05:51:32.000Z">
+<meta property="article:modified_time" content="2020-12-14T09:05:23.514Z">
+<meta property="article:author" content="希夏">
+<meta name="twitter:card" content="summary">
+
+<link rel="canonical" href="http://example.com/2020/12/14/Kotlin%E8%AF%AD%E6%B3%95%E5%88%9D%E5%85%A5%E9%97%A8/">
+
+
+<script id="page-configurations">
+  // https://hexo.io/docs/variables.html
+  CONFIG.page = {
+    sidebar: "",
+    isHome : false,
+    isPost : true,
+    lang   : 'zh-CN'
+  };
+</script>
+
+  <title>Kotlin语法初入门 | 觅希夏</title>
+  
+
+
+
+
+
+
+  <noscript>
+  <style>
+  .use-motion .brand,
+  .use-motion .menu-item,
+  .sidebar-inner,
+  .use-motion .post-block,
+  .use-motion .pagination,
+  .use-motion .comments,
+  .use-motion .post-header,
+  .use-motion .post-body,
+  .use-motion .collection-header { opacity: initial; }
+
+  .use-motion .site-title,
+  .use-motion .site-subtitle {
+    opacity: initial;
+    top: initial;
+  }
+
+  .use-motion .logo-line-before i { left: initial; }
+  .use-motion .logo-line-after i { right: initial; }
+  </style>
+</noscript>
+
+<!-- hexo injector head_end start -->
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.12.0/dist/katex.min.css">
+
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/hexo-math@4.0.0/dist/style.css">
+<!-- hexo injector head_end end --></head>
+
+<body itemscope itemtype="http://schema.org/WebPage">
+  <div class="container use-motion">
+    <div class="headband"></div>
+
+    <header class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-container">
+  <div class="site-nav-toggle">
+    <div class="toggle" aria-label="切换导航栏">
+      <span class="toggle-line toggle-line-first"></span>
+      <span class="toggle-line toggle-line-middle"></span>
+      <span class="toggle-line toggle-line-last"></span>
+    </div>
+  </div>
+
+  <div class="site-meta">
+
+    <a href="/" class="brand" rel="start">
+      <span class="logo-line-before"><i></i></span>
+      <h1 class="site-title">觅希夏</h1>
+      <span class="logo-line-after"><i></i></span>
+    </a>
+  </div>
+
+  <div class="site-nav-right">
+    <div class="toggle popup-trigger">
+        <i class="fa fa-search fa-fw fa-lg"></i>
+    </div>
+  </div>
+</div>
+
+
+
+
+<nav class="site-nav">
+  <ul id="menu" class="main-menu menu">
+        <li class="menu-item menu-item-home">
+
+    <a href="/" rel="section"><i class="fa fa-home fa-fw"></i>首页</a>
+
+  </li>
+        <li class="menu-item menu-item-about">
+
+    <a href="/about/" rel="section"><i class="fa fa-user fa-fw"></i>关于</a>
+
+  </li>
+        <li class="menu-item menu-item-categories">
+
+    <a href="/categories/" rel="section"><i class="fa fa-th fa-fw"></i>分类</a>
+
+  </li>
+        <li class="menu-item menu-item-archives">
+
+    <a href="/archives/" rel="section"><i class="fa fa-archive fa-fw"></i>归档</a>
+
+  </li>
+      <li class="menu-item menu-item-search">
+        <a role="button" class="popup-trigger"><i class="fa fa-search fa-fw"></i>搜索
+        </a>
+      </li>
+  </ul>
+</nav>
+
+
+
+  <div class="search-pop-overlay">
+    <div class="popup search-popup">
+        <div class="search-header">
+  <span class="search-icon">
+    <i class="fa fa-search"></i>
+  </span>
+  <div class="search-input-container">
+    <input autocomplete="off" autocapitalize="off"
+           placeholder="搜索..." spellcheck="false"
+           type="search" class="search-input">
+  </div>
+  <span class="popup-btn-close">
+    <i class="fa fa-times-circle"></i>
+  </span>
+</div>
+<div id="search-result">
+  <div id="no-result">
+    <i class="fa fa-spinner fa-pulse fa-5x fa-fw"></i>
+  </div>
+</div>
+
+    </div>
+  </div>
+
+</div>
+    </header>
+
+    
+  <div class="back-to-top">
+    <i class="fa fa-arrow-up"></i>
+    <span>0%</span>
+  </div>
+
+
+    <main class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          
+
+          <div class="content post posts-expand">
+            
+
+    
+  
+  
+  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="zh-CN">
+    <link itemprop="mainEntityOfPage" href="http://example.com/2020/12/14/Kotlin%E8%AF%AD%E6%B3%95%E5%88%9D%E5%85%A5%E9%97%A8/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar.jpg">
+      <meta itemprop="name" content="希夏">
+      <meta itemprop="description" content="我还在幻想着，能找到一个喜欢的人">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="觅希夏">
+    </span>
+      <header class="post-header">
+        <h1 class="post-title" itemprop="name headline">
+          Kotlin语法初入门
+        </h1>
+
+        <div class="post-meta">
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-calendar"></i>
+              </span>
+              <span class="post-meta-item-text">发表于</span>
+              
+
+              <time title="创建时间：2020-12-14 13:51:32 / 修改时间：17:05:23" itemprop="dateCreated datePublished" datetime="2020-12-14T13:51:32+08:00">2020-12-14</time>
+            </span>
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-folder"></i>
+              </span>
+              <span class="post-meta-item-text">分类于</span>
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/Android/" itemprop="url" rel="index"><span itemprop="name">Android</span></a>
+                </span>
+            </span>
+
+          <br>
+            <span class="post-meta-item" title="本文字数">
+              <span class="post-meta-item-icon">
+                <i class="far fa-file-word"></i>
+              </span>
+                <span class="post-meta-item-text">本文字数：</span>
+              <span>2.7k</span>
+            </span>
+            <span class="post-meta-item" title="阅读时长">
+              <span class="post-meta-item-icon">
+                <i class="far fa-clock"></i>
+              </span>
+                <span class="post-meta-item-text">阅读时长 &asymp;</span>
+              <span>2 分钟</span>
+            </span>
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+        <p>从 Java 来初入 Kotlin ，因目前在学习阶段，还没有投入到项目中去使用，很多语法规则在学过之后慢慢地忘记了，所以写一写学到的语法，以便回顾。</p>
+<p>本文内容来源于《第一行代码》第三版第二章内容，仅仅做一些粗略概括罢了。</p>
+<a id="more"></a>
+<h1 id="变量"><a href="#变量" class="headerlink" title="变量"></a>变量</h1><p>声明变量的两个关键字： <strong>val</strong> 和 <strong>var</strong></p>
+<blockquote>
+<ul>
+<li><strong>val</strong> ( value 的简写) 用来声明不可变变量。使用 val 声明的变量经赋值后无法再度赋值。</li>
+<li><strong>var</strong> ( variable 的简写) 用来声明可变变量</li>
+</ul>
+</blockquote>
+<p>如下：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">val a &#x3D; 10</span><br><span class="line">var b &#x3D; 100</span><br><span class="line">println(&quot;a &#x3D; &quot; + a + &quot;b &#x3D; &quot; + b)</span><br></pre></td></tr></table></figure>
+<p>Kotlin 拥有出色的<strong>类型推导机制</strong>，在之上的代码中可窥一斑。必要时，也需要声明变量的类型。其与 Java 中的声明对照如下：</p>
+<div class="table-container">
+<table>
+<thead>
+<tr>
+<th style="text-align:center">Java 基本数据类型</th>
+<th style="text-align:center">Kotlin 对象数据类型</th>
+<th style="text-align:center">数据类型说明</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td style="text-align:center">int</td>
+<td style="text-align:center">Int</td>
+<td style="text-align:center">整数</td>
+</tr>
+<tr>
+<td style="text-align:center">long</td>
+<td style="text-align:center">Long</td>
+<td style="text-align:center">长整型</td>
+</tr>
+<tr>
+<td style="text-align:center">short</td>
+<td style="text-align:center">Short</td>
+<td style="text-align:center">短整型</td>
+</tr>
+<tr>
+<td style="text-align:center">float</td>
+<td style="text-align:center">Float</td>
+<td style="text-align:center">单精度浮点型</td>
+</tr>
+<tr>
+<td style="text-align:center">double</td>
+<td style="text-align:center">Double</td>
+<td style="text-align:center">双精度浮点型</td>
+</tr>
+<tr>
+<td style="text-align:center">byte</td>
+<td style="text-align:center">Byte</td>
+<td style="text-align:center">字节</td>
+</tr>
+<tr>
+<td style="text-align:center">char</td>
+<td style="text-align:center">Char</td>
+<td style="text-align:center">字符</td>
+</tr>
+<tr>
+<td style="text-align:center">boolean</td>
+<td style="text-align:center">Boolean</td>
+<td style="text-align:center">布尔型</td>
+</tr>
+</tbody>
+</table>
+</div>
+<p>显式声明如下：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">var a: Int &#x3D; 10</span><br></pre></td></tr></table></figure>
+<h1 id="函数"><a href="#函数" class="headerlink" title="函数"></a>函数</h1><p>常用关键字：<strong>fun</strong>。示例函数体如下：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">fun method(param1: Int, parma2: Int): Int &#123;</span><br><span class="line">    return 0</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>小括号之外的 Int 声明了返回的变量类型。再比如如下的函数：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">fun largerNumber(param1: Int, param2: Int): Int &#123;</span><br><span class="line">    return max(param1, param2)</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>这种函数主体内容仅有一行代码的函数可以简写为：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">fun largerNumber(param1: Int, param2: Int): Int &#x3D; max(param1, param2)</span><br></pre></td></tr></table></figure>
+<p>又因为 Kotlin 的类型推导机制，还可以简化为：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">fun largerNumber(param1: Int, param2: Int) &#x3D; max(param1, param2)</span><br></pre></td></tr></table></figure>
+<h1 id="控制逻辑部分"><a href="#控制逻辑部分" class="headerlink" title="控制逻辑部分"></a>控制逻辑部分</h1><h2 id="if-与-when"><a href="#if-与-when" class="headerlink" title="if 与 when"></a>if 与 when</h2><p>if 的用法相差不多。比如上面的函数可改写为：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line">fun largerNumber(param1: Int, param2: Int): Int &#123;</span><br><span class="line">    return if(param1 &gt; param2)&#123;</span><br><span class="line">        param1</span><br><span class="line">    &#125; else &#123;</span><br><span class="line">        param2</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>可简化为：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">fun largerNumber(param1: Int, param2: Int) &#x3D; if(param1 &gt; param2)&#123;</span><br><span class="line">    param1</span><br><span class="line">&#125; else &#123;</span><br><span class="line">    param2</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>再简化为：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">fun largerNumber(param1: Int, param2: Int) &#x3D; if(param1 &gt; param2) param1 else param2</span><br></pre></td></tr></table></figure>
+<h2 id="when"><a href="#when" class="headerlink" title="when"></a>when</h2><p>相当于 Java 中的 switch，又远强于 switch。Java 中的 switch 仅可传入整型，JDK1.7 之后添加了对字符串的支持（我好像从没传过字符串）。而 when 则相当强大。它允许传入任意类型的参数，判断的条件也可以多种多样，格式为：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">匹配值 -&gt; &#123;执行逻辑&#125;</span><br></pre></td></tr></table></figure>
+<p>常见如：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">fun getPrice(game: String) &#x3D; when(game)&#123;</span><br><span class="line">    &quot;Dark Souls 3&quot; -&gt; 268</span><br><span class="line">    &quot;Devil May Cry 5&quot; -&gt; 137</span><br><span class="line">    &quot;Left 4 Dead 2&quot; -&gt; 37</span><br><span class="line">    else -&gt; 68</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>还支持复杂条件:</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">fun getPrice(game: String) &#x3D; when&#123;</span><br><span class="line">    game.startsWith(&quot;Dark&quot;) -&gt; 268</span><br><span class="line">    game.endsWith(&quot;Cry 5&quot;) -&gt; 137</span><br><span class="line">    game.contains(&quot;Dead&quot;) -&gt; 37</span><br><span class="line">    else -&gt; 68</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<h2 id="for-in-循环"><a href="#for-in-循环" class="headerlink" title="for-in 循环"></a>for-in 循环</h2><p>Kotlin 有以下几种表示区间的写法：</p>
+<blockquote>
+<ul>
+<li>val rangeA = 0..10 表示 [0,10] 。这是一个双端闭区间</li>
+<li>val rangeB = 0 util 10 表示 [0,10) 。这是一个单端闭区间</li>
+<li>val rangeC = 10 downTo 0 表示[10, 0] 。这也是一个双端闭区间</li>
+</ul>
+</blockquote>
+<p>对于循环，便有了如下写法：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">for(i in 0..10)&#123;</span><br><span class="line">    ...</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>或</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">for(i in 0 util 10)&#123;</span><br><span class="line">    ...</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>但在以上的循环中，i 是以 1 为差递增的。有时需要改变一下递增规则，则需要用到 <strong>step</strong>：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">for(i in 0 util 10 step 2)&#123;</span><br><span class="line">    ...</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<h1 id="面向对象编程"><a href="#面向对象编程" class="headerlink" title="面向对象编程"></a>面向对象编程</h1><h2 id="类与对象"><a href="#类与对象" class="headerlink" title="类与对象"></a>类与对象</h2><p>新建一个类，如下：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line">class Game &#123;</span><br><span class="line">    var name &#x3D; &quot;&quot;</span><br><span class="line">    var price &#x3D; 0</span><br><span class="line"></span><br><span class="line">    fun info()&#123;</span><br><span class="line">        println(&quot;The Game : &quot; + name + &quot; is sold in &quot; + price + &quot; on steam&quot;)</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>Kotlin 在实例化一个对象时不使用关键字，示例如下：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">fun main() &#123;</span><br><span class="line">    val g &#x3D; Game()</span><br><span class="line">    g.name &#x3D; &quot;Dark Souls 3&quot;</span><br><span class="line">    g.price &#x3D; 268</span><br><span class="line">    g.info()</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<h2 id="继承与构造"><a href="#继承与构造" class="headerlink" title="继承与构造"></a>继承与构造</h2><p>不同于 Java 中一个类本身就可以被继承的默认规则，在 Kotlin 中，这个类需要添加 <strong>open</strong> 关键字：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line">open class Game &#123;</span><br><span class="line">    var name &#x3D; &quot;&quot;</span><br><span class="line">    var price &#x3D; 0</span><br><span class="line"></span><br><span class="line">    fun info()&#123;</span><br><span class="line">        println(&quot;The Game : &quot; + name + &quot; is sold in &quot; + price + &quot; on steam&quot;)</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>接下来，让一个类继承 Game 类。在 Java 中，关键字为 extends，而在 Kotlin 中，则变成了一个冒号，如下：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">class RPG : Game() &#123;</span><br><span class="line"></span><br><span class="line">    var fullname &#x3D; &quot;&quot;</span><br><span class="line">    var rolename &#x3D; &quot;&quot;</span><br><span class="line"></span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+    </div>
+
+    
+    
+    
+
+      <footer class="post-footer">
+
+        
+
+
+        
+    <div class="post-nav">
+      <div class="post-nav-item">
+    <a href="/2020/12/08/2020%E6%80%BB%E7%BB%93/" rel="prev" title="2020总结">
+      <i class="fa fa-chevron-left"></i> 2020总结
+    </a></div>
+      <div class="post-nav-item"></div>
+    </div>
+      </footer>
+    
+  </article>
+  
+  
+  
+
+
+
+          </div>
+          
+
+<script>
+  window.addEventListener('tabs:register', () => {
+    let { activeClass } = CONFIG.comments;
+    if (CONFIG.comments.storage) {
+      activeClass = localStorage.getItem('comments_active') || activeClass;
+    }
+    if (activeClass) {
+      let activeTab = document.querySelector(`a[href="#comment-${activeClass}"]`);
+      if (activeTab) {
+        activeTab.click();
+      }
+    }
+  });
+  if (CONFIG.comments.storage) {
+    window.addEventListener('tabs:click', event => {
+      if (!event.target.matches('.tabs-comment .tab-content .tab-pane')) return;
+      let commentClass = event.target.classList[1];
+      localStorage.setItem('comments_active', commentClass);
+    });
+  }
+</script>
+
+        </div>
+          
+  
+  <div class="toggle sidebar-toggle">
+    <span class="toggle-line toggle-line-first"></span>
+    <span class="toggle-line toggle-line-middle"></span>
+    <span class="toggle-line toggle-line-last"></span>
+  </div>
+
+  <aside class="sidebar">
+    <div class="sidebar-inner">
+
+      <ul class="sidebar-nav motion-element">
+        <li class="sidebar-nav-toc">
+          文章目录
+        </li>
+        <li class="sidebar-nav-overview">
+          站点概览
+        </li>
+      </ul>
+
+      <!--noindex-->
+      <div class="post-toc-wrap sidebar-panel">
+          <div class="post-toc motion-element"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#%E5%8F%98%E9%87%8F"><span class="nav-number">1.</span> <span class="nav-text">变量</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#%E5%87%BD%E6%95%B0"><span class="nav-number">2.</span> <span class="nav-text">函数</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#%E6%8E%A7%E5%88%B6%E9%80%BB%E8%BE%91%E9%83%A8%E5%88%86"><span class="nav-number">3.</span> <span class="nav-text">控制逻辑部分</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#if-%E4%B8%8E-when"><span class="nav-number">3.1.</span> <span class="nav-text">if 与 when</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#when"><span class="nav-number">3.2.</span> <span class="nav-text">when</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#for-in-%E5%BE%AA%E7%8E%AF"><span class="nav-number">3.3.</span> <span class="nav-text">for-in 循环</span></a></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#%E9%9D%A2%E5%90%91%E5%AF%B9%E8%B1%A1%E7%BC%96%E7%A8%8B"><span class="nav-number">4.</span> <span class="nav-text">面向对象编程</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#%E7%B1%BB%E4%B8%8E%E5%AF%B9%E8%B1%A1"><span class="nav-number">4.1.</span> <span class="nav-text">类与对象</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E7%BB%A7%E6%89%BF%E4%B8%8E%E6%9E%84%E9%80%A0"><span class="nav-number">4.2.</span> <span class="nav-text">继承与构造</span></a></li></ol></li></ol></div>
+      </div>
+      <!--/noindex-->
+
+      <div class="site-overview-wrap sidebar-panel">
+        <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+    <img class="site-author-image" itemprop="image" alt="希夏"
+      src="/images/avatar.jpg">
+  <p class="site-author-name" itemprop="name">希夏</p>
+  <div class="site-description" itemprop="description">我还在幻想着，能找到一个喜欢的人</div>
+</div>
+<div class="site-state-wrap motion-element">
+  <nav class="site-state">
+      <div class="site-state-item site-state-posts">
+          <a href="/archives/">
+        
+          <span class="site-state-item-count">15</span>
+          <span class="site-state-item-name">日志</span>
+        </a>
+      </div>
+      <div class="site-state-item site-state-categories">
+            <a href="/categories/">
+          
+        <span class="site-state-item-count">4</span>
+        <span class="site-state-item-name">分类</span></a>
+      </div>
+  </nav>
+</div>
+
+
+
+      </div>
+
+    </div>
+  </aside>
+  <div id="sidebar-dimmer"></div>
+
+
+      </div>
+    </main>
+
+    <footer class="footer">
+      <div class="footer-inner">
+        
+
+        
+
+<div class="copyright">
+  
+  &copy; 
+  <span itemprop="copyrightYear">2020</span>
+  <span class="with-love">
+    <i class="fa fa-heart"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">希夏</span>
+    <span class="post-meta-divider">|</span>
+    <span class="post-meta-item-icon">
+      <i class="fa fa-chart-area"></i>
+    </span>
+    <span title="站点总字数">83k</span>
+    <span class="post-meta-divider">|</span>
+    <span class="post-meta-item-icon">
+      <i class="fa fa-coffee"></i>
+    </span>
+    <span title="站点阅读时长">1:15</span>
+</div>
+  <div class="powered-by">由 <a href="https://hexo.io/" class="theme-link" rel="noopener" target="_blank">Hexo</a> & <a href="https://mist.theme-next.org/" class="theme-link" rel="noopener" target="_blank">NexT.Mist</a> 强力驱动
+  </div>
+
+        
+
+
+
+
+
+
+
+
+      </div>
+    </footer>
+  </div>
+
+  
+  <script src="/lib/anime.min.js"></script>
+  <script src="/lib/velocity/velocity.min.js"></script>
+  <script src="/lib/velocity/velocity.ui.min.js"></script>
+
+<script src="/js/utils.js"></script>
+
+<script src="/js/motion.js"></script>
+
+
+<script src="/js/schemes/muse.js"></script>
+
+
+<script src="/js/next-boot.js"></script>
+
+
+
+
+  
+
+
+
+
+  
+<script src="/js/local-search.js"></script>
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+
+  
+
+  
+
+</body>
+</html>
