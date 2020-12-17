@@ -177,7 +177,7 @@
 </blockquote>
 <p>前两件事情，是我根本不敢相信自己能完成的事情。如果这些事情能做到的话，或许我就能在心理上突破自己的极限；但如果没能做到，我难免会有觉得自己已经到此为止的心理负担。</p>
 <p>所以，我希望别人看到这个列表的时候，我已经完成了这个对我来说堪称宏大的目标。</p>
-<h2 id="阅读-1"><a href="#阅读-1" class="headerlink" title="阅读"></a>阅读</h2><p>这方面，我认为还是提前定下读哪些书比较好，先以10本为目标，这样省去了寻找的时间。我按分类的不同将阅读顺序打乱，以免增加我的短时间阅读同类书籍疲倦感。</p>
+<h2 id="阅读-1"><a href="#阅读-1" class="headerlink" title="阅读"></a>阅读</h2><p>这方面，我认为还是提前定下读哪些书比较好，先以10本为目标，这样省去了寻找的时间。我按分类的不同将阅读顺序打乱，以免增加我的短时间阅读同类书籍疲倦感。年末的时候再看兴趣添两本书作凑数</p>
 <blockquote>
 <ul>
 <li>《平均分》</li>
@@ -436,7 +436,7 @@
     <title>Kotlin语法初入门</title>
     <url>/2020/12/14/Kotlin%E8%AF%AD%E6%B3%95%E5%88%9D%E5%85%A5%E9%97%A8/</url>
     <content><![CDATA[<p>从 Java 来初入 Kotlin ，因目前在学习阶段，还没有投入到项目中去使用，很多语法规则在学过之后慢慢地忘记了，所以写一写学到的语法，以便回顾。</p>
-<p>本文内容来源于《第一行代码》第三版第二章内容，仅仅做一些粗略概括罢了。</p>
+<p>本文内容来源于《第一行代码》第三版第二章，代码上可能不尽相同，内容上仅仅做一些粗略概括罢了。</p>
 <a id="more"></a>
 <h1 id="变量"><a href="#变量" class="headerlink" title="变量"></a>变量</h1><p>声明变量的两个关键字： <strong>val</strong> 和 <strong>var</strong></p>
 <blockquote>
@@ -446,7 +446,7 @@
 </ul>
 </blockquote>
 <p>如下：</p>
-<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">val a &#x3D; 10</span><br><span class="line">var b &#x3D; 100</span><br><span class="line">println(&quot;a &#x3D; &quot; + a + &quot;b &#x3D; &quot; + b)</span><br></pre></td></tr></table></figure>
+<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">val a &#x3D; 10</span><br><span class="line">var b &#x3D; 100</span><br><span class="line">println(&quot;a &#x3D; $a b &#x3D; $b&quot;)</span><br></pre></td></tr></table></figure>
 <p>Kotlin 拥有出色的<strong>类型推导机制</strong>，在之上的代码中可窥一斑。必要时，也需要声明变量的类型。其与 Java 中的声明对照如下：</p>
 <div class="table-container">
 <table>
@@ -518,7 +518,11 @@
 <p>再简化为：</p>
 <figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">fun largerNumber(param1: Int, param2: Int) &#x3D; if(param1 &gt; param2) param1 else param2</span><br></pre></td></tr></table></figure>
 <h2 id="when"><a href="#when" class="headerlink" title="when"></a>when</h2><p>相当于 Java 中的 switch，又远强于 switch。Java 中的 switch 仅可传入整型，JDK1.7 之后添加了对字符串的支持（我好像从没传过字符串）。而 when 则相当强大。它允许传入任意类型的参数，判断的条件也可以多种多样，格式为：</p>
-<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">匹配值 -&gt; &#123;执行逻辑&#125;</span><br></pre></td></tr></table></figure>
+<blockquote>
+<ul>
+<li>匹配值 -&gt; {执行逻辑}</li>
+</ul>
+</blockquote>
 <p>常见如：</p>
 <figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">fun getPrice(game: String) &#x3D; when(game)&#123;</span><br><span class="line">    &quot;Dark Souls 3&quot; -&gt; 268</span><br><span class="line">    &quot;Devil May Cry 5&quot; -&gt; 137</span><br><span class="line">    &quot;Left 4 Dead 2&quot; -&gt; 37</span><br><span class="line">    else -&gt; 68</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
 <p>还支持复杂条件:</p>
@@ -538,13 +542,94 @@
 <p>但在以上的循环中，i 是以 1 为差递增的。有时需要改变一下递增规则，则需要用到 <strong>step</strong>：</p>
 <figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">for(i in 0 util 10 step 2)&#123;</span><br><span class="line">    ...</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
 <h1 id="面向对象编程"><a href="#面向对象编程" class="headerlink" title="面向对象编程"></a>面向对象编程</h1><h2 id="类与对象"><a href="#类与对象" class="headerlink" title="类与对象"></a>类与对象</h2><p>新建一个类，如下：</p>
-<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">class Game &#123;</span><br><span class="line">    var name &#x3D; &quot;&quot;</span><br><span class="line">    var price &#x3D; 0</span><br><span class="line"></span><br><span class="line">    fun info()&#123;</span><br><span class="line">        println(&quot;The Game : &quot; + name + &quot; is sold in &quot; + price + &quot; on steam&quot;)</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">class Game &#123;</span><br><span class="line">    var name &#x3D; &quot;&quot;</span><br><span class="line">    var price &#x3D; 0</span><br><span class="line"></span><br><span class="line">    fun info()&#123;</span><br><span class="line">        println(&quot;The Game : $name is sold in $price on steam&quot;)</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
 <p>Kotlin 在实例化一个对象时不使用关键字，示例如下：</p>
 <figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">fun main() &#123;</span><br><span class="line">    val g &#x3D; Game()</span><br><span class="line">    g.name &#x3D; &quot;Dark Souls 3&quot;</span><br><span class="line">    g.price &#x3D; 268</span><br><span class="line">    g.info()</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>在 Kotlin 中，[类.属性] = [值] 这一写法相当于 Java 的 set() 方法</p>
 <h2 id="继承与构造"><a href="#继承与构造" class="headerlink" title="继承与构造"></a>继承与构造</h2><p>不同于 Java 中一个类本身就可以被继承的默认规则，在 Kotlin 中，这个类需要添加 <strong>open</strong> 关键字：</p>
 <figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">open class Game &#123;</span><br><span class="line">    var name &#x3D; &quot;&quot;</span><br><span class="line">    var price &#x3D; 0</span><br><span class="line"></span><br><span class="line">    fun info()&#123;</span><br><span class="line">        println(&quot;The Game : &quot; + name + &quot; is sold in &quot; + price + &quot; on steam&quot;)</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
 <p>接下来，让一个类继承 Game 类。在 Java 中，关键字为 extends，而在 Kotlin 中，则变成了一个冒号，如下：</p>
-<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">class RPG : Game() &#123;</span><br><span class="line"></span><br><span class="line">    var fullname &#x3D; &quot;&quot;</span><br><span class="line">    var rolename &#x3D; &quot;&quot;</span><br><span class="line"></span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">class RPG : Game() &#123;</span><br><span class="line">    var fullName &#x3D; &quot;&quot;</span><br><span class="line">    var roleName &#x3D; &quot;&quot;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>冒号后的 “Game()” 涉及到了构造函数的问题。每个类都存在一个不带参的主构造函数，比如 Game 类，在实例化时并未带进任何参数， RPG 也是如此。不过，也可以改写为主构造函数带参的形式：</p>
+<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">class RPG (val fullName: String, val roleName: String) : Game() &#123;</span><br><span class="line"></span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>在主构造函数中，被声明了 val 和 var 的变量会成为该类的字段，而未声明的变量则是主构造函数内的局域变量。</p>
+<p>这之后实例化 RPG 类的时候就需要携带参数了。那如果 Game 类也变成主构造函数带参后，则继承 Game 类时需要赋予参数，这样一来 RPG 也需要携带一些其他参数，如下：</p>
+<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">class RPG (val fullName: String, val roleName: String, name: String, price: String) : Game(name, price) &#123;</span><br><span class="line"></span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>若是想在主构造函数中做一些初始化操作的话，需要在 init 结构体中：</p>
+<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">class RPG (val fullName: String, val roleName: String, name: String, price: String) : Game(name, price) &#123;</span><br><span class="line">    init&#123;</span><br><span class="line"></span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>此外，还可以通过 constructor 关键字来定义主构造函数和次构造函数。只不过，在定义主构造函数时，无法用 val 和 var 声明变量，即变量无法变成类的字段，只能作为局域变量使用；在定义次构造函数时与Java差别不大，不再赘述。</p>
+<h2 id="接口"><a href="#接口" class="headerlink" title="接口"></a>接口</h2><h2 id="函数可见性修饰符"><a href="#函数可见性修饰符" class="headerlink" title="函数可见性修饰符"></a>函数可见性修饰符</h2><div class="table-container">
+<table>
+<thead>
+<tr>
+<th style="text-align:center">修饰符</th>
+<th style="text-align:center">Java</th>
+<th style="text-align:center">Kotlin</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td style="text-align:center">public</td>
+<td style="text-align:center">所有类可见</td>
+<td style="text-align:center">所有类可见（默认）</td>
+</tr>
+<tr>
+<td style="text-align:center">private</td>
+<td style="text-align:center">当前类可见</td>
+<td style="text-align:center">当前类可见</td>
+</tr>
+<tr>
+<td style="text-align:center">protect</td>
+<td style="text-align:center">当前类、子类、同一包路径下的类可见</td>
+<td style="text-align:center">当前类、子类可见</td>
+</tr>
+<tr>
+<td style="text-align:center">default</td>
+<td style="text-align:center">当前类、同一包路径下的类可见</td>
+<td style="text-align:center">无</td>
+</tr>
+<tr>
+<td style="text-align:center">internal</td>
+<td style="text-align:center">无</td>
+<td style="text-align:center">统一模块中的类可见</td>
+</tr>
+</tbody>
+</table>
+</div>
+<h2 id="数据类与单例类"><a href="#数据类与单例类" class="headerlink" title="数据类与单例类"></a>数据类与单例类</h2><p>数据类的关键字为 <strong>data</strong>，在 class 前添加，它会帮一个类自动生成 equals()、hashCode()、toString() 等方法</p>
+<p>单例类的关键字为 <strong>object</strong>，替换掉 class 即可</p>
+<h1 id="Lambda-编程"><a href="#Lambda-编程" class="headerlink" title="Lambda 编程"></a>Lambda 编程</h1><h2 id="集合"><a href="#集合" class="headerlink" title="集合"></a>集合</h2><p>Kotlin提供了内置的简化初始化集合的写法：</p>
+<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">val gameList &#x3D; listOf(&quot;Dark Souls&quot;, &quot;Devil May Cry&quot;, &quot;Sekiro: Shadows Die Twice&quot;, &quot;The Legend Of Zelda&quot;, &quot;Super Mario Odyssey&quot;, &quot;Ori And The Will Of Wisps&quot;)</span><br></pre></td></tr></table></figure>
+<p>但是，listOf() 函数创建的是一个不可变的集合，要创建可变集合需要 mutableListOf() 函数</p>
+<p>对于 set 集合，函数变成了 setOf() 和 mutableSetOf()</p>
+<p>对于 map 集合，写法要特殊一些：</p>
+<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">val gameMap &#x3D; mapOf(&quot;Dark Souls&quot; to 268, &quot;Devil May Cry 5&quot; to 137, &quot;Sekito: Shadows Die Twice&quot; to 274, &quot;Ori And The Will Of Wisps&quot; to 90)</span><br><span class="line">for ((game, price) in gameMap)&#123;</span><br><span class="line">    println(&quot;The game : $game is sold in $price on steam.&quot;)</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<h2 id="函数式API"><a href="#函数式API" class="headerlink" title="函数式API"></a>函数式API</h2><p>Lambda 表达式在函数式 API 中用的比较多，先说一下语法结构：</p>
+<blockquote>
+<ul>
+<li>{参数名1： 参数类型， 参数名2： 参数类型 -&gt; 函数体}</li>
+</ul>
+</blockquote>
+<h2 id="maxBy-函数"><a href="#maxBy-函数" class="headerlink" title="maxBy 函数"></a>maxBy 函数</h2><p>这是一个提值函数，比如从 gameList 中提出长度最长的 game 单词，先从普通写法开始：</p>
+<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">val gameList &#x3D; listOf(&quot;Dark Souls&quot;, &quot;Devil May Cry&quot;, &quot;Sekiro: Shadows Die Twice&quot;, &quot;The Legend Of Zelda&quot;, &quot;Super Mario Odyssey&quot;, &quot;Ori And The Will Of Wisps&quot;)</span><br><span class="line">var maxLengthGame &#x3D; &quot;&quot;</span><br><span class="line">for (game in gameList)&#123;</span><br><span class="line">    if (game.length &gt; maxLengthGame.length)&#123;</span><br><span class="line">        maxLengthGame &#x3D; game</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br><span class="line">println(&quot;max length game is $maxLengthGame&quot;)</span><br></pre></td></tr></table></figure>
+<p>此时先了解一个函数：maxBy。它可以根据传入的条件来遍历集合，从而找到最大值，那么此时的条件就是单词的长度：</p>
+<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">val gameList &#x3D; listOf(&quot;Dark Souls&quot;, &quot;Devil May Cry&quot;, &quot;Sekiro: Shadows Die Twice&quot;, &quot;The Legend Of Zelda&quot;, &quot;Super Mario Odyssey&quot;, &quot;Ori And The Will Of Wisps&quot;)</span><br><span class="line">var lambda &#x3D; &#123; game: String -&gt; game.length&#125;</span><br><span class="line">var maxLengthGame &#x3D; gameList.maxBy(lambda)</span><br></pre></td></tr></table></figure>
+<p>等同于：</p>
+<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">var maxLengthGame &#x3D; gameList.maxBy(&#123; game: String -&gt; game.length&#125;)</span><br></pre></td></tr></table></figure>
+<p>当 lambda 参数是函数最后一个参数时，可将表达式移出括号：</p>
+<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">var maxLengthGame &#x3D; gameList.maxBy() &#123; game: String -&gt; game.length&#125;</span><br></pre></td></tr></table></figure>
+<p>当 lambda 参数是函数唯一一个参数时，可将函数括号省略：</p>
+<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">var maxLengthGame &#x3D; gameList.maxBy &#123; game: String -&gt; game.length&#125;</span><br></pre></td></tr></table></figure>
+<p>介于 Kotlin 的类型推导机制，对参数类型的声明可省略：</p>
+<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">var maxLengthGame &#x3D; gameList.maxBy &#123; game -&gt; game.length&#125;</span><br></pre></td></tr></table></figure>
+<p>当 lambda 表达式中只有一个参数时，不必声明参数名，条件里的参数名可用 it 来代替：</p>
+<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">var maxLengthGame &#x3D; gameList.maxBy &#123; it.length&#125;</span><br></pre></td></tr></table></figure>
+<h2 id="map-函数"><a href="#map-函数" class="headerlink" title="map 函数"></a>map 函数</h2><p>这是一个映射函数，同上映射规则在 lambda 表达式中指定，最终生成一个新的集合。比如将单词名全部变为大写模式：</p>
+<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">val gameList &#x3D; listOf(&quot;Dark Souls&quot;, &quot;Devil May Cry&quot;, &quot;Sekiro: Shadows Die Twice&quot;, &quot;The Legend Of Zelda&quot;, &quot;Super Mario Odyssey&quot;, &quot;Ori And The Will Of Wisps&quot;)</span><br><span class="line">val newList &#x3D; gameList.map &#123; it.toUpperCase() &#125;</span><br><span class="line">for (game in newList)&#123;</span><br><span class="line">    println(game)</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<h2 id="filter-函数"><a href="#filter-函数" class="headerlink" title="filter 函数"></a>filter 函数</h2><p>这是一个过滤函数，示例用法如下：</p>
+<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">val gameList &#x3D; listOf(&quot;Dark Souls&quot;, &quot;Devil May Cry&quot;, &quot;Sekiro: Shadows Die Twice&quot;, &quot;The Legend Of Zelda&quot;, &quot;Super Mario Odyssey&quot;, &quot;Ori And The Will Of Wisps&quot;)</span><br><span class="line">val newList &#x3D; gameList.filter &#123; it.length &lt;&#x3D; 20 &#125;</span><br><span class="line">        .map &#123; it.toUpperCase() &#125;</span><br><span class="line">for (game in newList)&#123;</span><br><span class="line">    println(game)</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<h2 id="any-amp-all"><a href="#any-amp-all" class="headerlink" title="any &amp; all"></a>any &amp; all</h2><p>这是两个判断函数，any 函数用于判断集合中是否至少存在一个元素满足条件，而 all 函数用于判断是否全部元素满足条件，示例如下：</p>
+<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">val gameList &#x3D; listOf(&quot;Dark Souls&quot;, &quot;Devil May Cry&quot;, &quot;Sekiro: Shadows Die Twice&quot;, &quot;The Legend Of Zelda&quot;, &quot;Super Mario Odyssey&quot;, &quot;Ori And The Will Of Wisps&quot;)</span><br><span class="line">val anyResult &#x3D; gameList.any &#123; it.startsWith(&quot;Dark&quot;) &#125;</span><br><span class="line">val allResult &#x3D; gameList.all &#123; it.length &gt; 10 &#125;</span><br><span class="line">println(&quot;anyResult is $anyResult, allResult is $allResult&quot;)</span><br></pre></td></tr></table></figure>
 ]]></content>
       <categories>
         <category>Android</category>
@@ -656,6 +741,7 @@
 <p>实在是没有面对的勇气。</p>
 <p>躲在角落自生自灭罢了。</p>
 <h1 id="后记"><a href="#后记" class="headerlink" title="后记"></a>后记</h1><p>很久没有写过这样的东西了，兜兜转转竟然写了一个月，写完竟然还觉得有一点酸爽。大概自己真的是一个喜欢心理自虐、自我沉沦与自我麻痹的人吧。</p>
+<p>如果你用悲情贿赂过读者，那你也一定用悲情贿赂过自己。    ——2020年 回顾《看见》时留</p>
 ]]></content>
       <categories>
         <category>Book</category>
