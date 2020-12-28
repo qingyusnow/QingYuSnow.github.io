@@ -433,14 +433,6 @@
       </categories>
   </entry>
   <entry>
-    <title>DOS批处理命令初入门</title>
-    <url>/2020/12/23/DOS%E6%89%B9%E5%A4%84%E7%90%86%E5%91%BD%E4%BB%A4%E5%88%9D%E5%85%A5%E9%97%A8/</url>
-    <content><![CDATA[<p>前几天下载了些游戏壁纸，但不知是不是由于系统的文件命名毫无规则，几十张壁纸名字都是乱序的英文，所以我想到了DOS批处理命令，顺便学习一下，这样以后解决起问题来会方便些。</p>
-<a id="more"></a>
-<h1 id="序言"><a href="#序言" class="headerlink" title="序言"></a>序言</h1><p>DOS批处理，是一种简化的脚本语言，常应用于DOS系统和Windows系统，类似于Unix系统的Shell脚本。后缀为.bat（源Batch，译批量）。</p>
-<h1 id="命令简介"><a href="#命令简介" class="headerlink" title="命令简介"></a>命令简介</h1>]]></content>
-  </entry>
-  <entry>
     <title>lemon</title>
     <url>/2020/06/24/lemon/</url>
     <content><![CDATA[<p>歌名：lemon</p>
