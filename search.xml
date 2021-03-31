@@ -484,6 +484,7 @@
 <ul>
 <li><a href="https://www.bilibili.com/video/BV1b54y197tY">蔚蓝 全金草莓</a> （C 面短但容错率极低，B 面又长又难，还有最不想提及的第 9 关）</li>
 <li><a href="https://www.bilibili.com/video/BV1Bb411E7zy">鬼泣5 DMD 全 S</a> （DMD 都还做不到通关）</li>
+<li>空洞骑士 全辐辉 （已于 2021/03/30 完成）</li>
 <li><a href="https://www.bilibili.com/video/BV1S4411Q7x4">武士刀零 速通成就</a></li>
 <li>只狼 全成就</li>
 <li>奥日与萤火意志 全成就</li>
@@ -614,6 +615,27 @@
 ]]></content>
       <categories>
         <category>Song</category>
+      </categories>
+  </entry>
+  <entry>
+    <title>发布第一个自己的库</title>
+    <url>/2021/03/17/%E5%8F%91%E5%B8%83%E7%AC%AC%E4%B8%80%E4%B8%AA%E8%87%AA%E5%B7%B1%E7%9A%84%E5%BA%93/</url>
+    <content><![CDATA[<h1 id="前言"><a href="#前言" class="headerlink" title="前言"></a>前言</h1><p>发布依赖库有两种方式：</p>
+<blockquote>
+<ul>
+<li><p>发布到 jitpack</p>
+</li>
+<li><p>发布到 jcenter</p>
+</li>
+</ul>
+</blockquote>
+<p>两种发布方式的过程并不一样，且发布后两者的添加方式也不一样：除使用 implemention 引用库以外，前者还需要在 build.gradle 中添加 maven { url “jitpack.io” }。</p>
+<p>个人比较喜欢使用依赖库的时候简单一些，所以本文记录的是后者的发布方法。</p>
+<h1 id="准备工作"><a href="#准备工作" class="headerlink" title="准备工作"></a>准备工作</h1><p>Android Studio、开源项目、Bintray账号（因仓库jcenter属于Bintray）</p>
+<h1 id="申请-BinTray-账号"><a href="#申请-BinTray-账号" class="headerlink" title="申请 BinTray 账号"></a>申请 BinTray 账号</h1><p>可用 Github 或 Google 账号 sign in 后填写信息注册。但我在注册的时候使用 Github 遇到了问题，只能转而选择 Google 账号。</p>
+<h1 id="创建一个-Android-库"><a href="#创建一个-Android-库" class="headerlink" title="创建一个 Android 库"></a>创建一个 Android 库</h1>]]></content>
+      <categories>
+        <category>Android</category>
       </categories>
   </entry>
   <entry>
