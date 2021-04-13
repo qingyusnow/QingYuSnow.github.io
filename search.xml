@@ -342,6 +342,150 @@
       </categories>
   </entry>
   <entry>
+    <title>一些算法题</title>
+    <url>/2021/04/13/%E4%B8%80%E4%BA%9B%E7%AE%97%E6%B3%95%E9%A2%98/</url>
+    <content><![CDATA[<p>以训练一下自己的思维</p>
+<p><a href="https://github.com/Blankj/awesome-java-leetcode">原文地址</a></p>
+<a id="more"></a>
+<h1 id="加法"><a href="#加法" class="headerlink" title="加法"></a>加法</h1><p><a href="https://github.com/Blankj/awesome-java-leetcode/blob/master/note/0001/README.md">查看原文</a></p>
+<p>给定一个整数数组，返回两个数字的索引，以使它们加起来成为一个特定的目标。</p>
+<p>您可以假设每个输入都只有一个解决方案，并且您可能不会两次使用相同的元素。</p>
+<p>示例：</p>
+<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">Given nums &#x3D; [2, 7, 11, 15], target &#x3D; 9,</span><br><span class="line"></span><br><span class="line">Because nums[0] + nums[1] &#x3D; 2 + 7 &#x3D; 9,</span><br><span class="line">return [0, 1].</span><br></pre></td></tr></table></figure>
+<h2 id="我的思路"><a href="#我的思路" class="headerlink" title="我的思路"></a>我的思路</h2><p>与思路 0 一致，实现的时候<strong>多了一步转化为 list 的步骤</strong>。这一步不该做，因为<strong>占用了更多的时间和内存空间</strong>，以后少做。此外此方法的<strong>复杂度为$O(n^2)$</strong>，如果样本容量大一些，花费时间会更多。</p>
+<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">public static int[] twoNums(int[] nums, int target)&#123;</span><br><span class="line">    List&lt;Integer&gt; tempNumList &#x3D; Arrays.stream(nums).boxed().collect(Collectors.toList());</span><br><span class="line"></span><br><span class="line">    if (tempNumList.size() &gt; 0) &#123;</span><br><span class="line">        for (int i &#x3D; 0; i &lt; tempNumList.size() - 1; i++) &#123;</span><br><span class="line">            for (int j &#x3D; i + 1; j &lt; tempNumList.size(); j++) &#123;</span><br><span class="line">                if (tempNumList.get(i) + tempNumList.get(j) &#x3D;&#x3D; target)&#123;</span><br><span class="line">                    return new int[]&#123;i ,j&#125;;</span><br><span class="line">                &#125;</span><br><span class="line">            &#125;</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line">    return null;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<h2 id="推荐方法"><a href="#推荐方法" class="headerlink" title="推荐方法"></a>推荐方法</h2><p>利用 HashMap 作为存储媒介，<strong>键值为目标值减去当前元素值的差值，而值则是当前元素值的索引</strong>。</p>
+<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">public static int[] twoNums(int[] nums, int target)&#123;</span><br><span class="line">    Map&lt;Integer, Integer&gt; hashMap &#x3D; new HashMap&lt;&gt;();</span><br><span class="line">    for (int i &#x3D; 0; i &lt; nums.length; i++) &#123;</span><br><span class="line">        Integer value &#x3D; hashMap.get(nums[i]);</span><br><span class="line">        if (value !&#x3D; null)&#123;</span><br><span class="line">            return new int[]&#123;value, i&#125;;</span><br><span class="line">        &#125;</span><br><span class="line">        hashMap.put(target - nums[i], i);</span><br><span class="line">    &#125;</span><br><span class="line">    return null;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>举例说明方法原理：</p>
+<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">nums &#x3D; [3,8,4,6,9,2,15,11], target &#x3D; 13</span><br></pre></td></tr></table></figure>
+<p>循环时：</p>
+<div class="table-container">
+<table>
+<thead>
+<tr>
+<th style="text-align:center">数组</th>
+<th style="text-align:center">3</th>
+<th style="text-align:center">8</th>
+<th style="text-align:center">4</th>
+<th style="text-align:center">6</th>
+<th style="text-align:center">9</th>
+<th style="text-align:center">2</th>
+<th style="text-align:center">15</th>
+<th style="text-align:center">11</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td style="text-align:center">key</td>
+<td style="text-align:center">10</td>
+<td style="text-align:center">5</td>
+<td style="text-align:center">9</td>
+<td style="text-align:center">7</td>
+<td style="text-align:center">4</td>
+<td style="text-align:center">11</td>
+<td style="text-align:center">-2</td>
+<td style="text-align:center">2</td>
+</tr>
+<tr>
+<td style="text-align:center">value（index）</td>
+<td style="text-align:center">0</td>
+<td style="text-align:center">1</td>
+<td style="text-align:center">2</td>
+<td style="text-align:center">3</td>
+<td style="text-align:center">4</td>
+<td style="text-align:center">5</td>
+<td style="text-align:center">6</td>
+<td style="text-align:center">7</td>
+</tr>
+</tbody>
+</table>
+</div>
+<h2 id="学习点"><a href="#学习点" class="headerlink" title="学习点"></a>学习点</h2><blockquote>
+<ul>
+<li>利用 HashMap 的存储机制，保存了差值（逆向思维）（也是寻找的元素值）的同时，还保存了原元素值的索引值。复杂度或许还是$O(n^2)$，不过，是 0…n 的变化，所以在可接受范围内。</li>
+<li>整数数组转化为 List 的方法： Arrays.stream(nums).boxed().collect(Collectors.toList())</li>
+<li>List 为顺序表结果，方便访问，不方便设计元素的插入、删除和移动等操作</li>
+<li>int 不可与 null 值放在一起判断，但 Integer 可以</li>
+</ul>
+</blockquote>
+<h1 id="逆序整数"><a href="#逆序整数" class="headerlink" title="逆序整数"></a>逆序整数</h1><p><a href="https://github.com/Blankj/awesome-java-leetcode/blob/master/note/0007/README.md">查看原文</a></p>
+<p>给定一个32位带符号整数，求该整数的逆序整数。</p>
+<p>示例：</p>
+<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">Input: 123</span><br><span class="line">Output:  321</span><br><span class="line"></span><br><span class="line">Input: -123</span><br><span class="line">Output: -321</span><br><span class="line"></span><br><span class="line">Input: 120</span><br><span class="line">Output: 21</span><br></pre></td></tr></table></figure>
+<h2 id="我的思路-1"><a href="#我的思路-1" class="headerlink" title="我的思路"></a>我的思路</h2><p>第一反应用字符串转换，简单，但感觉思想有些僵化。想了下，还是用数学的方式解决。</p>
+<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">public static int reverseNumber(long number)&#123;</span><br><span class="line">    long tempNumber &#x3D; 0;</span><br><span class="line">    for (; number !&#x3D; 0 ; number &#x3D; number &#x2F; 10) &#123;</span><br><span class="line">        tempNumber &#x3D; tempNumber * 10 + number % 10;</span><br><span class="line">    &#125;</span><br><span class="line">    if (tempNumber &gt; Integer.MAX_VALUE || tempNumber &lt; Integer.MIN_VALUE) &#123;</span><br><span class="line">        return 0;</span><br><span class="line">    &#125;</span><br><span class="line">    return (int) tempNumber;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>这次思路与原文思路对上了，只是代码上还有些优化空间。</p>
+<h2 id="学习点-1"><a href="#学习点-1" class="headerlink" title="学习点"></a>学习点</h2><blockquote>
+<ul>
+<li>number = number / 10 可以简写为 number /= 10，我记错了简写方式</li>
+<li>最后的返回可简写为条件赋值语句 return tempNumber &gt; Integer.MAX_VALUE || tempNumber &lt; Integer.MIN_VALUE ? 0 : (int) tempNumber;</li>
+</ul>
+</blockquote>
+<h1 id="回文数"><a href="#回文数" class="headerlink" title="回文数"></a>回文数</h1><p><a href="https://github.com/Blankj/awesome-java-leetcode/blob/master/note/0009/README.md">查看原文</a></p>
+<p>确定整数是否是回文。 整数与回读相同时就是回文。</p>
+<p>示例：</p>
+<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">Input: 121</span><br><span class="line">Output: true</span><br><span class="line"></span><br><span class="line">Input: -121</span><br><span class="line">Output: false</span><br><span class="line">Explanation：从左到右，它显示为-121。从右到左，它变为121-。因此，它不是回文。</span><br><span class="line"></span><br><span class="line">Input: 10</span><br><span class="line">Output: false</span><br><span class="line">Explanation: 从右到左读取01。因此，它不是回文。</span><br></pre></td></tr></table></figure>
+<h2 id="我的思路："><a href="#我的思路：" class="headerlink" title="我的思路："></a>我的思路：</h2><p>负数一律不是回文数，正整数则转换后比较即可。关键代码上个问题已给出，此处略。</p>
+<h2 id="推荐思路"><a href="#推荐思路" class="headerlink" title="推荐思路"></a>推荐思路</h2><p>负数、<strong>10的整倍数</strong>均不是回文数。且不必比较全部长度，在回文计算过程中，适时比较即可完成判断。</p>
+<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">public static boolean isPalindrome(int x) &#123;</span><br><span class="line">    if (x &lt; 0 || (x !&#x3D; 0 &amp;&amp; x % 10 &#x3D;&#x3D; 0)) return false;</span><br><span class="line">    int halfReverseX &#x3D; 0;</span><br><span class="line">    while (x &gt; halfReverseX) &#123;</span><br><span class="line">        halfReverseX &#x3D; halfReverseX * 10 + x % 10;</span><br><span class="line">        x &#x2F;&#x3D; 10;</span><br><span class="line">    &#125;</span><br><span class="line">    return halfReverseX &#x3D;&#x3D; x || halfReverseX &#x2F; 10 &#x3D;&#x3D; x;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<h2 id="学习点-2"><a href="#学习点-2" class="headerlink" title="学习点"></a>学习点</h2><blockquote>
+<ul>
+<li>试着优化及改变一个问题的判断条件和判断方式</li>
+<li>可以提前筛选掉的特殊情况考虑不周全。不过这个问题不大，只要在关键判断部分解决掉也可。</li>
+</ul>
+</blockquote>
+<h1 id="罗马数"><a href="#罗马数" class="headerlink" title="罗马数"></a>罗马数</h1><p><a href="https://github.com/Blankj/awesome-java-leetcode/blob/master/note/0013/README.md">原文地址</a></p>
+<p>罗马数字由七个不同的符号表示：I，V，X，L，C，D和M。</p>
+<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">Symbol       Value</span><br><span class="line">I             1</span><br><span class="line">V             5</span><br><span class="line">X             10</span><br><span class="line">L             50</span><br><span class="line">C             100</span><br><span class="line">D             500</span><br><span class="line">M             1000</span><br></pre></td></tr></table></figure>
+<p>例如，两个用罗马数字记为II，仅将两个加在一起。 十二被写为XII，简称X + II。 数字二十七写为XXVII，即XX + V + II。</p>
+<p>罗马数字通常从左到右以从大到小的顺序书写。 但是，四个数字不是IIII。 取而代之的是，数字四被写为IV。 因为一个在五之前，所以我们减去它等于四。 相同的原则适用于编号为IX的数字9。 在六个实例中使用减法：</p>
+<p>我可以放在V（5）和X（10）的前面以得到4和9。<br>X可以放在L（50）和C（100）之前以得到40和90。<br>C可以放在D（500）和M（1000）之前以得到400和900。<br>给定罗马数字，将其转换为整数。 输入保证在1到3999的范围内。</p>
+<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">Input: &quot;III&quot;</span><br><span class="line">Output: 3</span><br><span class="line"></span><br><span class="line">Input: &quot;IV&quot;</span><br><span class="line">Output: 4</span><br><span class="line"></span><br><span class="line">Input: &quot;IX&quot;</span><br><span class="line">Output: 9</span><br><span class="line"></span><br><span class="line">Input: &quot;LVIII&quot;</span><br><span class="line">Output: 58</span><br><span class="line">Explanation: C &#x3D; 100, L &#x3D; 50, XXX &#x3D; 30 and III &#x3D; 3.</span><br><span class="line"></span><br><span class="line">Input: &quot;MCMXCIV&quot;</span><br><span class="line">Output: 1994</span><br><span class="line">Explanation: M &#x3D; 1000, CM &#x3D; 900, XC &#x3D; 90 and IV &#x3D; 4.</span><br></pre></td></tr></table></figure>
+<h2 id="我的思路-2"><a href="#我的思路-2" class="headerlink" title="我的思路"></a>我的思路</h2><p>很惭愧，无。看了推荐思路，拍手叫好，又是逆向思维。</p>
+<h2 id="推荐思路-1"><a href="#推荐思路-1" class="headerlink" title="推荐思路"></a>推荐思路</h2><p>题意是罗马数字转整型数，范围从 1 到 3999，查看下百度百科的罗马数字介绍如下：</p>
+<p>相同的数字连写，所表示的数等于这些数字相加得到的数，如 Ⅲ=3；</p>
+<p>小的数字在大的数字的右边，所表示的数等于这些数字相加得到的数，如 Ⅷ=8、Ⅻ=12；</p>
+<p>小的数字（限于 Ⅰ、X 和 C）在大的数字的左边，所表示的数等于大数减小数得到的数，如 Ⅳ=4、Ⅸ=9。</p>
+<p>那么我们可以利用 map 来完成罗马数字的 7 个数字符号：I、V、X、L、C、D、M 和整数的映射关系，然后根据上面的解释来模拟完成即可。</p>
+<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">public static int romanToInt(String roman) &#123;</span><br><span class="line">    Map&lt;Character, Integer&gt; map &#x3D; new HashMap&lt;&gt;();</span><br><span class="line">    map.put(&#39;I&#39;, 1);</span><br><span class="line">    map.put(&#39;V&#39;, 5);</span><br><span class="line">    map.put(&#39;X&#39;, 10);</span><br><span class="line">    map.put(&#39;L&#39;, 50);</span><br><span class="line">    map.put(&#39;C&#39;, 100);</span><br><span class="line">    map.put(&#39;D&#39;, 500);</span><br><span class="line">    map.put(&#39;M&#39;, 1000);</span><br><span class="line">    int res &#x3D; map.get(roman.charAt(roman.length() - 1));</span><br><span class="line">    for (int i &#x3D; roman.length() - 1; i &gt; 0; i--)&#123;</span><br><span class="line">        int value1 &#x3D; map.get(roman.charAt(i));</span><br><span class="line">        int value2 &#x3D; map.get(roman.charAt(i - 1));</span><br><span class="line">        res &#x3D; value1 &gt; value2 ? res - value2 : res + value2;</span><br><span class="line">    &#125;</span><br><span class="line">    return res;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<h2 id="学习点-3"><a href="#学习点-3" class="headerlink" title="学习点"></a>学习点</h2><blockquote>
+<ul>
+<li>主要还是没有想到解决这个问题的思路，分析不够仔细，思维不够发散</li>
+<li>字符型的声明关键字是 Character 不是 CharSequence</li>
+</ul>
+</blockquote>
+]]></content>
+      <categories>
+        <category>Java</category>
+      </categories>
+  </entry>
+  <entry>
+    <title>为什么我做不好界面</title>
+    <url>/2021/04/02/%E4%B8%BA%E4%BB%80%E4%B9%88%E6%88%91%E5%81%9A%E4%B8%8D%E5%A5%BD%E7%95%8C%E9%9D%A2/</url>
+    <content><![CDATA[<p>从开始学 Android 到现在四五年了，每次写界面都会被人吐槽界面很丑。虽然我并不是 UI 设计师，但自己也不能总是写一些平均水平以下的界面，于是决定反思一下为什么我做不好界面。</p>
+<a id="more"></a>
+<h1 id="序言"><a href="#序言" class="headerlink" title="序言"></a>序言</h1><p>先确定一下我反思的思路：</p>
+<blockquote>
+<ul>
+<li><p>回顾 Android 界面的发展历史：为什么以前的界面很丑，或者说为什么被抛弃了</p>
+</li>
+<li><p>确定当今界面的大体设计思想：当今的设计思想是怎样的，为什么是这样</p>
+</li>
+<li><p>未来的界面设计方向</p>
+</li>
+</ul>
+</blockquote>
+<p>就先定这几个章节吧，以后会慢慢补充的，毕竟界面是永远在变化的。</p>
+<h1 id="确定当今界面的大体设计思想"><a href="#确定当今界面的大体设计思想" class="headerlink" title="确定当今界面的大体设计思想"></a>确定当今界面的大体设计思想</h1><p>我思考了一下，应当先确定一个标准，针对各个细节上的标准。在此基础上，才方便进行细节上的确定与优化。</p>
+<p>界面设计大致包括为两类：直观上的静态界面设计与隐性的动态交互设计。</p>
+<p>Google 曾在 2015 年提出了 Material Design。这种设计思想以及相关的设计指南资料已经对界面的规范作出了相当详细的建议，且很多细节上的设计让我啧啧称赞。</p>
+<p>但在我读完后想要学习使用这一思想的时候，遇到了一个很大的问题：Google 并没有提供充足的现有资源，很多控件和动画效果需要开发者自己从零实现。这就使得开发一个完整且优秀的 Material Design 风格 APP 需要花费很多精力。而且，经受过 iOS 设计风格的影响，国内很多衍生系统和 APP 也在模仿 iOS 风格的路上一去不复返。渐渐地，人们的审美也开始趋向于 iOS 的风格。</p>
+<h1 id="回顾"><a href="#回顾" class="headerlink" title="回顾"></a>回顾</h1><h2 id="回顾早期版本的-Android-界面"><a href="#回顾早期版本的-Android-界面" class="headerlink" title="回顾早期版本的 Android 界面"></a>回顾早期版本的 Android 界面</h2>]]></content>
+      <categories>
+        <category>Android</category>
+      </categories>
+  </entry>
+  <entry>
     <title>二载成就杂谈</title>
     <url>/2020/12/20/%E4%BA%8C%E8%BD%BD%E6%88%90%E5%B0%B1%E6%9D%82%E8%B0%88/</url>
     <content><![CDATA[<p>我活的太过随心所欲，生活便迷失了方向。</p>
@@ -620,7 +764,9 @@
   <entry>
     <title>发布第一个自己的库</title>
     <url>/2021/03/17/%E5%8F%91%E5%B8%83%E7%AC%AC%E4%B8%80%E4%B8%AA%E8%87%AA%E5%B7%B1%E7%9A%84%E5%BA%93/</url>
-    <content><![CDATA[<h1 id="前言"><a href="#前言" class="headerlink" title="前言"></a>前言</h1><p>发布依赖库有两种方式：</p>
+    <content><![CDATA[<p>学习一下发布库</p>
+<a id="more"></a>
+<h1 id="前言"><a href="#前言" class="headerlink" title="前言"></a>前言</h1><p>发布依赖库有两种方式：</p>
 <blockquote>
 <ul>
 <li><p>发布到 jitpack</p>
