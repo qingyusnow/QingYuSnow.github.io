@@ -342,176 +342,6 @@
       </categories>
   </entry>
   <entry>
-    <title>一些算法题</title>
-    <url>/2021/04/13/%E4%B8%80%E4%BA%9B%E7%AE%97%E6%B3%95%E9%A2%98/</url>
-    <content><![CDATA[<p>以训练一下自己的思维</p>
-<p><a href="https://github.com/Blankj/awesome-java-leetcode">原文地址</a></p>
-<a id="more"></a>
-<h1 id="加法"><a href="#加法" class="headerlink" title="加法"></a>加法</h1><p><a href="https://github.com/Blankj/awesome-java-leetcode/blob/master/note/0001/README.md">查看原文</a></p>
-<p>给定一个整数数组，返回两个数字的索引，以使它们加起来成为一个特定的目标。</p>
-<p>您可以假设每个输入都只有一个解决方案，并且您可能不会两次使用相同的元素。</p>
-<p>示例：</p>
-<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">Given nums &#x3D; [2, 7, 11, 15], target &#x3D; 9,</span><br><span class="line"></span><br><span class="line">Because nums[0] + nums[1] &#x3D; 2 + 7 &#x3D; 9,</span><br><span class="line">return [0, 1].</span><br></pre></td></tr></table></figure>
-<h2 id="我的思路"><a href="#我的思路" class="headerlink" title="我的思路"></a>我的思路</h2><p>与思路 0 一致，实现的时候<strong>多了一步转化为 list 的步骤</strong>。这一步不该做，因为<strong>占用了更多的时间和内存空间</strong>，以后少做。此外此方法的<strong>复杂度为$O(n^2)$</strong>，如果样本容量大一些，花费时间会更多。</p>
-<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">public static int[] twoNums(int[] nums, int target)&#123;</span><br><span class="line">    List&lt;Integer&gt; tempNumList &#x3D; Arrays.stream(nums).boxed().collect(Collectors.toList());</span><br><span class="line"></span><br><span class="line">    if (tempNumList.size() &gt; 0) &#123;</span><br><span class="line">        for (int i &#x3D; 0; i &lt; tempNumList.size() - 1; i++) &#123;</span><br><span class="line">            for (int j &#x3D; i + 1; j &lt; tempNumList.size(); j++) &#123;</span><br><span class="line">                if (tempNumList.get(i) + tempNumList.get(j) &#x3D;&#x3D; target)&#123;</span><br><span class="line">                    return new int[]&#123;i ,j&#125;;</span><br><span class="line">                &#125;</span><br><span class="line">            &#125;</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line">    return null;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-<h2 id="推荐方法"><a href="#推荐方法" class="headerlink" title="推荐方法"></a>推荐方法</h2><p>利用 HashMap 作为存储媒介，<strong>键值为目标值减去当前元素值的差值，而值则是当前元素值的索引</strong>。</p>
-<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">public static int[] twoNums(int[] nums, int target)&#123;</span><br><span class="line">    Map&lt;Integer, Integer&gt; hashMap &#x3D; new HashMap&lt;&gt;();</span><br><span class="line">    for (int i &#x3D; 0; i &lt; nums.length; i++) &#123;</span><br><span class="line">        Integer value &#x3D; hashMap.get(nums[i]);</span><br><span class="line">        if (value !&#x3D; null)&#123;</span><br><span class="line">            return new int[]&#123;value, i&#125;;</span><br><span class="line">        &#125;</span><br><span class="line">        hashMap.put(target - nums[i], i);</span><br><span class="line">    &#125;</span><br><span class="line">    return null;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-<p>举例说明方法原理：</p>
-<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">nums &#x3D; [3,8,4,6,9,2,15,11], target &#x3D; 13</span><br></pre></td></tr></table></figure>
-<p>循环时：</p>
-<div class="table-container">
-<table>
-<thead>
-<tr>
-<th style="text-align:center">数组</th>
-<th style="text-align:center">3</th>
-<th style="text-align:center">8</th>
-<th style="text-align:center">4</th>
-<th style="text-align:center">6</th>
-<th style="text-align:center">9</th>
-<th style="text-align:center">2</th>
-<th style="text-align:center">15</th>
-<th style="text-align:center">11</th>
-</tr>
-</thead>
-<tbody>
-<tr>
-<td style="text-align:center">key</td>
-<td style="text-align:center">10</td>
-<td style="text-align:center">5</td>
-<td style="text-align:center">9</td>
-<td style="text-align:center">7</td>
-<td style="text-align:center">4</td>
-<td style="text-align:center">11</td>
-<td style="text-align:center">-2</td>
-<td style="text-align:center">2</td>
-</tr>
-<tr>
-<td style="text-align:center">value（index）</td>
-<td style="text-align:center">0</td>
-<td style="text-align:center">1</td>
-<td style="text-align:center">2</td>
-<td style="text-align:center">3</td>
-<td style="text-align:center">4</td>
-<td style="text-align:center">5</td>
-<td style="text-align:center">6</td>
-<td style="text-align:center">7</td>
-</tr>
-</tbody>
-</table>
-</div>
-<h2 id="学习点"><a href="#学习点" class="headerlink" title="学习点"></a>学习点</h2><blockquote>
-<ul>
-<li>利用 HashMap 的存储机制，保存了差值（逆向思维）（也是寻找的元素值）的同时，还保存了原元素值的索引值。复杂度或许还是$O(n^2)$，不过，是 0…n 的变化，所以在可接受范围内。</li>
-<li>整数数组转化为 List 的方法： Arrays.stream(nums).boxed().collect(Collectors.toList())</li>
-<li>List 为顺序表结果，方便访问，不方便设计元素的插入、删除和移动等操作</li>
-<li>int 不可与 null 值放在一起判断，但 Integer 可以</li>
-</ul>
-</blockquote>
-<h1 id="逆序整数"><a href="#逆序整数" class="headerlink" title="逆序整数"></a>逆序整数</h1><p><a href="https://github.com/Blankj/awesome-java-leetcode/blob/master/note/0007/README.md">查看原文</a></p>
-<p>给定一个32位带符号整数，求该整数的逆序整数。</p>
-<p>示例：</p>
-<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">Input: 123</span><br><span class="line">Output:  321</span><br><span class="line"></span><br><span class="line">Input: -123</span><br><span class="line">Output: -321</span><br><span class="line"></span><br><span class="line">Input: 120</span><br><span class="line">Output: 21</span><br></pre></td></tr></table></figure>
-<h2 id="我的思路-1"><a href="#我的思路-1" class="headerlink" title="我的思路"></a>我的思路</h2><p>第一反应用字符串转换，简单，但感觉思想有些僵化。想了下，还是用数学的方式解决。</p>
-<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">public static int reverseNumber(long number)&#123;</span><br><span class="line">    long tempNumber &#x3D; 0;</span><br><span class="line">    for (; number !&#x3D; 0 ; number &#x3D; number &#x2F; 10) &#123;</span><br><span class="line">        tempNumber &#x3D; tempNumber * 10 + number % 10;</span><br><span class="line">    &#125;</span><br><span class="line">    if (tempNumber &gt; Integer.MAX_VALUE || tempNumber &lt; Integer.MIN_VALUE) &#123;</span><br><span class="line">        return 0;</span><br><span class="line">    &#125;</span><br><span class="line">    return (int) tempNumber;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-<p>这次思路与原文思路对上了，只是代码上还有些优化空间。</p>
-<h2 id="学习点-1"><a href="#学习点-1" class="headerlink" title="学习点"></a>学习点</h2><blockquote>
-<ul>
-<li>number = number / 10 可以简写为 number /= 10，我记错了简写方式</li>
-<li>最后的返回可简写为条件赋值语句 return tempNumber &gt; Integer.MAX_VALUE || tempNumber &lt; Integer.MIN_VALUE ? 0 : (int) tempNumber;</li>
-</ul>
-</blockquote>
-<h1 id="回文数"><a href="#回文数" class="headerlink" title="回文数"></a>回文数</h1><p><a href="https://github.com/Blankj/awesome-java-leetcode/blob/master/note/0009/README.md">查看原文</a></p>
-<p>确定整数是否是回文。 整数与回读相同时就是回文。</p>
-<p>示例：</p>
-<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">Input: 121</span><br><span class="line">Output: true</span><br><span class="line"></span><br><span class="line">Input: -121</span><br><span class="line">Output: false</span><br><span class="line">Explanation：从左到右，它显示为-121。从右到左，它变为121-。因此，它不是回文。</span><br><span class="line"></span><br><span class="line">Input: 10</span><br><span class="line">Output: false</span><br><span class="line">Explanation: 从右到左读取01。因此，它不是回文。</span><br></pre></td></tr></table></figure>
-<h2 id="我的思路："><a href="#我的思路：" class="headerlink" title="我的思路："></a>我的思路：</h2><p>负数一律不是回文数，正整数则转换后比较即可。关键代码上个问题已给出，此处略。</p>
-<h2 id="推荐思路"><a href="#推荐思路" class="headerlink" title="推荐思路"></a>推荐思路</h2><p>负数、<strong>10的整倍数</strong>均不是回文数。且不必比较全部长度，在回文计算过程中，适时比较即可完成判断。</p>
-<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">public static boolean isPalindrome(int x) &#123;</span><br><span class="line">    if (x &lt; 0 || (x !&#x3D; 0 &amp;&amp; x % 10 &#x3D;&#x3D; 0)) return false;</span><br><span class="line">    int halfReverseX &#x3D; 0;</span><br><span class="line">    while (x &gt; halfReverseX) &#123;</span><br><span class="line">        halfReverseX &#x3D; halfReverseX * 10 + x % 10;</span><br><span class="line">        x &#x2F;&#x3D; 10;</span><br><span class="line">    &#125;</span><br><span class="line">    return halfReverseX &#x3D;&#x3D; x || halfReverseX &#x2F; 10 &#x3D;&#x3D; x;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-<h2 id="学习点-2"><a href="#学习点-2" class="headerlink" title="学习点"></a>学习点</h2><blockquote>
-<ul>
-<li>试着优化及改变一个问题的判断条件和判断方式</li>
-<li>可以提前筛选掉的特殊情况考虑不周全。不过这个问题不大，只要在关键判断部分解决掉也可。</li>
-</ul>
-</blockquote>
-<h1 id="罗马数"><a href="#罗马数" class="headerlink" title="罗马数"></a>罗马数</h1><p><a href="https://github.com/Blankj/awesome-java-leetcode/blob/master/note/0013/README.md">原文地址</a></p>
-<p>罗马数字由七个不同的符号表示：I，V，X，L，C，D和M。</p>
-<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">Symbol       Value</span><br><span class="line">I             1</span><br><span class="line">V             5</span><br><span class="line">X             10</span><br><span class="line">L             50</span><br><span class="line">C             100</span><br><span class="line">D             500</span><br><span class="line">M             1000</span><br></pre></td></tr></table></figure>
-<p>例如，两个用罗马数字记为II，仅将两个加在一起。 十二被写为XII，简称X + II。 数字二十七写为XXVII，即XX + V + II。</p>
-<p>罗马数字通常从左到右以从大到小的顺序书写。 但是，四个数字不是IIII。 取而代之的是，数字四被写为IV。 因为一个在五之前，所以我们减去它等于四。 相同的原则适用于编号为IX的数字9。 在六个实例中使用减法：</p>
-<p>我可以放在V（5）和X（10）的前面以得到4和9。<br>X可以放在L（50）和C（100）之前以得到40和90。<br>C可以放在D（500）和M（1000）之前以得到400和900。<br>给定罗马数字，将其转换为整数。 输入保证在1到3999的范围内。</p>
-<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">Input: &quot;III&quot;</span><br><span class="line">Output: 3</span><br><span class="line"></span><br><span class="line">Input: &quot;IV&quot;</span><br><span class="line">Output: 4</span><br><span class="line"></span><br><span class="line">Input: &quot;IX&quot;</span><br><span class="line">Output: 9</span><br><span class="line"></span><br><span class="line">Input: &quot;LVIII&quot;</span><br><span class="line">Output: 58</span><br><span class="line">Explanation: C &#x3D; 100, L &#x3D; 50, XXX &#x3D; 30 and III &#x3D; 3.</span><br><span class="line"></span><br><span class="line">Input: &quot;MCMXCIV&quot;</span><br><span class="line">Output: 1994</span><br><span class="line">Explanation: M &#x3D; 1000, CM &#x3D; 900, XC &#x3D; 90 and IV &#x3D; 4.</span><br></pre></td></tr></table></figure>
-<h2 id="我的思路-2"><a href="#我的思路-2" class="headerlink" title="我的思路"></a>我的思路</h2><p>很惭愧，无。看了推荐思路，拍手叫好，又是逆向思维。</p>
-<h2 id="推荐思路-1"><a href="#推荐思路-1" class="headerlink" title="推荐思路"></a>推荐思路</h2><p>题意是罗马数字转整型数，范围从 1 到 3999，查看下百度百科的罗马数字介绍如下：</p>
-<p>相同的数字连写，所表示的数等于这些数字相加得到的数，如 Ⅲ=3；</p>
-<p>小的数字在大的数字的右边，所表示的数等于这些数字相加得到的数，如 Ⅷ=8、Ⅻ=12；</p>
-<p>小的数字（限于 Ⅰ、X 和 C）在大的数字的左边，所表示的数等于大数减小数得到的数，如 Ⅳ=4、Ⅸ=9。</p>
-<p>那么我们可以利用 map 来完成罗马数字的 7 个数字符号：I、V、X、L、C、D、M 和整数的映射关系，然后根据上面的解释来模拟完成即可。</p>
-<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">public static int romanToInt(String roman) &#123;</span><br><span class="line">    Map&lt;Character, Integer&gt; map &#x3D; new HashMap&lt;&gt;();</span><br><span class="line">    map.put(&#39;I&#39;, 1);</span><br><span class="line">    map.put(&#39;V&#39;, 5);</span><br><span class="line">    map.put(&#39;X&#39;, 10);</span><br><span class="line">    map.put(&#39;L&#39;, 50);</span><br><span class="line">    map.put(&#39;C&#39;, 100);</span><br><span class="line">    map.put(&#39;D&#39;, 500);</span><br><span class="line">    map.put(&#39;M&#39;, 1000);</span><br><span class="line">    int res &#x3D; map.get(roman.charAt(roman.length() - 1));</span><br><span class="line">    for (int i &#x3D; roman.length() - 1; i &gt; 0; i--)&#123;</span><br><span class="line">        int value1 &#x3D; map.get(roman.charAt(i));</span><br><span class="line">        int value2 &#x3D; map.get(roman.charAt(i - 1));</span><br><span class="line">        res &#x3D; value1 &gt; value2 ? res - value2 : res + value2;</span><br><span class="line">    &#125;</span><br><span class="line">    return res;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-<h2 id="学习点-3"><a href="#学习点-3" class="headerlink" title="学习点"></a>学习点</h2><blockquote>
-<ul>
-<li>主要还是没有想到解决这个问题的思路，分析不够仔细，思维不够发散</li>
-<li>字符型的声明关键字是 Character 不是 CharSequence</li>
-</ul>
-</blockquote>
-<h1 id="最长公共前缀"><a href="#最长公共前缀" class="headerlink" title="最长公共前缀"></a>最长公共前缀</h1><p><a href="https://github.com/Blankj/awesome-java-leetcode/blob/master/note/0014/README.md">查看原文</a></p>
-<p>编写一个函数以在字符串数组中找到最长的公共前缀字符串。</p>
-<p>如果没有公共前缀，则返回一个空字符串“”。</p>
-<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">Input: [&quot;flower&quot;,&quot;flow&quot;,&quot;flight&quot;]</span><br><span class="line">Output: &quot;fl&quot;</span><br><span class="line"></span><br><span class="line">Input: [&quot;dog&quot;,&quot;racecar&quot;,&quot;car&quot;]</span><br><span class="line">Output: &quot;&quot;</span><br></pre></td></tr></table></figure>
-<h2 id="我的思路-3"><a href="#我的思路-3" class="headerlink" title="我的思路"></a>我的思路</h2><p>一开始看错了题目，以为是找最长公共子字符串，后来才发现是前缀。先找出长度最短的字符串，再截取其前缀逐个比较，返回结果。</p>
-<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">public static String longestCommonPrefix(String[] inputs)&#123;</span><br><span class="line">    String shortestStr &#x3D; inputs[0];</span><br><span class="line">    for (String str : inputs)&#123;</span><br><span class="line">        if (str.length() &lt; shortestStr.length()) &#123;</span><br><span class="line">            shortestStr &#x3D; str;</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    String prefix &#x3D; &quot;&quot;;</span><br><span class="line">    boolean allEquals &#x3D; true;</span><br><span class="line">    for (int i &#x3D; 1; i &lt; shortestStr.length(); i++) &#123;</span><br><span class="line">        prefix &#x3D; shortestStr.substring(0, i);</span><br><span class="line">        for (String str: inputs)&#123;</span><br><span class="line">            if (str.indexOf(prefix) !&#x3D; 0)&#123;</span><br><span class="line">                allEquals &#x3D; false;</span><br><span class="line">                break;</span><br><span class="line">            &#125;</span><br><span class="line">        &#125;</span><br><span class="line">        if (!allEquals) &#123;</span><br><span class="line">            prefix &#x3D; shortestStr.substring(0, i - 1);</span><br><span class="line">            break;</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line">    return prefix;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-<h2 id="推荐思路-2"><a href="#推荐思路-2" class="headerlink" title="推荐思路"></a>推荐思路</h2><p>找出最短的那个字符串的长度 minLen，然后在 0…minLen 的范围比较所有字符串，如果比较到有不同的字符，那么直接返回当前索引长度的字符串即可，否则最后返回最短的字符串即可。</p>
-<p>而且再一次体现出了我代码功力与推荐答案的差距。</p>
-<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">public String longestCommonPrefix(String[] strs) &#123;</span><br><span class="line">    int len &#x3D; strs.length;</span><br><span class="line">    if (len &#x3D;&#x3D; 0) return &quot;&quot;;</span><br><span class="line">    int minLen &#x3D; 0x7fffffff;</span><br><span class="line">    for (String str : strs) minLen &#x3D; Math.min(minLen, str.length());</span><br><span class="line">    for (int j &#x3D; 0; j &lt; minLen; ++j)</span><br><span class="line">        for (int i &#x3D; 1; i &lt; len; ++i)</span><br><span class="line">            if (strs[0].charAt(j) !&#x3D; strs[i].charAt(j))</span><br><span class="line">                return strs[0].substring(0, j);</span><br><span class="line">    return strs[0].substring(0, minLen);</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-<h2 id="学习点-4"><a href="#学习点-4" class="headerlink" title="学习点"></a>学习点</h2><blockquote>
-<ul>
-<li>Math.min()方法可以比较两个数之间的大小并返回值, 比 if 判断语句方便阅读</li>
-<li>Integer.MAX_VALUE = 0x7fffffff, Integer.MIN_VALUE = 0x80000000</li>
-</ul>
-</blockquote>
-<h1 id="跳水板"><a href="#跳水板" class="headerlink" title="跳水板"></a>跳水板</h1><p><a href="https://github.com/Blankj/awesome-java-leetcode/blob/master/note/16_11/README.md">查看原文</a></p>
-<p>你正在使用一堆木板建造跳水板。有两种类型的木板，其中长度较短的木板长度为 shorter，长度较长的木板长度为 longer。你必须正好使用 k 块木板。编写一个方法，生成跳水板所有可能的长度。</p>
-<p>返回的长度需要从小到大排列。</p>
-<p>示例：</p>
-<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">inputs：</span><br><span class="line">shorter &#x3D; 1</span><br><span class="line">longer &#x3D; 2</span><br><span class="line">k &#x3D; 3</span><br><span class="line">outputs： </span><br><span class="line">&#123;3,4,5,6&#125;</span><br><span class="line"></span><br><span class="line">0 &lt; shorter &lt;&#x3D; longer</span><br><span class="line">0 &lt;&#x3D; k &lt;&#x3D; 100000</span><br></pre></td></tr></table></figure>
-<h2 id="我的思路-4"><a href="#我的思路-4" class="headerlink" title="我的思路"></a>我的思路</h2><p>这个问题还算好的，只有两种木板。</p>
-<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">public static List dividingBoard(int shorter, int longer, int k)&#123;</span><br><span class="line">    if (k &#x3D;&#x3D; 0) return null;</span><br><span class="line">    List&lt;Integer&gt; dataList &#x3D; new ArrayList&lt;&gt;();</span><br><span class="line">    if (shorter &#x3D;&#x3D; longer) &#123;</span><br><span class="line">        dataList.add(shorter * k);</span><br><span class="line">        return dataList;</span><br><span class="line">    &#125;</span><br><span class="line">    for (int i &#x3D; 0; i &lt;&#x3D; k; i++)&#123;</span><br><span class="line">        dataList.add(i * shorter + (k - i) * longer);</span><br><span class="line">    &#125;</span><br><span class="line">    return dataList;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-<h2 id="推荐思路-3"><a href="#推荐思路-3" class="headerlink" title="推荐思路"></a>推荐思路</h2><p>这题乍一看，好像得用递归或动态规划来解，仔细一想，其实就是高中数学学过的等差数列知识。</p>
-<p>当 k == 0 时，返回 [] 即可；</p>
-<p>当 shorter == longer 时，返回 [k * shorter] 即可；</p>
-<p>当 shorter != longer 时，那么其实就是一个首项为 k <em> shorter，末项为 k </em> longer，公差为 longer - shorter 的等差数列么。</p>
-<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">public int[] divingBoard(int shorter, int longer, int k) &#123;</span><br><span class="line">    if (k &#x3D;&#x3D; 0) &#123;</span><br><span class="line">        return new int[0];</span><br><span class="line">    &#125;</span><br><span class="line">    if (shorter &#x3D;&#x3D; longer) &#123;</span><br><span class="line">        return new int[]&#123;shorter * k&#125;;</span><br><span class="line">    &#125;</span><br><span class="line">    int[] ans &#x3D; new int[k + 1];</span><br><span class="line">    int st &#x3D; k * shorter;&#x2F;&#x2F; 等差数列的首项</span><br><span class="line">    int delta &#x3D; longer - shorter;&#x2F;&#x2F; 公差</span><br><span class="line">    for (int i &#x3D; 0; i &lt;&#x3D; k; i++) &#123;</span><br><span class="line">        ans[i] &#x3D; st + i * delta;</span><br><span class="line">    &#125;</span><br><span class="line">    return ans;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-<h2 id="学习点-5"><a href="#学习点-5" class="headerlink" title="学习点"></a>学习点</h2><p>我就知道，算法的归路终是数学。而且如果按照 ACM 的标准来判断我的答案，返回类型是不符合标准的。</p>
-<blockquote>
-<ul>
-<li>算法问题，终归是数学问题。有时候答案就藏在已经学过的数学公式中，以前做 ACM 的时候就有这种感觉了</li>
-</ul>
-</blockquote>
-<h1 id="有效括号"><a href="#有效括号" class="headerlink" title="有效括号"></a>有效括号</h1><p><a href="https://github.com/Blankj/awesome-java-leetcode/blob/master/note/0020/README.md">查看原文</a></p>
-<p>给定仅包含字符’（’，’）’，’{‘，’}’，’[‘和’]’的字符串，请确定输入字符串是否有效。</p>
-<p>输入字符串在以下情况下有效：</p>
-<blockquote>
-<ul>
-<li>开括号必须用相同类型的括号封闭。</li>
-<li>开括号必须以正确的顺序关闭。</li>
-<li>请注意，空字符串也被视为有效。</li>
-</ul>
-</blockquote>
-<p>示例：</p>
-<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">Input: &quot;()&quot;</span><br><span class="line">Output: true</span><br><span class="line"></span><br><span class="line">Input: &quot;()[]&#123;&#125;&quot;</span><br><span class="line">Output: true</span><br><span class="line"></span><br><span class="line">Input: &quot;(]&quot;</span><br><span class="line">Output: false</span><br><span class="line"></span><br><span class="line">Input: &quot;([)]&quot;</span><br><span class="line">Output: false</span><br><span class="line"></span><br><span class="line">Input: &quot;&#123;[]&#125;&quot;</span><br><span class="line">Output: true</span><br></pre></td></tr></table></figure>
-<h2 id="我的思路-5"><a href="#我的思路-5" class="headerlink" title="我的思路"></a>我的思路</h2><p>这个问题，让我想到了一个游戏，消消乐。把一对紧挨着的、配对的括号消掉，不能消掉的留下，且每发生一次消掉的事件则对内部重新进行一次配对判断。如果最后剩下的字符串是空字符串，则视为有效。</p>
-<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">public static boolean isValidParentheses(String str)&#123;</span><br><span class="line">    if (str.equals(&quot;&quot;)) return true;</span><br><span class="line">    if (str.length() &#x3D;&#x3D; 1) return false;</span><br><span class="line">        </span><br><span class="line">    Map&lt;Character, Character&gt; map &#x3D; new HashMap&lt;&gt;();</span><br><span class="line">    map.put(&#39;&#123;&#39;, &#39;&#125;&#39;);</span><br><span class="line">    map.put(&#39;(&#39;, &#39;)&#39;);</span><br><span class="line">    map.put(&#39;[&#39;, &#39;]&#39;);</span><br><span class="line">    </span><br><span class="line">    while (str.length() &gt; 1) &#123;</span><br><span class="line">        for (int i &#x3D; 0; i &lt; str.length() - 1; i++) &#123;</span><br><span class="line">            &#x2F;&#x2F;如果紧挨着的字符串是配对的，则消掉这两个字符串，然后跳出此次判断，重新开始循环</span><br><span class="line">            if (map.get(str.charAt(i)) !&#x3D; null &amp;&amp; map.get(str.charAt(i)).equals(str.charAt(i + 1)))&#123;</span><br><span class="line">                str &#x3D; str.substring(0, i) + str.substring(i + 2);</span><br><span class="line">                break;</span><br><span class="line">            &#125;</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    return str.length() &#x3D;&#x3D; 0;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-<h2 id="推荐思路-4"><a href="#推荐思路-4" class="headerlink" title="推荐思路"></a>推荐思路</h2><p>我们可以用栈来解决这个问题，当出现左括号的时候入栈，当遇到右括号时，判断栈顶的左括号是否何其匹配，不匹配的话直接返回 false 即可，最终判断是否空栈即可。有个细节注意下 top = 1;，从而省去了之后判空的操作和 top - 1 导致数组越界的错误。</p>
-<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">public static boolean isValid(String str) &#123;</span><br><span class="line">    char[] stack &#x3D; new char[str.length() - 1];</span><br><span class="line">    int top &#x3D; 1;</span><br><span class="line">    for (char c : str.toCharArray()) &#123;</span><br><span class="line">        if (c &#x3D;&#x3D; &#39;(&#39; || c &#x3D;&#x3D; &#39;&#123;&#39; || c &#x3D;&#x3D; &#39;[&#39;) &#123;</span><br><span class="line">            stack[top++] &#x3D; c;</span><br><span class="line">        &#125; else if (c &#x3D;&#x3D; &#39;)&#39; &amp;&amp; stack[--top] !&#x3D; &#39;(&#39;)&#123;</span><br><span class="line">            return false;</span><br><span class="line">        &#125; else if (c &#x3D;&#x3D; &#39;]&#39; &amp;&amp; stack[--top] !&#x3D; &#39;[&#39;)&#123;</span><br><span class="line">            return false;</span><br><span class="line">        &#125; else if (c &#x3D;&#x3D; &#39;&#125;&#39; &amp;&amp; stack[--top] !&#x3D; &#39;&#123;&#39;)&#123;</span><br><span class="line">            return false;</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line">    return top &#x3D;&#x3D; 1;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-<h2 id="学习点-6"><a href="#学习点-6" class="headerlink" title="学习点"></a>学习点</h2><p>我的思路里，是用截取的方式替代了消掉的操作，而推荐思路里是用了逐个配对替换的方式替代了消掉的操作，让我眼前一亮。我也想过栈这种数据结构，但我数据结构学的不好，不知道用什么存储结构来代表栈。而且我的方法里有几个地方如果编写的时候不注意的话，容易引起数组越界。</p>
-<h1 id="合并两个短列表"><a href="#合并两个短列表" class="headerlink" title="合并两个短列表"></a>合并两个短列表</h1><p>合并两个排序的链表，并将其作为新列表返回。 应该通过将前两个列表的节点拼接在一起来创建新列表。</p>
-<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">Input: 1-&gt;2-&gt;4, 1-&gt;3-&gt;4</span><br><span class="line">Output: 1-&gt;1-&gt;2-&gt;3-&gt;4-&gt;4</span><br></pre></td></tr></table></figure>
-]]></content>
-      <categories>
-        <category>Java</category>
-      </categories>
-  </entry>
-  <entry>
     <title>为什么我做不好界面</title>
     <url>/2021/04/02/%E4%B8%BA%E4%BB%80%E4%B9%88%E6%88%91%E5%81%9A%E4%B8%8D%E5%A5%BD%E7%95%8C%E9%9D%A2/</url>
     <content><![CDATA[<p>从开始学 Android 到现在四五年了，每次写界面都会被人吐槽界面很丑。虽然我并不是 UI 设计师，但自己也不能总是写一些平均水平以下的界面，于是决定反思一下为什么我做不好界面。</p>
@@ -1301,6 +1131,189 @@
 <h2 id="运算符重载"><a href="#运算符重载" class="headerlink" title="运算符重载"></a>运算符重载</h2><h1 id="END"><a href="#END" class="headerlink" title="END"></a>END</h1>]]></content>
       <categories>
         <category>Android</category>
+      </categories>
+  </entry>
+  <entry>
+    <title>一些算法题</title>
+    <url>/2021/04/13/%E4%B8%80%E4%BA%9B%E7%AE%97%E6%B3%95%E9%A2%98/</url>
+    <content><![CDATA[<p>以训练一下自己的思维</p>
+<p><a href="https://github.com/Blankj/awesome-java-leetcode">原文地址</a></p>
+<a id="more"></a>
+<h1 id="加法"><a href="#加法" class="headerlink" title="加法"></a>加法</h1><p><a href="https://github.com/Blankj/awesome-java-leetcode/blob/master/note/0001/README.md">查看原文</a></p>
+<p>给定一个整数数组，返回两个数字的索引，以使它们加起来成为一个特定的目标。</p>
+<p>您可以假设每个输入都只有一个解决方案，并且您可能不会两次使用相同的元素。</p>
+<p>示例：</p>
+<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">Given nums &#x3D; [2, 7, 11, 15], target &#x3D; 9,</span><br><span class="line"></span><br><span class="line">Because nums[0] + nums[1] &#x3D; 2 + 7 &#x3D; 9,</span><br><span class="line">return [0, 1].</span><br></pre></td></tr></table></figure>
+<h2 id="我的思路"><a href="#我的思路" class="headerlink" title="我的思路"></a>我的思路</h2><p>与思路 0 一致，实现的时候<strong>多了一步转化为 list 的步骤</strong>。这一步不该做，因为<strong>占用了更多的时间和内存空间</strong>，以后少做。此外此方法的<strong>复杂度为$O(n^2)$</strong>，如果样本容量大一些，花费时间会更多。</p>
+<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">public static int[] twoNums(int[] nums, int target)&#123;</span><br><span class="line">    List&lt;Integer&gt; tempNumList &#x3D; Arrays.stream(nums).boxed().collect(Collectors.toList());</span><br><span class="line"></span><br><span class="line">    if (tempNumList.size() &gt; 0) &#123;</span><br><span class="line">        for (int i &#x3D; 0; i &lt; tempNumList.size() - 1; i++) &#123;</span><br><span class="line">            for (int j &#x3D; i + 1; j &lt; tempNumList.size(); j++) &#123;</span><br><span class="line">                if (tempNumList.get(i) + tempNumList.get(j) &#x3D;&#x3D; target)&#123;</span><br><span class="line">                    return new int[]&#123;i ,j&#125;;</span><br><span class="line">                &#125;</span><br><span class="line">            &#125;</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line">    return null;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<h2 id="推荐方法"><a href="#推荐方法" class="headerlink" title="推荐方法"></a>推荐方法</h2><p>利用 HashMap 作为存储媒介，<strong>键值为目标值减去当前元素值的差值，而值则是当前元素值的索引</strong>。</p>
+<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">public static int[] twoNums(int[] nums, int target)&#123;</span><br><span class="line">    Map&lt;Integer, Integer&gt; hashMap &#x3D; new HashMap&lt;&gt;();</span><br><span class="line">    for (int i &#x3D; 0; i &lt; nums.length; i++) &#123;</span><br><span class="line">        Integer value &#x3D; hashMap.get(nums[i]);</span><br><span class="line">        if (value !&#x3D; null)&#123;</span><br><span class="line">            return new int[]&#123;value, i&#125;;</span><br><span class="line">        &#125;</span><br><span class="line">        hashMap.put(target - nums[i], i);</span><br><span class="line">    &#125;</span><br><span class="line">    return null;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>举例说明方法原理：</p>
+<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">nums &#x3D; [3,8,4,6,9,2,15,11], target &#x3D; 13</span><br></pre></td></tr></table></figure>
+<p>循环时：</p>
+<div class="table-container">
+<table>
+<thead>
+<tr>
+<th style="text-align:center">数组</th>
+<th style="text-align:center">3</th>
+<th style="text-align:center">8</th>
+<th style="text-align:center">4</th>
+<th style="text-align:center">6</th>
+<th style="text-align:center">9</th>
+<th style="text-align:center">2</th>
+<th style="text-align:center">15</th>
+<th style="text-align:center">11</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td style="text-align:center">key</td>
+<td style="text-align:center">10</td>
+<td style="text-align:center">5</td>
+<td style="text-align:center">9</td>
+<td style="text-align:center">7</td>
+<td style="text-align:center">4</td>
+<td style="text-align:center">11</td>
+<td style="text-align:center">-2</td>
+<td style="text-align:center">2</td>
+</tr>
+<tr>
+<td style="text-align:center">value（index）</td>
+<td style="text-align:center">0</td>
+<td style="text-align:center">1</td>
+<td style="text-align:center">2</td>
+<td style="text-align:center">3</td>
+<td style="text-align:center">4</td>
+<td style="text-align:center">5</td>
+<td style="text-align:center">6</td>
+<td style="text-align:center">7</td>
+</tr>
+</tbody>
+</table>
+</div>
+<h2 id="学习点"><a href="#学习点" class="headerlink" title="学习点"></a>学习点</h2><blockquote>
+<ul>
+<li>利用 HashMap 的存储机制，保存了差值（逆向思维）（也是寻找的元素值）的同时，还保存了原元素值的索引值。复杂度或许还是$O(n^2)$，不过，是 0…n 的变化，所以在可接受范围内。</li>
+<li>整数数组转化为 List 的方法： Arrays.stream(nums).boxed().collect(Collectors.toList())</li>
+<li>List 为顺序表结果，方便访问，不方便设计元素的插入、删除和移动等操作</li>
+<li>int 不可与 null 值放在一起判断，但 Integer 可以</li>
+</ul>
+</blockquote>
+<h1 id="逆序整数"><a href="#逆序整数" class="headerlink" title="逆序整数"></a>逆序整数</h1><p><a href="https://github.com/Blankj/awesome-java-leetcode/blob/master/note/0007/README.md">查看原文</a></p>
+<p>给定一个32位带符号整数，求该整数的逆序整数。</p>
+<p>示例：</p>
+<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">Input: 123</span><br><span class="line">Output:  321</span><br><span class="line"></span><br><span class="line">Input: -123</span><br><span class="line">Output: -321</span><br><span class="line"></span><br><span class="line">Input: 120</span><br><span class="line">Output: 21</span><br></pre></td></tr></table></figure>
+<h2 id="我的思路-1"><a href="#我的思路-1" class="headerlink" title="我的思路"></a>我的思路</h2><p>第一反应用字符串转换，简单，但感觉思想有些僵化。想了下，还是用数学的方式解决。</p>
+<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">public static int reverseNumber(long number)&#123;</span><br><span class="line">    long tempNumber &#x3D; 0;</span><br><span class="line">    for (; number !&#x3D; 0 ; number &#x3D; number &#x2F; 10) &#123;</span><br><span class="line">        tempNumber &#x3D; tempNumber * 10 + number % 10;</span><br><span class="line">    &#125;</span><br><span class="line">    if (tempNumber &gt; Integer.MAX_VALUE || tempNumber &lt; Integer.MIN_VALUE) &#123;</span><br><span class="line">        return 0;</span><br><span class="line">    &#125;</span><br><span class="line">    return (int) tempNumber;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>这次思路与原文思路对上了，只是代码上还有些优化空间。</p>
+<h2 id="学习点-1"><a href="#学习点-1" class="headerlink" title="学习点"></a>学习点</h2><blockquote>
+<ul>
+<li>number = number / 10 可以简写为 number /= 10，我记错了简写方式</li>
+<li>最后的返回可简写为条件赋值语句 return tempNumber &gt; Integer.MAX_VALUE || tempNumber &lt; Integer.MIN_VALUE ? 0 : (int) tempNumber;</li>
+</ul>
+</blockquote>
+<h1 id="回文数"><a href="#回文数" class="headerlink" title="回文数"></a>回文数</h1><p><a href="https://github.com/Blankj/awesome-java-leetcode/blob/master/note/0009/README.md">查看原文</a></p>
+<p>确定整数是否是回文。 整数与回读相同时就是回文。</p>
+<p>示例：</p>
+<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">Input: 121</span><br><span class="line">Output: true</span><br><span class="line"></span><br><span class="line">Input: -121</span><br><span class="line">Output: false</span><br><span class="line">Explanation：从左到右，它显示为-121。从右到左，它变为121-。因此，它不是回文。</span><br><span class="line"></span><br><span class="line">Input: 10</span><br><span class="line">Output: false</span><br><span class="line">Explanation: 从右到左读取01。因此，它不是回文。</span><br></pre></td></tr></table></figure>
+<h2 id="我的思路："><a href="#我的思路：" class="headerlink" title="我的思路："></a>我的思路：</h2><p>负数一律不是回文数，正整数则转换后比较即可。关键代码上个问题已给出，此处略。</p>
+<h2 id="推荐思路"><a href="#推荐思路" class="headerlink" title="推荐思路"></a>推荐思路</h2><p>负数、<strong>10的整倍数</strong>均不是回文数。且不必比较全部长度，在回文计算过程中，适时比较即可完成判断。</p>
+<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">public static boolean isPalindrome(int x) &#123;</span><br><span class="line">    if (x &lt; 0 || (x !&#x3D; 0 &amp;&amp; x % 10 &#x3D;&#x3D; 0)) return false;</span><br><span class="line">    int halfReverseX &#x3D; 0;</span><br><span class="line">    while (x &gt; halfReverseX) &#123;</span><br><span class="line">        halfReverseX &#x3D; halfReverseX * 10 + x % 10;</span><br><span class="line">        x &#x2F;&#x3D; 10;</span><br><span class="line">    &#125;</span><br><span class="line">    return halfReverseX &#x3D;&#x3D; x || halfReverseX &#x2F; 10 &#x3D;&#x3D; x;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<h2 id="学习点-2"><a href="#学习点-2" class="headerlink" title="学习点"></a>学习点</h2><blockquote>
+<ul>
+<li>试着优化及改变一个问题的判断条件和判断方式</li>
+<li>可以提前筛选掉的特殊情况考虑不周全。不过这个问题不大，只要在关键判断部分解决掉也可。</li>
+</ul>
+</blockquote>
+<h1 id="罗马数"><a href="#罗马数" class="headerlink" title="罗马数"></a>罗马数</h1><p><a href="https://github.com/Blankj/awesome-java-leetcode/blob/master/note/0013/README.md">原文地址</a></p>
+<p>罗马数字由七个不同的符号表示：I，V，X，L，C，D和M。</p>
+<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">Symbol       Value</span><br><span class="line">I             1</span><br><span class="line">V             5</span><br><span class="line">X             10</span><br><span class="line">L             50</span><br><span class="line">C             100</span><br><span class="line">D             500</span><br><span class="line">M             1000</span><br></pre></td></tr></table></figure>
+<p>例如，两个用罗马数字记为II，仅将两个加在一起。 十二被写为XII，简称X + II。 数字二十七写为XXVII，即XX + V + II。</p>
+<p>罗马数字通常从左到右以从大到小的顺序书写。 但是，四个数字不是IIII。 取而代之的是，数字四被写为IV。 因为一个在五之前，所以我们减去它等于四。 相同的原则适用于编号为IX的数字9。 在六个实例中使用减法：</p>
+<p>我可以放在V（5）和X（10）的前面以得到4和9。<br>X可以放在L（50）和C（100）之前以得到40和90。<br>C可以放在D（500）和M（1000）之前以得到400和900。<br>给定罗马数字，将其转换为整数。 输入保证在1到3999的范围内。</p>
+<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">Input: &quot;III&quot;</span><br><span class="line">Output: 3</span><br><span class="line"></span><br><span class="line">Input: &quot;IV&quot;</span><br><span class="line">Output: 4</span><br><span class="line"></span><br><span class="line">Input: &quot;IX&quot;</span><br><span class="line">Output: 9</span><br><span class="line"></span><br><span class="line">Input: &quot;LVIII&quot;</span><br><span class="line">Output: 58</span><br><span class="line">Explanation: C &#x3D; 100, L &#x3D; 50, XXX &#x3D; 30 and III &#x3D; 3.</span><br><span class="line"></span><br><span class="line">Input: &quot;MCMXCIV&quot;</span><br><span class="line">Output: 1994</span><br><span class="line">Explanation: M &#x3D; 1000, CM &#x3D; 900, XC &#x3D; 90 and IV &#x3D; 4.</span><br></pre></td></tr></table></figure>
+<h2 id="我的思路-2"><a href="#我的思路-2" class="headerlink" title="我的思路"></a>我的思路</h2><p>很惭愧，无。看了推荐思路，拍手叫好，又是逆向思维。</p>
+<h2 id="推荐思路-1"><a href="#推荐思路-1" class="headerlink" title="推荐思路"></a>推荐思路</h2><p>题意是罗马数字转整型数，范围从 1 到 3999，查看下百度百科的罗马数字介绍如下：</p>
+<p>相同的数字连写，所表示的数等于这些数字相加得到的数，如 Ⅲ=3；</p>
+<p>小的数字在大的数字的右边，所表示的数等于这些数字相加得到的数，如 Ⅷ=8、Ⅻ=12；</p>
+<p>小的数字（限于 Ⅰ、X 和 C）在大的数字的左边，所表示的数等于大数减小数得到的数，如 Ⅳ=4、Ⅸ=9。</p>
+<p>那么我们可以利用 map 来完成罗马数字的 7 个数字符号：I、V、X、L、C、D、M 和整数的映射关系，然后根据上面的解释来模拟完成即可。</p>
+<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">public static int romanToInt(String roman) &#123;</span><br><span class="line">    Map&lt;Character, Integer&gt; map &#x3D; new HashMap&lt;&gt;();</span><br><span class="line">    map.put(&#39;I&#39;, 1);</span><br><span class="line">    map.put(&#39;V&#39;, 5);</span><br><span class="line">    map.put(&#39;X&#39;, 10);</span><br><span class="line">    map.put(&#39;L&#39;, 50);</span><br><span class="line">    map.put(&#39;C&#39;, 100);</span><br><span class="line">    map.put(&#39;D&#39;, 500);</span><br><span class="line">    map.put(&#39;M&#39;, 1000);</span><br><span class="line">    int res &#x3D; map.get(roman.charAt(roman.length() - 1));</span><br><span class="line">    for (int i &#x3D; roman.length() - 1; i &gt; 0; i--)&#123;</span><br><span class="line">        int value1 &#x3D; map.get(roman.charAt(i));</span><br><span class="line">        int value2 &#x3D; map.get(roman.charAt(i - 1));</span><br><span class="line">        res &#x3D; value1 &gt; value2 ? res - value2 : res + value2;</span><br><span class="line">    &#125;</span><br><span class="line">    return res;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<h2 id="学习点-3"><a href="#学习点-3" class="headerlink" title="学习点"></a>学习点</h2><blockquote>
+<ul>
+<li>主要还是没有想到解决这个问题的思路，分析不够仔细，思维不够发散</li>
+<li>字符型的声明关键字是 Character 不是 CharSequence</li>
+</ul>
+</blockquote>
+<h1 id="最长公共前缀"><a href="#最长公共前缀" class="headerlink" title="最长公共前缀"></a>最长公共前缀</h1><p><a href="https://github.com/Blankj/awesome-java-leetcode/blob/master/note/0014/README.md">查看原文</a></p>
+<p>编写一个函数以在字符串数组中找到最长的公共前缀字符串。</p>
+<p>如果没有公共前缀，则返回一个空字符串“”。</p>
+<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">Input: [&quot;flower&quot;,&quot;flow&quot;,&quot;flight&quot;]</span><br><span class="line">Output: &quot;fl&quot;</span><br><span class="line"></span><br><span class="line">Input: [&quot;dog&quot;,&quot;racecar&quot;,&quot;car&quot;]</span><br><span class="line">Output: &quot;&quot;</span><br></pre></td></tr></table></figure>
+<h2 id="我的思路-3"><a href="#我的思路-3" class="headerlink" title="我的思路"></a>我的思路</h2><p>一开始看错了题目，以为是找最长公共子字符串，后来才发现是前缀。先找出长度最短的字符串，再截取其前缀逐个比较，返回结果。</p>
+<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">public static String longestCommonPrefix(String[] inputs)&#123;</span><br><span class="line">    String shortestStr &#x3D; inputs[0];</span><br><span class="line">    for (String str : inputs)&#123;</span><br><span class="line">        if (str.length() &lt; shortestStr.length()) &#123;</span><br><span class="line">            shortestStr &#x3D; str;</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    String prefix &#x3D; &quot;&quot;;</span><br><span class="line">    boolean allEquals &#x3D; true;</span><br><span class="line">    for (int i &#x3D; 1; i &lt; shortestStr.length(); i++) &#123;</span><br><span class="line">        prefix &#x3D; shortestStr.substring(0, i);</span><br><span class="line">        for (String str: inputs)&#123;</span><br><span class="line">            if (str.indexOf(prefix) !&#x3D; 0)&#123;</span><br><span class="line">                allEquals &#x3D; false;</span><br><span class="line">                break;</span><br><span class="line">            &#125;</span><br><span class="line">        &#125;</span><br><span class="line">        if (!allEquals) &#123;</span><br><span class="line">            prefix &#x3D; shortestStr.substring(0, i - 1);</span><br><span class="line">            break;</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line">    return prefix;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<h2 id="推荐思路-2"><a href="#推荐思路-2" class="headerlink" title="推荐思路"></a>推荐思路</h2><p>找出最短的那个字符串的长度 minLen，然后在 0…minLen 的范围比较所有字符串，如果比较到有不同的字符，那么直接返回当前索引长度的字符串即可，否则最后返回最短的字符串即可。</p>
+<p>而且再一次体现出了我代码功力与推荐答案的差距。</p>
+<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">public String longestCommonPrefix(String[] strs) &#123;</span><br><span class="line">    int len &#x3D; strs.length;</span><br><span class="line">    if (len &#x3D;&#x3D; 0) return &quot;&quot;;</span><br><span class="line">    int minLen &#x3D; 0x7fffffff;</span><br><span class="line">    for (String str : strs) minLen &#x3D; Math.min(minLen, str.length());</span><br><span class="line">    for (int j &#x3D; 0; j &lt; minLen; ++j)</span><br><span class="line">        for (int i &#x3D; 1; i &lt; len; ++i)</span><br><span class="line">            if (strs[0].charAt(j) !&#x3D; strs[i].charAt(j))</span><br><span class="line">                return strs[0].substring(0, j);</span><br><span class="line">    return strs[0].substring(0, minLen);</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<h2 id="学习点-4"><a href="#学习点-4" class="headerlink" title="学习点"></a>学习点</h2><blockquote>
+<ul>
+<li>Math.min()方法可以比较两个数之间的大小并返回值, 比 if 判断语句方便阅读</li>
+<li>Integer.MAX_VALUE = 0x7fffffff, Integer.MIN_VALUE = 0x80000000</li>
+</ul>
+</blockquote>
+<h1 id="跳水板"><a href="#跳水板" class="headerlink" title="跳水板"></a>跳水板</h1><p><a href="https://github.com/Blankj/awesome-java-leetcode/blob/master/note/16_11/README.md">查看原文</a></p>
+<p>你正在使用一堆木板建造跳水板。有两种类型的木板，其中长度较短的木板长度为 shorter，长度较长的木板长度为 longer。你必须正好使用 k 块木板。编写一个方法，生成跳水板所有可能的长度。</p>
+<p>返回的长度需要从小到大排列。</p>
+<p>示例：</p>
+<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">inputs：</span><br><span class="line">shorter &#x3D; 1</span><br><span class="line">longer &#x3D; 2</span><br><span class="line">k &#x3D; 3</span><br><span class="line">outputs： </span><br><span class="line">&#123;3,4,5,6&#125;</span><br><span class="line"></span><br><span class="line">0 &lt; shorter &lt;&#x3D; longer</span><br><span class="line">0 &lt;&#x3D; k &lt;&#x3D; 100000</span><br></pre></td></tr></table></figure>
+<h2 id="我的思路-4"><a href="#我的思路-4" class="headerlink" title="我的思路"></a>我的思路</h2><p>这个问题还算好的，只有两种木板。</p>
+<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">public static List dividingBoard(int shorter, int longer, int k)&#123;</span><br><span class="line">    if (k &#x3D;&#x3D; 0) return null;</span><br><span class="line">    List&lt;Integer&gt; dataList &#x3D; new ArrayList&lt;&gt;();</span><br><span class="line">    if (shorter &#x3D;&#x3D; longer) &#123;</span><br><span class="line">        dataList.add(shorter * k);</span><br><span class="line">        return dataList;</span><br><span class="line">    &#125;</span><br><span class="line">    for (int i &#x3D; 0; i &lt;&#x3D; k; i++)&#123;</span><br><span class="line">        dataList.add(i * shorter + (k - i) * longer);</span><br><span class="line">    &#125;</span><br><span class="line">    return dataList;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<h2 id="推荐思路-3"><a href="#推荐思路-3" class="headerlink" title="推荐思路"></a>推荐思路</h2><p>这题乍一看，好像得用递归或动态规划来解，仔细一想，其实就是高中数学学过的等差数列知识。</p>
+<p>当 k == 0 时，返回 [] 即可；</p>
+<p>当 shorter == longer 时，返回 [k * shorter] 即可；</p>
+<p>当 shorter != longer 时，那么其实就是一个首项为 k <em> shorter，末项为 k </em> longer，公差为 longer - shorter 的等差数列么。</p>
+<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">public int[] divingBoard(int shorter, int longer, int k) &#123;</span><br><span class="line">    if (k &#x3D;&#x3D; 0) &#123;</span><br><span class="line">        return new int[0];</span><br><span class="line">    &#125;</span><br><span class="line">    if (shorter &#x3D;&#x3D; longer) &#123;</span><br><span class="line">        return new int[]&#123;shorter * k&#125;;</span><br><span class="line">    &#125;</span><br><span class="line">    int[] ans &#x3D; new int[k + 1];</span><br><span class="line">    int st &#x3D; k * shorter;&#x2F;&#x2F; 等差数列的首项</span><br><span class="line">    int delta &#x3D; longer - shorter;&#x2F;&#x2F; 公差</span><br><span class="line">    for (int i &#x3D; 0; i &lt;&#x3D; k; i++) &#123;</span><br><span class="line">        ans[i] &#x3D; st + i * delta;</span><br><span class="line">    &#125;</span><br><span class="line">    return ans;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<h2 id="学习点-5"><a href="#学习点-5" class="headerlink" title="学习点"></a>学习点</h2><p>我就知道，算法的归路终是数学。而且如果按照 ACM 的标准来判断我的答案，返回类型是不符合标准的。</p>
+<blockquote>
+<ul>
+<li>算法问题，终归是数学问题。有时候答案就藏在已经学过的数学公式中，以前做 ACM 的时候就有这种感觉了</li>
+</ul>
+</blockquote>
+<h1 id="有效括号"><a href="#有效括号" class="headerlink" title="有效括号"></a>有效括号</h1><p><a href="https://github.com/Blankj/awesome-java-leetcode/blob/master/note/0020/README.md">查看原文</a></p>
+<p>给定仅包含字符’（’，’）’，’{‘，’}’，’[‘和’]’的字符串，请确定输入字符串是否有效。</p>
+<p>输入字符串在以下情况下有效：</p>
+<blockquote>
+<ul>
+<li>开括号必须用相同类型的括号封闭。</li>
+<li>开括号必须以正确的顺序关闭。</li>
+<li>请注意，空字符串也被视为有效。</li>
+</ul>
+</blockquote>
+<p>示例：</p>
+<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">Input: &quot;()&quot;</span><br><span class="line">Output: true</span><br><span class="line"></span><br><span class="line">Input: &quot;()[]&#123;&#125;&quot;</span><br><span class="line">Output: true</span><br><span class="line"></span><br><span class="line">Input: &quot;(]&quot;</span><br><span class="line">Output: false</span><br><span class="line"></span><br><span class="line">Input: &quot;([)]&quot;</span><br><span class="line">Output: false</span><br><span class="line"></span><br><span class="line">Input: &quot;&#123;[]&#125;&quot;</span><br><span class="line">Output: true</span><br></pre></td></tr></table></figure>
+<h2 id="我的思路-5"><a href="#我的思路-5" class="headerlink" title="我的思路"></a>我的思路</h2><p>这个问题，让我想到了一个游戏，消消乐。把一对紧挨着的、配对的括号消掉，不能消掉的留下，且每发生一次消掉的事件则对内部重新进行一次配对判断。如果最后剩下的字符串是空字符串，则视为有效。</p>
+<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">public static boolean isValidParentheses(String str)&#123;</span><br><span class="line">    if (str.equals(&quot;&quot;)) return true;</span><br><span class="line">    if (str.length() &#x3D;&#x3D; 1) return false;</span><br><span class="line">        </span><br><span class="line">    Map&lt;Character, Character&gt; map &#x3D; new HashMap&lt;&gt;();</span><br><span class="line">    map.put(&#39;&#123;&#39;, &#39;&#125;&#39;);</span><br><span class="line">    map.put(&#39;(&#39;, &#39;)&#39;);</span><br><span class="line">    map.put(&#39;[&#39;, &#39;]&#39;);</span><br><span class="line">    </span><br><span class="line">    while (str.length() &gt; 1) &#123;</span><br><span class="line">        for (int i &#x3D; 0; i &lt; str.length() - 1; i++) &#123;</span><br><span class="line">            &#x2F;&#x2F;如果紧挨着的字符串是配对的，则消掉这两个字符串，然后跳出此次判断，重新开始循环</span><br><span class="line">            if (map.get(str.charAt(i)) !&#x3D; null &amp;&amp; map.get(str.charAt(i)).equals(str.charAt(i + 1)))&#123;</span><br><span class="line">                str &#x3D; str.substring(0, i) + str.substring(i + 2);</span><br><span class="line">                break;</span><br><span class="line">            &#125;</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    return str.length() &#x3D;&#x3D; 0;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<h2 id="推荐思路-4"><a href="#推荐思路-4" class="headerlink" title="推荐思路"></a>推荐思路</h2><p>我们可以用栈来解决这个问题，当出现左括号的时候入栈，当遇到右括号时，判断栈顶的左括号是否何其匹配，不匹配的话直接返回 false 即可，最终判断是否空栈即可。有个细节注意下 top = 1;，从而省去了之后判空的操作和 top - 1 导致数组越界的错误。</p>
+<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">public static boolean isValid(String str) &#123;</span><br><span class="line">    char[] stack &#x3D; new char[str.length() - 1];</span><br><span class="line">    int top &#x3D; 1;</span><br><span class="line">    for (char c : str.toCharArray()) &#123;</span><br><span class="line">        if (c &#x3D;&#x3D; &#39;(&#39; || c &#x3D;&#x3D; &#39;&#123;&#39; || c &#x3D;&#x3D; &#39;[&#39;) &#123;</span><br><span class="line">            stack[top++] &#x3D; c;</span><br><span class="line">        &#125; else if (c &#x3D;&#x3D; &#39;)&#39; &amp;&amp; stack[--top] !&#x3D; &#39;(&#39;)&#123;</span><br><span class="line">            return false;</span><br><span class="line">        &#125; else if (c &#x3D;&#x3D; &#39;]&#39; &amp;&amp; stack[--top] !&#x3D; &#39;[&#39;)&#123;</span><br><span class="line">            return false;</span><br><span class="line">        &#125; else if (c &#x3D;&#x3D; &#39;&#125;&#39; &amp;&amp; stack[--top] !&#x3D; &#39;&#123;&#39;)&#123;</span><br><span class="line">            return false;</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line">    return top &#x3D;&#x3D; 1;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<h2 id="学习点-6"><a href="#学习点-6" class="headerlink" title="学习点"></a>学习点</h2><p>我的思路里，是用截取的方式替代了消掉的操作，而推荐思路里是用了逐个配对替换的方式替代了消掉的操作，让我眼前一亮。我也想过栈这种数据结构，但我数据结构学的不好，不知道用什么存储结构来代表栈。而且我的方法里有几个地方如果编写的时候不注意的话，容易引起数组越界。</p>
+<h1 id="合并两个短列表"><a href="#合并两个短列表" class="headerlink" title="合并两个短列表"></a>合并两个短列表</h1><p>合并两个排序的链表，并将其作为新列表返回。 应该通过将前两个列表的节点拼接在一起来创建新列表。</p>
+<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">Input: 1-&gt;2-&gt;4, 1-&gt;3-&gt;4</span><br><span class="line">Output: 1-&gt;1-&gt;2-&gt;3-&gt;4-&gt;4</span><br></pre></td></tr></table></figure>
+<h1 id="从排序数组中删除重复项"><a href="#从排序数组中删除重复项" class="headerlink" title="从排序数组中删除重复项"></a>从排序数组中删除重复项</h1><p>给定一个已排序的数组 nums，就地删除重复项，以使每个元素仅出现一次并返回新的长度。</p>
+<p>不要为另一个数组分配额外的空间，必须通过使用$O(1)$额外的内存就地修改输入数组来做到这一点。</p>
+<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">Given nums &#x3D; [1,1,2],</span><br><span class="line"></span><br><span class="line">函数应返回length &#x3D; 2，且nums的前两个元素分别为1和2。</span><br><span class="line"></span><br><span class="line">Given nums &#x3D; [0,0,1,1,1,2,2,3,3,4],</span><br><span class="line"></span><br><span class="line">函数应返回length &#x3D; 5，并将nums的前五个元素分别修改为0、1、2、3和4。</span><br><span class="line"></span><br><span class="line">超出返回的长度设置什么值都没有关系。</span><br></pre></td></tr></table></figure>
+<h2 id="我的思路-6"><a href="#我的思路-6" class="headerlink" title="我的思路"></a>我的思路</h2><p>返回的长度，是数组里不重复数字的个数。余下的，从第二位开始，逐个往后比较，如果小于后面的，则将该位赋值为比较大的数，并跳出循环，进行下一位的往后比较。</p>
+<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">public static int removeDuplicates(int[] nums)&#123;</span><br><span class="line">    int length &#x3D; 0;</span><br><span class="line">    for (int i &#x3D; 0; i &lt; nums.length - 1; i++) &#123;</span><br><span class="line">        if (nums[i] &#x3D;&#x3D; nums[i + 1]) &#123;</span><br><span class="line">            length++;</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line">    for (int i &#x3D; 0; i &lt; length; i++) &#123;</span><br><span class="line">        for (int j &#x3D; i + 1; j &lt; nums.length; j++)&#123;</span><br><span class="line">            if (nums[i] &lt; nums[j]) &#123;</span><br><span class="line">                nums[i + 1] &#x3D; nums[j];</span><br><span class="line">                break;</span><br><span class="line">            &#125;</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line">    return length;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<h2 id="推荐思路-5"><a href="#推荐思路-5" class="headerlink" title="推荐思路"></a>推荐思路</h2><p>以tail变量计数的同时，以tail作为赋值位，很骚的操作。</p>
+<p>以及我真的搞不懂了，有时候会加这种长度&lt;=1直接返回值的代码，有时候（指上一题）又不加这种特殊情况处理的代码。</p>
+<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">public int removeDuplicates(int[] nums) &#123;</span><br><span class="line">    int len &#x3D; nums.length;</span><br><span class="line">    if (len &lt;&#x3D; 1) return len;</span><br><span class="line">    int tail &#x3D; 1;</span><br><span class="line">    for (int i &#x3D; 1; i &lt; len; ++i) &#123;</span><br><span class="line">        if (nums[i - 1] !&#x3D; nums[i]) &#123;</span><br><span class="line">            nums[tail++] &#x3D; nums[i];</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line">    return tail;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<h1 id="从排序数组中删除指定项"><a href="#从排序数组中删除指定项" class="headerlink" title="从排序数组中删除指定项"></a>从排序数组中删除指定项</h1><p>给定数组Nums和值val，删除该值的所有实例就位并返回新长度。</p>
+<p>不要为另一个数组分配额外的空间，您必须通过**将输入阵列修改为o（1）额外的内存来修改输入阵列。</p>
+<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">Given nums &#x3D; [0,1,2,2,3,0,4,2], val &#x3D; 2,</span><br><span class="line"></span><br><span class="line">函数应返回length &#x3D; 5，num的前五个元素包含0、1、3、0和4。</span><br></pre></td></tr></table></figure>
+<h2 id="我的思路-7"><a href="#我的思路-7" class="headerlink" title="我的思路"></a>我的思路</h2><p>借鉴上一题的解法思路。</p>
+<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">public static int removeSpecialDuplicated(int[] nums, int val)&#123;</span><br><span class="line">    int length &#x3D; 0;</span><br><span class="line">    for (int i &#x3D; 0; i &lt; nums.length; i++) &#123;</span><br><span class="line">        if (nums[i] !&#x3D; val) &#123;</span><br><span class="line">            nums[length++] &#x3D; nums[i];</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line">    return length;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+]]></content>
+      <categories>
+        <category>Java</category>
       </categories>
   </entry>
   <entry>
