@@ -349,9 +349,9 @@
 <h1 id="序言"><a href="#序言" class="headerlink" title="序言"></a>序言</h1><p>先确定一下我反思的思路：</p>
 <blockquote>
 <ul>
-<li><p>回顾 Android 界面的发展历史：为什么以前的界面很丑，或者说为什么被抛弃了</p>
+<li><p>确定当今界面的大体设计思想：当今的设计思想是怎样的</p>
 </li>
-<li><p>确定当今界面的大体设计思想：当今的设计思想是怎样的，为什么是这样</p>
+<li><p>回顾 Android 界面的发展历史：为什么以前的界面很丑，或者说为什么被抛弃了</p>
 </li>
 <li><p>未来的界面设计方向</p>
 </li>
@@ -359,10 +359,75 @@
 </blockquote>
 <p>就先定这几个章节吧，以后会慢慢补充的，毕竟界面是永远在变化的。</p>
 <h1 id="确定当今界面的大体设计思想"><a href="#确定当今界面的大体设计思想" class="headerlink" title="确定当今界面的大体设计思想"></a>确定当今界面的大体设计思想</h1><p>我思考了一下，应当先确定一个标准，针对各个细节上的标准。在此基础上，才方便进行细节上的确定与优化。</p>
-<p>界面设计大致包括为两类：直观上的静态界面设计与隐性的动态交互设计。</p>
-<p>Google 曾在 2015 年提出了 Material Design。这种设计思想以及相关的设计指南资料已经对界面的规范作出了相当详细的建议，且很多细节上的设计让我啧啧称赞。</p>
-<p>但在我读完后想要学习使用这一思想的时候，遇到了一个很大的问题：Google 并没有提供充足的现有资源，很多控件和动画效果需要开发者自己从零实现。这就使得开发一个完整且优秀的 Material Design 风格 APP 需要花费很多精力。而且，经受过 iOS 设计风格的影响，国内很多衍生系统和 APP 也在模仿 iOS 风格的路上一去不复返。渐渐地，人们的审美也开始趋向于 iOS 的风格。</p>
-<h1 id="回顾"><a href="#回顾" class="headerlink" title="回顾"></a>回顾</h1><h2 id="回顾早期版本的-Android-界面"><a href="#回顾早期版本的-Android-界面" class="headerlink" title="回顾早期版本的 Android 界面"></a>回顾早期版本的 Android 界面</h2>]]></content>
+<p>界面设计大致包括为两类：直观上的静态界面设计(仅视觉)与隐性的动态交互设计(触碰与视觉)。</p>
+<p>Google 曾在 2015 年提出了 Material Design。这种设计思想以及相关的设计指南资料已经对界面的规范作出了相当详细的建议，且很多细节上的设计让我啧啧称赞。作为一个界面审美白痴，我当然要试一下可行性如何。</p>
+<p>但在我实践这一思想的过程中，遇到了一个很大的问题：很多控件细节和动画效果需要开发者自己从零实现，Google 并没有为开发者提供充足的现有资源。这就使得开发一个完整且优秀的 Material Design 风格 APP 需要花费很多精力。</p>
+<p>而且，经受过 iOS 设计风格的影响，国内很多衍生系统和 APP 也在模仿 iOS 风格的路上一去不复返。</p>
+<p>其实我认为，界面风格不分系统。只是，在一个 APP 内的所有界面上，往往很难做到统一界面设计风格与规则。</p>
+<h2 id="Google-Material-Design"><a href="#Google-Material-Design" class="headerlink" title="Google - Material Design"></a>Google - Material Design</h2><p>参考文章：</p>
+<blockquote>
+<ul>
+<li><a href="https://www.uisdc.com/material-design-knowledge">如果你不熟悉Material Design，请一口吃下这篇干货</a></li>
+<li><a href="https://material.io/">Material Design 官网</a></li>
+</ul>
+</blockquote>
+<h3 id="特点"><a href="#特点" class="headerlink" title="特点"></a>特点</h3><p>Material Design 注重与卡片式设计，风格不完全是抽象扁平风格，也带有一些拟物的特性。它从物理现实里学习了诸如质感、投影、加速度等概念，将之在动画细节上给予表现。扁平设计的优点是信息噪音(见下文“信噪比”)少，缺点是情感（见下文“情感化”）传递不足。</p>
+<h3 id="设计理念"><a href="#设计理念" class="headerlink" title="设计理念"></a>设计理念</h3><h4 id="Z轴"><a href="#Z轴" class="headerlink" title="Z轴"></a>Z轴</h4><p>在二维的手机平面上，利用投影、动效等构建出Z轴，创造出三维感。</p>
+<blockquote>
+<ul>
+<li>投影：通过阴影的面积与边缘的模糊化程度来反馈出控件的海拔高低</li>
+</ul>
+</blockquote>
+<p><img src="https://image.uisdc.com/wp-content/uploads/2018/11/uisdc-yk-20181104-58.jpg" alt="海拔阴影比较图"></p>
+<blockquote>
+<ul>
+<li>界面分层</li>
+</ul>
+</blockquote>
+<p><img src="https://image.uisdc.com/wp-content/uploads/2018/11/uisdc-yk-20181104-4.jpg" alt="控件海拔高度图"></p>
+<h4 id="组件"><a href="#组件" class="headerlink" title="组件"></a>组件</h4><blockquote>
+<ul>
+<li>悬浮球 FAB</li>
+</ul>
+</blockquote>
+<p>FAB 常有默认（56dp）与 Mini 尺寸（40dp）：</p>
+<p><img src="https://image.uisdc.com/wp-content/uploads/2018/11/uisdc-yk-20181104-136.jpg" alt="FAB图标"></p>
+<p>FAB 可设计为跳转，也可以展开子菜单：</p>
+<p><img src="https://image.uisdc.com/wp-content/uploads/2018/11/uisdc-yk-20181104-141.jpg" alt></p>
+<h2 id="一些设计概念"><a href="#一些设计概念" class="headerlink" title="一些设计概念"></a>一些设计概念</h2><h3 id="信噪比"><a href="#信噪比" class="headerlink" title="信噪比"></a>信噪比</h3><p>参考文章：</p>
+<blockquote>
+<ul>
+<li><a href="https://www.sohu.com/a/280346052_505826">界面设计中的“信噪比”</a></li>
+</ul>
+</blockquote>
+<p>“信号”指有效或用户的目标信息，“噪声”指无用或干扰信息。信噪比越高，将信息传达给用户的效率也就越高。通常有两种方法来提高信噪比，一是<strong>加大信号</strong>，二是<strong>降低噪声</strong>。</p>
+<p>比如下面这张图：</p>
+<p><img src="http://5b0988e595225.cdn.sohucs.com/images/20181207/f71d3e67b75d453dbe1cbdc442b2e195.jpeg" alt></p>
+<p>在右侧的界面中，分割线的颜色深浅与列表文字保持了一致。这就使得在视觉效果上呈现出，列表里的文字内容与分割线的信息处理等级是一致的。而实际上，应用想展示给用户的优先处理信息，是列表里的文字内容。所以，这里需要将分割线的颜色设置为浅色，以减少干扰信息。</p>
+<p>再比如这张图：</p>
+<p><img src="http://5b0988e595225.cdn.sohucs.com/images/20181207/717debfaa24344bcadf0bda9757249c9.jpeg" alt></p>
+<p>iOS7 将拟物化图标改为扁平化图标。拟物化图标拥有充足的细节表现，比如高光、阴影、纹理、材质等；而扁平化图标经过了抽象、简化与符号化，与前者相比，去掉了很多不必要的细节，减少了用户的信息提取量。背景从拟真的深色图片更换为毛玻璃化的浅色背景，也降低了噪声<del>（与文章里的加大信号观点不同，我反而认为是这些处理是着重弱化了噪声）</del>。此外，iOS6 的主界面说不上脏，但 iOS7 的主界面看起来更“干净”一些，这是因为后者的界面里的颜色纯度与明度更高，颜色跨度比较小（也可以看得出相对地，iOS7 四个带有一些黑色元素的图标更容易吸引视线）。</p>
+<p>关于“信噪比”，我之前在学习游戏开发的视频中也看到过，只不过一时找不到视频了。等我找到后来这里补个链接。</p>
+<h3 id="情感化"><a href="#情感化" class="headerlink" title="情感化"></a>情感化</h3><p>参考文章</p>
+<blockquote>
+<ul>
+<li><a href="https://zhuanlan.zhihu.com/p/109625598">APP引导页设计技巧，让你的设计更上一层楼</a></li>
+<li><a href="http://www.woshipm.com/pd/12750.html">情感化移动应用设计</a></li>
+<li><a href="https://zhuanlan.zhihu.com/p/43085292">界面情感化设计</a></li>
+</ul>
+</blockquote>
+<p>情绪是一个很主观、很微妙的东西。情感化设计，是指设计师利用界面元素，激发和带给用户一些设计目标内的情绪。当然，有时也可能处于设计目标之外。这样易引起用户的兴趣或共鸣，提升用户的粘度。</p>
+<p>情感化设计常通过色彩、图案、布局、交互来达成感染情绪的结果。比如：</p>
+<blockquote>
+<ul>
+<li>色彩：黄红色常作为积极的色彩和主色调使用，给人以热情、快乐等正面情绪；蓝绿黑色常作为消极的色彩和配色使用，给人以安静祥和、自由舒适等情绪。</li>
+<li>图案：类似于下面的生动表情图案，能较准确地表达出一个人的情绪</li>
+<li>布局：具有清晰、直观的结构化和层次化的界面，能让用户感觉到清爽与舒适；杂乱无章的布局容易让用户感到烦躁与不快。</li>
+<li>交互：活泼有趣的交互设计，能激发用户对应用的使用兴趣；规矩死板的交互，会让用户觉得生硬无趣。</li>
+</ul>
+</blockquote>
+<p><img src="http://5b0988e595225.cdn.sohucs.com/images/20200422/b8006cac55204b8dbc91dc85c59af452.gif" alt></p>
+]]></content>
       <categories>
         <category>Android</category>
       </categories>
@@ -1311,6 +1376,12 @@
 <figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">Given nums &#x3D; [0,1,2,2,3,0,4,2], val &#x3D; 2,</span><br><span class="line"></span><br><span class="line">函数应返回length &#x3D; 5，num的前五个元素包含0、1、3、0和4。</span><br></pre></td></tr></table></figure>
 <h2 id="我的思路-7"><a href="#我的思路-7" class="headerlink" title="我的思路"></a>我的思路</h2><p>借鉴上一题的解法思路。</p>
 <figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">public static int removeSpecialDuplicated(int[] nums, int val)&#123;</span><br><span class="line">    int length &#x3D; 0;</span><br><span class="line">    for (int i &#x3D; 0; i &lt; nums.length; i++) &#123;</span><br><span class="line">        if (nums[i] !&#x3D; val) &#123;</span><br><span class="line">            nums[length++] &#x3D; nums[i];</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line">    return length;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<h1 id="搜索插入位置"><a href="#搜索插入位置" class="headerlink" title="搜索插入位置"></a>搜索插入位置</h1><p>给定一个已排序的数组和一个目标值，如果找到目标，则返回索引。 如果不是，则返回按顺序插入索引的位置的索引。</p>
+<p>您可以假设阵列中没有重复项。</p>
+<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">Input: [1,3,5,6], 5</span><br><span class="line">Output: 2</span><br><span class="line"></span><br><span class="line">Input: [1,3,5,6], 2</span><br><span class="line">Output: 1</span><br><span class="line"></span><br><span class="line">Input: [1,3,5,6], 7</span><br><span class="line">Output: 4</span><br><span class="line"></span><br><span class="line">Input: [1,3,5,6], 0</span><br><span class="line">Output: 0</span><br></pre></td></tr></table></figure>
+<h2 id="我的思路-8"><a href="#我的思路-8" class="headerlink" title="我的思路"></a>我的思路</h2><p>哈，这么简单？这挨个比较不就完了？</p>
+<h2 id="推荐思路-6"><a href="#推荐思路-6" class="headerlink" title="推荐思路"></a>推荐思路</h2><p>哦<del>（自作聪明之后发现被打脸后的失落）</del>，用二分法加快搜索速度啊~</p>
+<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">public int searchInsert(int[] nums, int target) &#123;</span><br><span class="line">    int left &#x3D; 0, right &#x3D; nums.length - 1, mid &#x3D; (right + left) &gt;&gt; 1;</span><br><span class="line">    while (left &lt;&#x3D; right) &#123;</span><br><span class="line">        if (target &lt;&#x3D; nums[mid]) right &#x3D; mid - 1;</span><br><span class="line">        else left &#x3D; mid + 1;</span><br><span class="line">        mid &#x3D; (right + left) &gt;&gt; 1;</span><br><span class="line">    &#125;</span><br><span class="line">    return left;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
 ]]></content>
       <categories>
         <category>Java</category>
