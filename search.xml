@@ -445,7 +445,36 @@
 <p><img src="https://image.uisdc.com/wp-content/uploads/2018/11/uisdc-yk-20181104-53.jpg" alt></p>
 <p>用户选择前，可以禁用掉确认功能防止用户点击：</p>
 <p><img src="https://image.uisdc.com/wp-content/uploads/2018/11/uisdc-yk-20181104-128.jpg" alt></p>
-<h5 id="分割线"><a href="#分割线" class="headerlink" title="分割线"></a>分割线</h5><h2 id="一些设计概念"><a href="#一些设计概念" class="headerlink" title="一些设计概念"></a>一些设计概念</h2><h3 id="信噪比"><a href="#信噪比" class="headerlink" title="信噪比"></a>信噪比</h3><p>参考文章：</p>
+<h5 id="分割线"><a href="#分割线" class="headerlink" title="分割线"></a>分割线</h5><p>信息分割按照轻重，次序依次是面的分割、线的分割和留白的分割。</p>
+<p><strong>全出血分割线</strong>与<strong>插入式分割线</strong></p>
+<p>全出血（“出血”是平面印刷中的概念，“全出血”指分割线横向贯穿整个页面）分割线给人的感受是信息完全独立，而插入式分割线更方便我们找到当前阅读的位置。</p>
+<p><img src="https://image.uisdc.com/wp-content/uploads/2018/11/uisdc-yk-20181104-31.jpg" alt></p>
+<h5 id="抽屉式导航栏-Navigation-Drawer"><a href="#抽屉式导航栏-Navigation-Drawer" class="headerlink" title="抽屉式导航栏 Navigation Drawer"></a>抽屉式导航栏 Navigation Drawer</h5><p>与苹果的不建议使用不同，Material Design 反而很青睐这种交互形式，并鼓励在应用栏增加一个导航图标，以供激活抽屉式导航。</p>
+<blockquote>
+<ul>
+<li>容器（可选）</li>
+<li>头部（可选）。通常为个人信息</li>
+<li>分割线（可选）</li>
+<li>选中态</li>
+<li>选中态文本</li>
+<li>未激活文本</li>
+<li>小标题</li>
+</ul>
+</blockquote>
+<p><img src="https://image.uisdc.com/wp-content/uploads/2018/11/uisdc-yk-20181104-30.jpg" alt></p>
+<h5 id="页卡-Tabs"><a href="#页卡-Tabs" class="headerlink" title="页卡 Tabs"></a>页卡 Tabs</h5><p>常见于顶部应用栏，一般由2个到多个组成。点击时，应用栏下方跳转到对应内容。</p>
+<p><img src="https://image.uisdc.com/wp-content/uploads/2018/11/uisdc-yk-20181104-96.jpg" alt></p>
+<h5 id="文字输入框-Text-Fields"><a href="#文字输入框-Text-Fields" class="headerlink" title="文字输入框 Text Fields"></a>文字输入框 Text Fields</h5><p><img src="https://image.uisdc.com/wp-content/uploads/2018/11/uisdc-yk-20181104-94.jpg" alt></p>
+<h5 id="图片组-Image-Lists"><a href="#图片组-Image-Lists" class="headerlink" title="图片组 Image Lists"></a>图片组 Image Lists</h5><blockquote>
+<ul>
+<li>正常图片组：每张图片大小一致，间距统一且通常有些窄。图片源要求大小统一</li>
+<li>排版图片组</li>
+<li>照片墙图片组：结构组织教松散，适合图像尺寸不均等的内容展示</li>
+<li>瀑布流图片组：图片宽度均相等</li>
+</ul>
+</blockquote>
+<p><img src="https://image.uisdc.com/wp-content/uploads/2018/11/uisdc-yk-20181104-72.jpg" alt></p>
+<h2 id="一些设计概念"><a href="#一些设计概念" class="headerlink" title="一些设计概念"></a>一些设计概念</h2><h3 id="信噪比"><a href="#信噪比" class="headerlink" title="信噪比"></a>信噪比</h3><p>参考文章：</p>
 <blockquote>
 <ul>
 <li><a href="https://www.sohu.com/a/280346052_505826">界面设计中的“信噪比”</a></li>
