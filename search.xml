@@ -342,185 +342,6 @@
       </categories>
   </entry>
   <entry>
-    <title>为什么我做不好界面</title>
-    <url>/2021/04/02/%E4%B8%BA%E4%BB%80%E4%B9%88%E6%88%91%E5%81%9A%E4%B8%8D%E5%A5%BD%E7%95%8C%E9%9D%A2/</url>
-    <content><![CDATA[<p>从开始学 Android 到现在四五年了，每次写界面都会被人吐槽界面很丑。虽然我并不是 UI 设计师，但自己也不能总是写一些平均水平以下的界面，于是决定反思一下为什么我做不好界面。</p>
-<a id="more"></a>
-<h1 id="序言"><a href="#序言" class="headerlink" title="序言"></a>序言</h1><p>先确定一下我反思的思路：</p>
-<blockquote>
-<ul>
-<li><p>确定当今界面的大体设计思想：当今的设计思想是怎样的</p>
-</li>
-<li><p>回顾 Android 界面的发展历史：为什么以前的界面很丑，或者说为什么被抛弃了</p>
-</li>
-<li><p>未来的界面设计方向</p>
-</li>
-</ul>
-</blockquote>
-<p>就先定这几个章节吧，以后会慢慢补充的，<strong>毕竟审美是在持续变化的</strong>。</p>
-<h1 id="确定当今界面的大体设计思想"><a href="#确定当今界面的大体设计思想" class="headerlink" title="确定当今界面的大体设计思想"></a>确定当今界面的大体设计思想</h1><p>我思考了一下，应当先确定一个标准，针对各个细节上的标准。在此基础上，才方便进行细节上的确定与优化。</p>
-<p>界面设计大致包括为两类：直观上的静态界面设计(仅视觉)与隐性的动态交互设计(触碰与视觉)。</p>
-<p>Google 曾在 2015 年提出了 Material Design。这种设计思想以及相关的设计指南资料已经对界面的规范作出了相当详细的建议，且很多细节上的设计让我啧啧称赞。作为一个界面审美白痴，我当然要试一下可行性如何。</p>
-<p>但在我实践这一思想的过程中，遇到了一个很大的问题：很多控件细节和动画效果需要开发者自己从零实现，Google 并没有为开发者提供充足的现有资源。这就使得开发一个完整且优秀的 Material Design 风格 APP 需要花费很多精力。</p>
-<p>而且，经受过 iOS 设计风格的影响，国内很多衍生系统和 APP 也在模仿 iOS 风格的路上一去不复返。</p>
-<p>其实我认为，界面风格不分系统。只是，在一个 APP 内的所有界面上，往往很难做到统一界面设计风格与规则。</p>
-<h2 id="Google-Material-Design"><a href="#Google-Material-Design" class="headerlink" title="Google - Material Design"></a>Google - Material Design</h2><p>参考文章：</p>
-<blockquote>
-<ul>
-<li><a href="https://www.uisdc.com/material-design-knowledge">如果你不熟悉Material Design，请一口吃下这篇干货</a></li>
-<li><a href="https://material.io/">Material Design 官网</a></li>
-</ul>
-</blockquote>
-<h3 id="特点"><a href="#特点" class="headerlink" title="特点"></a>特点</h3><p>Material Design 注重与卡片式设计，风格不完全是抽象扁平风格，也带有一些拟物的特性。它从物理现实里学习了诸如质感、投影、加速度等概念，将之在动画细节上给予表现。扁平设计的优点是<strong>信息噪音少</strong>(见下文设计概念中的“信噪比”)，缺点是<strong>情感传递不足</strong>（见下文设计概念中的“情感化”）。</p>
-<h3 id="设计理念"><a href="#设计理念" class="headerlink" title="设计理念"></a>设计理念</h3><h4 id="Z轴"><a href="#Z轴" class="headerlink" title="Z轴"></a>Z轴</h4><p>在二维的手机平面上，利用投影、动效等构建出Z轴，创造出三维感。</p>
-<h5 id="投影"><a href="#投影" class="headerlink" title="投影"></a>投影</h5><p>通过阴影的面积与边缘的模糊化程度来反馈出控件的海拔高低</p>
-<p><img src="https://image.uisdc.com/wp-content/uploads/2018/11/uisdc-yk-20181104-58.jpg" alt="海拔阴影比较图"></p>
-<h5 id="界面分层"><a href="#界面分层" class="headerlink" title="界面分层"></a>界面分层</h5><p><img src="https://image.uisdc.com/wp-content/uploads/2018/11/uisdc-yk-20181104-4.jpg" alt="控件海拔高度图"></p>
-<h4 id="组件"><a href="#组件" class="headerlink" title="组件"></a>组件</h4><p>正如 iOS 拥有自己的特色组件，Material Design 也有一些自己独具特色的组件。</p>
-<h5 id="悬浮球-FAB"><a href="#悬浮球-FAB" class="headerlink" title="悬浮球 FAB"></a>悬浮球 FAB</h5><p>悬浮球是一个很显眼的组件。它应当<strong>负责当前页面的一些主线操作</strong>。</p>
-<p>FAB 常有默认（56dp）与 Mini 尺寸（40dp）：</p>
-<p><img src="https://image.uisdc.com/wp-content/uploads/2018/11/uisdc-yk-20181104-136.jpg" alt="FAB图标"></p>
-<p>FAB 可设计为跳转，也可以展开子菜单：</p>
-<p><img src="https://image.uisdc.com/wp-content/uploads/2018/11/uisdc-yk-20181104-141.jpg" alt></p>
-<h5 id="底部应用栏-App-bars-bottom"><a href="#底部应用栏-App-bars-bottom" class="headerlink" title="底部应用栏 App bars: bottom"></a>底部应用栏 App bars: bottom</h5><p><img src="https://image.uisdc.com/wp-content/uploads/2018/11/uisdc-yk-20181104-55.jpg" alt></p>
-<p>底部栏应包含两个以上的图标(不含FAB)：</p>
-<p><img src="https://image.uisdc.com/wp-content/uploads/2018/11/uisdc-yk-20181104-35.jpg" alt></p>
-<h5 id="顶部应用栏-App-bars-top"><a href="#顶部应用栏-App-bars-top" class="headerlink" title="顶部应用栏 App bars: top"></a>顶部应用栏 App bars: top</h5><p>顶部应用栏与 iOS 的导航栏有些类似但不同。标题并非居中而是左对齐。左侧最多放置一个系统图标，右侧可放置多个系统图标。</p>
-<p><img src="https://image.uisdc.com/wp-content/uploads/2018/11/uisdc-yk-20181104-18.jpg" alt></p>
-<p>部分状态下可以改变原来的系统图标：</p>
-<p><img src="https://image.uisdc.com/wp-content/uploads/2018/11/uisdc-yk-20181104-15.jpg" alt></p>
-<p><strong>突出标题</strong>：可改变高度以凸显标题。可以让标题容纳更多的文字内容，比如新闻APP。有时为了减少视觉层级，可以在应用栏中加入图片来增强界面的整体感。</p>
-<p><img src="https://image.uisdc.com/wp-content/uploads/2018/11/uisdc-yk-20181104-12.jpg" alt></p>
-<h5 id="背板设计-Backdrop"><a href="#背板设计-Backdrop" class="headerlink" title="背板设计 Backdrop"></a>背板设计 Backdrop</h5><p>在应用引发的某个操作中，可设计背板来承载某些选项和辅助信息。较类似于 iOS 的 Action Sheet。</p>
-<p><img src="https://image.uisdc.com/wp-content/uploads/2018/11/uisdc-yk-20181104-105.jpg" alt="概念图"></p>
-<h5 id="背板设计的辅助控件"><a href="#背板设计的辅助控件" class="headerlink" title="背板设计的辅助控件"></a>背板设计的辅助控件</h5><blockquote>
-<ul>
-<li>背板设计隐藏时，后层控件可提供有关前层的辅助信息</li>
-<li>背板设计激活时，后层可显示与前层相关的控件</li>
-</ul>
-</blockquote>
-<p><img src="https://image.uisdc.com/wp-content/uploads/2018/11/uisdc-yk-20181104-56.jpg" alt></p>
-<h5 id="横幅-Banner"><a href="#横幅-Banner" class="headerlink" title="横幅 Banner"></a>横幅 Banner</h5><p>是顶部栏下的第一个凸显区域，显示突出的消息和相关操作。</p>
-<p><img src="https://image.uisdc.com/wp-content/uploads/2018/11/uisdc-yk-20181104-73.jpg" alt></p>
-<h5 id="底部导航-Bottom-Navigation"><a href="#底部导航-Bottom-Navigation" class="headerlink" title="底部导航 Bottom Navigation"></a>底部导航 Bottom Navigation</h5><p>将底部等分为多个图标与辅助文字的点击区域，以将功能模块区分开来。</p>
-<p><img src="https://image.uisdc.com/wp-content/uploads/2018/11/uisdc-yk-20181104-61.jpg" alt></p>
-<h5 id="按钮-Button"><a href="#按钮-Button" class="headerlink" title="按钮 Button"></a>按钮 Button</h5><p>按钮是一个很常见的元素，在 Material Design 中则常见为以下几种风格：</p>
-<blockquote>
-<ul>
-<li>纯文字按钮。只有加粗带色彩的文字，点击时会有波纹效果，显示按钮范围</li>
-<li>线性按钮。用线框来表明点击区域，不显眼</li>
-<li>填充按钮。常见形式，明显</li>
-<li>切换按钮。</li>
-</ul>
-</blockquote>
-<p><img src="https://image.uisdc.com/wp-content/uploads/2018/11/uisdc-yk-20181104-84.jpg" alt></p>
-<p>贴合在文字里，不显得冲突显眼的 纯文字按钮：</p>
-<p><img src="https://image.uisdc.com/wp-content/uploads/2018/11/uisdc-yk-20181104-116.jpg" alt></p>
-<p>权重不抢戏的 线性按钮：</p>
-<p><img src="https://image.uisdc.com/wp-content/uploads/2018/11/uisdc-yk-20181104-134.jpg" alt></p>
-<p>有权重，突出操作的 按钮：</p>
-<p><img src="https://image.uisdc.com/wp-content/uploads/2018/11/uisdc-yk-20181104-37.jpg" alt></p>
-<h5 id="卡片式设计-CardView"><a href="#卡片式设计-CardView" class="headerlink" title="卡片式设计 CardView"></a>卡片式设计 CardView</h5><p>这也是 Material Design 的显著标志。卡片式设计像是一个小的单元，单元内的信息逻辑关系更加紧密。</p>
-<p>卡片式设计应包含以下部分：</p>
-<blockquote>
-<ul>
-<li>容器卡元素。容纳所有卡内元素，尺寸由元素决定</li>
-<li>缩略图（可选）。放置头像、图标或logo等</li>
-<li>标题文字（可选）。通常是重要的标题，文字较大</li>
-<li>小标题（可选）。可放置文章署名或标记位置等</li>
-<li>多媒体（可选）。可放置照片或视频等</li>
-<li>辅助文字（可选）。通常是对于多媒体的描述信息</li>
-<li>按钮（可选）</li>
-<li>图标（可选）</li>
-</ul>
-</blockquote>
-<p><img src="https://image.uisdc.com/wp-content/uploads/2018/11/uisdc-yk-20181104-112.jpg" alt></p>
-<p><strong>卡片设计中的分割线</strong></p>
-<p>如果卡片中的内容元素不属于一个逻辑，那么可以使用一条分割线来分割区域。注意，分割线需使用非常轻的颜色，且不要抵达边缘，以保证视觉上卡片的完整性。</p>
-<p><img src="https://image.uisdc.com/wp-content/uploads/2018/11/uisdc-yk-20181104-79.jpg" alt></p>
-<h5 id="纸片-Chip"><a href="#纸片-Chip" class="headerlink" title="纸片 Chip"></a>纸片 Chip</h5><p>纸片通常是输入框中多个元素的组合，拥有选中态以及交互态等丰富交互。</p>
-<p><img src="https://image.uisdc.com/wp-content/uploads/2018/11/uisdc-yk-20181104-92.jpg" alt></p>
-<h5 id="对话框-Dialog"><a href="#对话框-Dialog" class="headerlink" title="对话框 Dialog"></a>对话框 Dialog</h5><p>对话框分为模态对话框与非模态对话框。主要区别是，模态对话框需要与人交互，而非模态对话框则是显示提示信息。</p>
-<p><img src="https://image.uisdc.com/wp-content/uploads/2018/11/uisdc-yk-20181104-87.jpg" alt></p>
-<p><img src="https://image.uisdc.com/wp-content/uploads/2018/11/uisdc-yk-20181104-53.jpg" alt></p>
-<p>用户选择前，可以禁用掉确认功能防止用户点击：</p>
-<p><img src="https://image.uisdc.com/wp-content/uploads/2018/11/uisdc-yk-20181104-128.jpg" alt></p>
-<h5 id="分割线"><a href="#分割线" class="headerlink" title="分割线"></a>分割线</h5><p>信息分割按照轻重，次序依次是面的分割、线的分割和留白的分割。</p>
-<p><strong>全出血分割线</strong>与<strong>插入式分割线</strong></p>
-<p>全出血（“出血”是平面印刷中的概念，“全出血”指分割线横向贯穿整个页面）分割线给人的感受是信息完全独立，而插入式分割线更方便我们找到当前阅读的位置。</p>
-<p><img src="https://image.uisdc.com/wp-content/uploads/2018/11/uisdc-yk-20181104-31.jpg" alt></p>
-<h5 id="抽屉式导航栏-Navigation-Drawer"><a href="#抽屉式导航栏-Navigation-Drawer" class="headerlink" title="抽屉式导航栏 Navigation Drawer"></a>抽屉式导航栏 Navigation Drawer</h5><p>与苹果的不建议使用不同，Material Design 反而很青睐这种交互形式，并鼓励在应用栏增加一个导航图标，以供激活抽屉式导航。</p>
-<blockquote>
-<ul>
-<li>容器（可选）</li>
-<li>头部（可选）。通常为个人信息</li>
-<li>分割线（可选）</li>
-<li>选中态</li>
-<li>选中态文本</li>
-<li>未激活文本</li>
-<li>小标题</li>
-</ul>
-</blockquote>
-<p><img src="https://image.uisdc.com/wp-content/uploads/2018/11/uisdc-yk-20181104-30.jpg" alt></p>
-<h5 id="页卡-Tabs"><a href="#页卡-Tabs" class="headerlink" title="页卡 Tabs"></a>页卡 Tabs</h5><p>常见于顶部应用栏，一般由2个到多个组成。点击时，应用栏下方跳转到对应内容。</p>
-<p><img src="https://image.uisdc.com/wp-content/uploads/2018/11/uisdc-yk-20181104-96.jpg" alt></p>
-<h5 id="文字输入框-Text-Fields"><a href="#文字输入框-Text-Fields" class="headerlink" title="文字输入框 Text Fields"></a>文字输入框 Text Fields</h5><p><img src="https://image.uisdc.com/wp-content/uploads/2018/11/uisdc-yk-20181104-94.jpg" alt></p>
-<h5 id="图片组-Image-Lists"><a href="#图片组-Image-Lists" class="headerlink" title="图片组 Image Lists"></a>图片组 Image Lists</h5><blockquote>
-<ul>
-<li>正常图片组：每张图片大小一致，间距统一且通常有些窄。图片源要求大小统一</li>
-<li>排版图片组</li>
-<li>照片墙图片组：结构组织教松散，适合图像尺寸不均等的内容展示</li>
-<li>瀑布流图片组：图片宽度均相等</li>
-</ul>
-</blockquote>
-<p><img src="https://image.uisdc.com/wp-content/uploads/2018/11/uisdc-yk-20181104-72.jpg" alt></p>
-<h5 id="滑块-Sliders"><a href="#滑块-Sliders" class="headerlink" title="滑块 Sliders"></a>滑块 Sliders</h5><p>在音乐 APP 和视频 APP 中，需要设置一个或多个滑块方便用户进行调节。</p>
-<p><img src="https://image.uisdc.com/wp-content/uploads/2018/11/uisdc-yk-20181104-70.jpg" alt></p>
-<h5 id="选择器-Selection-Controls"><a href="#选择器-Selection-Controls" class="headerlink" title="选择器 Selection Controls"></a>选择器 Selection Controls</h5><p>苹果使用按钮和 Action Sheet 来代替不太好点击的选择器，但 Material Design 仍然认为这些选择器在移动端可行。</p>
-<p><img src="https://image.uisdc.com/wp-content/uploads/2018/11/uisdc-yk-20181104-137.jpg" alt></p>
-<h5 id="底部提示栏-Snackbars"><a href="#底部提示栏-Snackbars" class="headerlink" title="底部提示栏 Snackbars"></a>底部提示栏 Snackbars</h5><p>当需要给用户一些不需要确认操作的信息，且处于不影响用户操作的情景，底部提示栏是一个比较不错的选择。</p>
-<p><img src="https://image.uisdc.com/wp-content/uploads/2018/11/uisdc-yk-20181104-126.jpg" alt></p>
-<h5 id="状态指引-Progress-Indicators"><a href="#状态指引-Progress-Indicators" class="headerlink" title="状态指引 Progress Indicators"></a>状态指引 Progress Indicators</h5><p>在一些花费时间加载的页面，需要让用户感知到加载的状态和进度，且不必占用过多的空间。</p>
-<p><img src="https://image.uisdc.com/wp-content/uploads/2018/11/uisdc-yk-20181104-145.jpg" alt></p>
-<h2 id="一些设计概念"><a href="#一些设计概念" class="headerlink" title="一些设计概念"></a>一些设计概念</h2><h3 id="信噪比"><a href="#信噪比" class="headerlink" title="信噪比"></a>信噪比</h3><p>参考文章：</p>
-<blockquote>
-<ul>
-<li><a href="https://www.sohu.com/a/280346052_505826">界面设计中的“信噪比”</a></li>
-</ul>
-</blockquote>
-<p>“信号”指有效或用户的目标信息，“噪声”指无用或干扰信息。信噪比越高，将信息传达给用户的效率也就越高。通常有两种方法来提高信噪比，一是<strong>加大信号</strong>，二是<strong>降低噪声</strong>。</p>
-<p>比如下面这张图：</p>
-<p><img src="http://5b0988e595225.cdn.sohucs.com/images/20181207/f71d3e67b75d453dbe1cbdc442b2e195.jpeg" alt></p>
-<p>在右侧的界面中，分割线的颜色深浅与列表文字保持了一致。这就使得在视觉效果上呈现出，列表里的文字内容与分割线的信息处理等级是一致的。而实际上，应用想展示给用户的优先处理信息，是列表里的文字内容。所以，这里需要将分割线的颜色设置为浅色，以减少干扰信息。</p>
-<p>再比如这张图：</p>
-<p><img src="http://5b0988e595225.cdn.sohucs.com/images/20181207/717debfaa24344bcadf0bda9757249c9.jpeg" alt></p>
-<p>iOS7 将拟物化图标改为扁平化图标。拟物化图标拥有充足的细节表现，比如高光、阴影、纹理、材质等；而扁平化图标经过了抽象、简化与符号化，与前者相比，去掉了很多不必要的细节，减少了用户的信息提取量。背景从拟真的深色图片更换为毛玻璃化的浅色背景，也降低了噪声<del>（与文章里的加大信号观点不同，我反而认为是这些处理是着重弱化了噪声）</del>。此外，iOS6 的主界面说不上脏，但 iOS7 的主界面看起来更“干净”一些，这是因为后者的界面里的颜色纯度与明度更高，颜色跨度比较小（也可以看得出相对地，iOS7 四个带有一些黑色元素的图标更容易吸引视线）。</p>
-<p>关于“信噪比”，我之前在学习游戏开发的视频中也看到过，只不过一时找不到视频了。等我找到后来这里补个链接。</p>
-<h3 id="情感化"><a href="#情感化" class="headerlink" title="情感化"></a>情感化</h3><p>参考文章</p>
-<blockquote>
-<ul>
-<li><a href="https://zhuanlan.zhihu.com/p/109625598">APP引导页设计技巧，让你的设计更上一层楼</a></li>
-<li><a href="http://www.woshipm.com/pd/12750.html">情感化移动应用设计</a></li>
-<li><a href="https://zhuanlan.zhihu.com/p/43085292">界面情感化设计</a></li>
-</ul>
-</blockquote>
-<p>情绪是一个很主观、很微妙的东西。情感化设计，是指设计师利用界面元素，激发和带给用户一些设计目标内的情绪。当然，有时也可能处于设计目标之外。这样易引起用户的兴趣或共鸣，提升用户的粘度。</p>
-<p>情感化设计常通过色彩、图案、布局、交互来达成感染情绪的结果。比如：</p>
-<blockquote>
-<ul>
-<li>色彩：黄红色常作为积极的色彩和主色调使用，给人以热情、快乐等正面情绪；蓝绿黑色常作为消极的色彩和配色使用，给人以安静祥和、自由舒适等情绪。</li>
-<li>图案：类似于下面的生动表情图案，能较准确地表达出一个人的情绪</li>
-<li>布局：具有清晰、直观的结构化和层次化的界面，能让用户感觉到清爽与舒适；杂乱无章的布局容易让用户感到烦躁与不快。</li>
-<li>交互：活泼有趣的交互设计，能激发用户对应用的使用兴趣；规矩死板的交互，会让用户觉得生硬无趣。</li>
-</ul>
-</blockquote>
-<p><img src="http://5b0988e595225.cdn.sohucs.com/images/20200422/b8006cac55204b8dbc91dc85c59af452.gif" alt></p>
-]]></content>
-      <categories>
-        <category>Android</category>
-      </categories>
-  </entry>
-  <entry>
     <title>二载成就杂谈</title>
     <url>/2020/12/20/%E4%BA%8C%E8%BD%BD%E6%88%90%E5%B0%B1%E6%9D%82%E8%B0%88/</url>
     <content><![CDATA[<p>我活的太过随心所欲，生活便迷失了方向。</p>
@@ -1474,9 +1295,238 @@
 <h2 id="我的思路-8"><a href="#我的思路-8" class="headerlink" title="我的思路"></a>我的思路</h2><p>哈，这么简单？这挨个比较不就完了？</p>
 <h2 id="推荐思路-6"><a href="#推荐思路-6" class="headerlink" title="推荐思路"></a>推荐思路</h2><p>哦<del>（自作聪明之后发现被打脸后的失落）</del>，用二分法加快搜索速度啊~</p>
 <figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">public int searchInsert(int[] nums, int target) &#123;</span><br><span class="line">    int left &#x3D; 0, right &#x3D; nums.length - 1, mid &#x3D; (right + left) &gt;&gt; 1;</span><br><span class="line">    while (left &lt;&#x3D; right) &#123;</span><br><span class="line">        if (target &lt;&#x3D; nums[mid]) right &#x3D; mid - 1;</span><br><span class="line">        else left &#x3D; mid + 1;</span><br><span class="line">        mid &#x3D; (right + left) &gt;&gt; 1;</span><br><span class="line">    &#125;</span><br><span class="line">    return left;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-]]></content>
+<h1 id="数数说"><a href="#数数说" class="headerlink" title="数数说"></a>数数说</h1><p>count-and-say 序列是整数序列，前五项如下：</p>
+<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">1. 1</span><br><span class="line">2. 11</span><br><span class="line">3. 21</span><br><span class="line">4. 1211</span><br><span class="line">5. 111221</span><br></pre></td></tr></table></figure>
+<p>1 读作“一个 1 ”或 11。</p>
+<p>11 读作“两个 1 ”或 21。</p>
+<p>21 读作“一个 2，然后一个 1 ”或 1211。</p>
+<p>给定一个整数 n，生成 count-and-say 序列的第 n 项。</p>
+<p>注意：整数序列的每一项都将表示为一个字符串。</p>
+<h2 id="思路"><a href="#思路" class="headerlink" title="思路"></a>思路</h2><p>我先是手动写了前七项的值，发现无数学规律可言，那就只能按照递归或循环的办法来计算输出结果。关键在于在循环中计算某个数的出现次数。</p>
+<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">public static String countAndSay(int n) &#123;</span><br><span class="line">    String str &#x3D; &quot;1&quot;;</span><br><span class="line">    while (--n &gt; 0) &#123;</span><br><span class="line">        StringBuilder res &#x3D; new StringBuilder(&quot;&quot;);</span><br><span class="line">        int times &#x3D; 1;</span><br><span class="line">        for (int i &#x3D; 0; i &lt; str.length(); i++) &#123;</span><br><span class="line">            if (i + 1 &lt; str.length()) &#123;</span><br><span class="line">                if (str.charAt(i) &#x3D;&#x3D; str.charAt(i + 1)) &#123;</span><br><span class="line">                    times++;</span><br><span class="line">                &#125; else &#123;</span><br><span class="line">                    res.append(times).append(str.charAt(i));</span><br><span class="line">                &#125;</span><br><span class="line">            &#125; else &#123;</span><br><span class="line">                res.append(times).append(str.charAt(i));</span><br><span class="line">            &#125;</span><br><span class="line">        &#125;</span><br><span class="line">        str &#x3D; res.toString();</span><br><span class="line">    &#125;</span><br><span class="line">    return str;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>小插曲：原本 res 我是写作 string 型的，循环中赋值的语句是 res += times + str.charAt(i) ，结果尝试调用的时候发现结果不对，才想到这里是整数型加字符型，计算时是整数加字符的 ASCII 值，结果变为了整数；如果是加字符串，则会直接变为字符串。算是一个意料之外的错误。</p>
+<h2 id="推荐思路-7"><a href="#推荐思路-7" class="headerlink" title="推荐思路"></a>推荐思路</h2><p>思路大概一致，但代码仍需优化。</p>
+<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">public String countAndSay(int n) &#123;</span><br><span class="line">    String str &#x3D; &quot;1&quot;;</span><br><span class="line">    while (--n &gt; 0) &#123;</span><br><span class="line">        int times &#x3D; 1;</span><br><span class="line">        StringBuilder sb &#x3D; new StringBuilder();</span><br><span class="line">        char[] chars &#x3D; str.toCharArray();</span><br><span class="line">        int len &#x3D; chars.length;</span><br><span class="line">        for (int j &#x3D; 1; j &lt; len; j++) &#123;</span><br><span class="line">            if (chars[j - 1] &#x3D;&#x3D; chars[j]) &#123;</span><br><span class="line">                times++;</span><br><span class="line">            &#125; else &#123;</span><br><span class="line">                sb.append(times).append(chars[j - 1]);</span><br><span class="line">                times &#x3D; 1;</span><br><span class="line">            &#125;</span><br><span class="line">        &#125;</span><br><span class="line">        str &#x3D; sb.append(times).append(chars[len - 1]).toString();</span><br><span class="line">    &#125;</span><br><span class="line">    return str;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<h1 id><a href="#" class="headerlink" title=" "></a> </h1>]]></content>
       <categories>
         <category>Java</category>
+      </categories>
+  </entry>
+  <entry>
+    <title>为什么我做不好界面</title>
+    <url>/2021/04/02/%E4%B8%BA%E4%BB%80%E4%B9%88%E6%88%91%E5%81%9A%E4%B8%8D%E5%A5%BD%E7%95%8C%E9%9D%A2/</url>
+    <content><![CDATA[<p>从开始学 Android 到现在好几年了，每次写界面都会被人吐槽界面很丑。虽然我并不是 UI 设计师，但自己也不能总是写一些平均水平以下的界面，于是决定反思一下为什么我做不好界面。</p>
+<a id="more"></a>
+<h1 id="序言"><a href="#序言" class="headerlink" title="序言"></a>序言</h1><p>先确定一下我反思的思路：</p>
+<blockquote>
+<ul>
+<li><p>确定当今界面的大体设计思想：当今的设计思想是怎样的</p>
+</li>
+<li><p>回顾 Android 界面的发展历史：为什么以前的界面很丑，或者说为什么被抛弃了</p>
+</li>
+<li><p>未来的界面设计方向</p>
+</li>
+</ul>
+</blockquote>
+<p>就先定这几个章节吧，以后会慢慢补充的，<strong>毕竟审美是在持续变化的</strong>。</p>
+<h1 id="确定当今界面的大体设计思想"><a href="#确定当今界面的大体设计思想" class="headerlink" title="确定当今界面的大体设计思想"></a>确定当今界面的大体设计思想</h1><p>我思考了一下，应当先确定一个标准，针对各个细节上的标准。在此基础上，才方便进行细节上的确定与优化。</p>
+<p>界面设计大致包括为两类：直观上的静态界面设计(仅视觉)与隐性的动态交互设计(触碰与视觉)。</p>
+<p>Google 曾在 2015 年提出了 Material Design。这种设计思想以及相关的设计指南资料已经对界面的规范作出了相当详细的建议，且很多细节上的设计让我啧啧称赞。作为一个界面审美白痴，我当然要试一下可行性如何。</p>
+<p>但在我实践这一思想的过程中，遇到了一个很大的问题：很多控件细节和动画效果需要开发者自己从零实现，Google 并没有为开发者提供充足的现有资源。这就使得开发一个完整且优秀的 Material Design 风格 APP 需要花费很多精力。</p>
+<p>而且，经受过 iOS 设计风格的影响，国内很多衍生系统和 APP 也在模仿 iOS 风格的路上一去不复返。</p>
+<p>其实我认为，界面风格不分系统。只是，在一个 APP 内的所有界面上，往往很难做到统一界面设计风格与规则。</p>
+<h2 id="Google-Material-Design"><a href="#Google-Material-Design" class="headerlink" title="Google - Material Design"></a>Google - Material Design</h2><p>参考文章：</p>
+<blockquote>
+<ul>
+<li><a href="https://www.uisdc.com/material-design-knowledge">如果你不熟悉Material Design，请一口吃下这篇干货</a></li>
+<li><a href="https://material.io/">Material Design 官网</a></li>
+</ul>
+</blockquote>
+<h3 id="特点"><a href="#特点" class="headerlink" title="特点"></a>特点</h3><p>Material Design 注重与卡片式设计，风格不完全是抽象扁平风格，也带有一些拟物的特性。它从物理现实里学习了诸如质感、投影、加速度等概念，将之在动画细节上给予表现。扁平设计的优点是<strong>信息噪音少</strong>(见下文设计概念中的“信噪比”)，缺点是<strong>情感传递不足</strong>（见下文设计概念中的“情感化”）。</p>
+<h3 id="设计理念"><a href="#设计理念" class="headerlink" title="设计理念"></a>设计理念</h3><h4 id="Z轴"><a href="#Z轴" class="headerlink" title="Z轴"></a>Z轴</h4><p>在二维的手机平面上，利用投影、动效等构建出Z轴，创造出三维感。</p>
+<h5 id="投影"><a href="#投影" class="headerlink" title="投影"></a>投影</h5><p>通过阴影的面积与边缘的模糊化程度来反馈出控件的海拔高低</p>
+<p><img src="https://image.uisdc.com/wp-content/uploads/2018/11/uisdc-yk-20181104-58.jpg" alt="海拔阴影比较图"></p>
+<h5 id="界面分层"><a href="#界面分层" class="headerlink" title="界面分层"></a>界面分层</h5><p><img src="https://image.uisdc.com/wp-content/uploads/2018/11/uisdc-yk-20181104-4.jpg" alt="控件海拔高度图"></p>
+<h4 id="组件"><a href="#组件" class="headerlink" title="组件"></a>组件</h4><p>正如 iOS 拥有自己的特色组件，Material Design 也有一些自己独具特色的组件。</p>
+<h5 id="悬浮球-FAB"><a href="#悬浮球-FAB" class="headerlink" title="悬浮球 FAB"></a>悬浮球 FAB</h5><p>悬浮球是一个很显眼的组件。它应当<strong>负责当前页面的一些主线操作</strong>。</p>
+<p>FAB 常有默认（56dp）与 Mini 尺寸（40dp）：</p>
+<p><img src="https://image.uisdc.com/wp-content/uploads/2018/11/uisdc-yk-20181104-136.jpg" alt="FAB图标"></p>
+<p>FAB 可设计为跳转，也可以展开子菜单：</p>
+<p><img src="https://image.uisdc.com/wp-content/uploads/2018/11/uisdc-yk-20181104-141.jpg" alt></p>
+<h5 id="底部应用栏-App-bars-bottom"><a href="#底部应用栏-App-bars-bottom" class="headerlink" title="底部应用栏 App bars: bottom"></a>底部应用栏 App bars: bottom</h5><p><img src="https://image.uisdc.com/wp-content/uploads/2018/11/uisdc-yk-20181104-55.jpg" alt></p>
+<p>底部栏应包含两个以上的图标(不含FAB)：</p>
+<p><img src="https://image.uisdc.com/wp-content/uploads/2018/11/uisdc-yk-20181104-35.jpg" alt></p>
+<h5 id="顶部应用栏-App-bars-top"><a href="#顶部应用栏-App-bars-top" class="headerlink" title="顶部应用栏 App bars: top"></a>顶部应用栏 App bars: top</h5><p>顶部应用栏与 iOS 的导航栏有些类似但不同。标题并非居中而是左对齐。左侧最多放置一个系统图标，右侧可放置多个系统图标。</p>
+<p><img src="https://image.uisdc.com/wp-content/uploads/2018/11/uisdc-yk-20181104-18.jpg" alt></p>
+<p>部分状态下可以改变原来的系统图标：</p>
+<p><img src="https://image.uisdc.com/wp-content/uploads/2018/11/uisdc-yk-20181104-15.jpg" alt></p>
+<p><strong>突出标题</strong>：可改变高度以凸显标题。可以让标题容纳更多的文字内容，比如新闻APP。有时为了减少视觉层级，可以在应用栏中加入图片来增强界面的整体感。</p>
+<p><img src="https://image.uisdc.com/wp-content/uploads/2018/11/uisdc-yk-20181104-12.jpg" alt></p>
+<h5 id="背板设计-Backdrop"><a href="#背板设计-Backdrop" class="headerlink" title="背板设计 Backdrop"></a>背板设计 Backdrop</h5><p>在应用引发的某个操作中，可设计背板来承载某些选项和辅助信息。较类似于 iOS 的 Action Sheet。</p>
+<p><img src="https://image.uisdc.com/wp-content/uploads/2018/11/uisdc-yk-20181104-105.jpg" alt="概念图"></p>
+<h5 id="背板设计的辅助控件"><a href="#背板设计的辅助控件" class="headerlink" title="背板设计的辅助控件"></a>背板设计的辅助控件</h5><blockquote>
+<ul>
+<li>背板设计隐藏时，后层控件可提供有关前层的辅助信息</li>
+<li>背板设计激活时，后层可显示与前层相关的控件</li>
+</ul>
+</blockquote>
+<p><img src="https://image.uisdc.com/wp-content/uploads/2018/11/uisdc-yk-20181104-56.jpg" alt></p>
+<h5 id="横幅-Banner"><a href="#横幅-Banner" class="headerlink" title="横幅 Banner"></a>横幅 Banner</h5><p>是顶部栏下的第一个凸显区域，显示突出的消息和相关操作。</p>
+<p><img src="https://image.uisdc.com/wp-content/uploads/2018/11/uisdc-yk-20181104-73.jpg" alt></p>
+<h5 id="底部导航-Bottom-Navigation"><a href="#底部导航-Bottom-Navigation" class="headerlink" title="底部导航 Bottom Navigation"></a>底部导航 Bottom Navigation</h5><p>将底部等分为多个图标与辅助文字的点击区域，以将功能模块区分开来。</p>
+<p><img src="https://image.uisdc.com/wp-content/uploads/2018/11/uisdc-yk-20181104-61.jpg" alt></p>
+<h5 id="按钮-Button"><a href="#按钮-Button" class="headerlink" title="按钮 Button"></a>按钮 Button</h5><p>按钮是一个很常见的元素，在 Material Design 中则常见为以下几种风格：</p>
+<blockquote>
+<ul>
+<li>纯文字按钮。只有加粗带色彩的文字，点击时会有波纹效果，显示按钮范围</li>
+<li>线性按钮。用线框来表明点击区域，不显眼</li>
+<li>填充按钮。常见形式，明显</li>
+<li>切换按钮。</li>
+</ul>
+</blockquote>
+<p><img src="https://image.uisdc.com/wp-content/uploads/2018/11/uisdc-yk-20181104-84.jpg" alt></p>
+<p>贴合在文字里，不显得冲突显眼的 纯文字按钮：</p>
+<p><img src="https://image.uisdc.com/wp-content/uploads/2018/11/uisdc-yk-20181104-116.jpg" alt></p>
+<p>权重不抢戏的 线性按钮：</p>
+<p><img src="https://image.uisdc.com/wp-content/uploads/2018/11/uisdc-yk-20181104-134.jpg" alt></p>
+<p>有权重，突出操作的 按钮：</p>
+<p><img src="https://image.uisdc.com/wp-content/uploads/2018/11/uisdc-yk-20181104-37.jpg" alt></p>
+<h5 id="卡片式设计-CardView"><a href="#卡片式设计-CardView" class="headerlink" title="卡片式设计 CardView"></a>卡片式设计 CardView</h5><p>这也是 Material Design 的显著标志。卡片式设计像是一个小的单元，单元内的信息逻辑关系更加紧密。</p>
+<p>卡片式设计应包含以下部分：</p>
+<blockquote>
+<ul>
+<li>容器卡元素。容纳所有卡内元素，尺寸由元素决定</li>
+<li>缩略图（可选）。放置头像、图标或logo等</li>
+<li>标题文字（可选）。通常是重要的标题，文字较大</li>
+<li>小标题（可选）。可放置文章署名或标记位置等</li>
+<li>多媒体（可选）。可放置照片或视频等</li>
+<li>辅助文字（可选）。通常是对于多媒体的描述信息</li>
+<li>按钮（可选）</li>
+<li>图标（可选）</li>
+</ul>
+</blockquote>
+<p><img src="https://image.uisdc.com/wp-content/uploads/2018/11/uisdc-yk-20181104-112.jpg" alt></p>
+<p><strong>卡片设计中的分割线</strong></p>
+<p>如果卡片中的内容元素不属于一个逻辑，那么可以使用一条分割线来分割区域。注意，分割线需使用非常轻的颜色，且不要抵达边缘，以保证视觉上卡片的完整性。</p>
+<p><img src="https://image.uisdc.com/wp-content/uploads/2018/11/uisdc-yk-20181104-79.jpg" alt></p>
+<h5 id="纸片-Chip"><a href="#纸片-Chip" class="headerlink" title="纸片 Chip"></a>纸片 Chip</h5><p>纸片通常是输入框中多个元素的组合，拥有选中态以及交互态等丰富交互。</p>
+<p><img src="https://image.uisdc.com/wp-content/uploads/2018/11/uisdc-yk-20181104-92.jpg" alt></p>
+<h5 id="对话框-Dialog"><a href="#对话框-Dialog" class="headerlink" title="对话框 Dialog"></a>对话框 Dialog</h5><p>对话框分为模态对话框与非模态对话框。主要区别是，模态对话框需要与人交互，而非模态对话框则是显示提示信息。</p>
+<p><img src="https://image.uisdc.com/wp-content/uploads/2018/11/uisdc-yk-20181104-87.jpg" alt></p>
+<p><img src="https://image.uisdc.com/wp-content/uploads/2018/11/uisdc-yk-20181104-53.jpg" alt></p>
+<p>用户选择前，可以禁用掉确认功能防止用户点击：</p>
+<p><img src="https://image.uisdc.com/wp-content/uploads/2018/11/uisdc-yk-20181104-128.jpg" alt></p>
+<h5 id="分割线"><a href="#分割线" class="headerlink" title="分割线"></a>分割线</h5><p>信息分割按照轻重，次序依次是面的分割、线的分割和留白的分割。</p>
+<p><strong>全出血分割线</strong>与<strong>插入式分割线</strong></p>
+<p>全出血（“出血”是平面印刷中的概念，“全出血”指分割线横向贯穿整个页面）分割线给人的感受是信息完全独立，而插入式分割线更方便我们找到当前阅读的位置。</p>
+<p><img src="https://image.uisdc.com/wp-content/uploads/2018/11/uisdc-yk-20181104-31.jpg" alt></p>
+<h5 id="抽屉式导航栏-Navigation-Drawer"><a href="#抽屉式导航栏-Navigation-Drawer" class="headerlink" title="抽屉式导航栏 Navigation Drawer"></a>抽屉式导航栏 Navigation Drawer</h5><p>与苹果的不建议使用不同，Material Design 反而很青睐这种交互形式，并鼓励在应用栏增加一个导航图标，以供激活抽屉式导航。</p>
+<blockquote>
+<ul>
+<li>容器（可选）</li>
+<li>头部（可选）。通常为个人信息</li>
+<li>分割线（可选）</li>
+<li>选中态</li>
+<li>选中态文本</li>
+<li>未激活文本</li>
+<li>小标题</li>
+</ul>
+</blockquote>
+<p><img src="https://image.uisdc.com/wp-content/uploads/2018/11/uisdc-yk-20181104-30.jpg" alt></p>
+<h5 id="页卡-Tabs"><a href="#页卡-Tabs" class="headerlink" title="页卡 Tabs"></a>页卡 Tabs</h5><p>常见于顶部应用栏，一般由2个到多个组成。点击时，应用栏下方跳转到对应内容。</p>
+<p><img src="https://image.uisdc.com/wp-content/uploads/2018/11/uisdc-yk-20181104-96.jpg" alt></p>
+<h5 id="文字输入框-Text-Fields"><a href="#文字输入框-Text-Fields" class="headerlink" title="文字输入框 Text Fields"></a>文字输入框 Text Fields</h5><p><img src="https://image.uisdc.com/wp-content/uploads/2018/11/uisdc-yk-20181104-94.jpg" alt></p>
+<h5 id="图片组-Image-Lists"><a href="#图片组-Image-Lists" class="headerlink" title="图片组 Image Lists"></a>图片组 Image Lists</h5><blockquote>
+<ul>
+<li>正常图片组：每张图片大小一致，间距统一且通常有些窄。图片源要求大小统一</li>
+<li>排版图片组</li>
+<li>照片墙图片组：结构组织教松散，适合图像尺寸不均等的内容展示</li>
+<li>瀑布流图片组：图片宽度均相等</li>
+</ul>
+</blockquote>
+<p><img src="https://image.uisdc.com/wp-content/uploads/2018/11/uisdc-yk-20181104-72.jpg" alt></p>
+<h5 id="滑块-Sliders"><a href="#滑块-Sliders" class="headerlink" title="滑块 Sliders"></a>滑块 Sliders</h5><p>在音乐 APP 和视频 APP 中，需要设置一个或多个滑块方便用户进行调节。</p>
+<p><img src="https://image.uisdc.com/wp-content/uploads/2018/11/uisdc-yk-20181104-70.jpg" alt></p>
+<h5 id="选择器-Selection-Controls"><a href="#选择器-Selection-Controls" class="headerlink" title="选择器 Selection Controls"></a>选择器 Selection Controls</h5><p>苹果使用按钮和 Action Sheet 来代替不太好点击的选择器，但 Material Design 仍然认为这些选择器在移动端可行。</p>
+<p><img src="https://image.uisdc.com/wp-content/uploads/2018/11/uisdc-yk-20181104-137.jpg" alt></p>
+<h5 id="底部提示栏-Snackbars"><a href="#底部提示栏-Snackbars" class="headerlink" title="底部提示栏 Snackbars"></a>底部提示栏 Snackbars</h5><p>当需要给用户一些不需要确认操作的信息，且处于不影响用户操作的情景，底部提示栏是一个比较不错的选择。</p>
+<p><img src="https://image.uisdc.com/wp-content/uploads/2018/11/uisdc-yk-20181104-126.jpg" alt></p>
+<h5 id="状态指引-Progress-Indicators"><a href="#状态指引-Progress-Indicators" class="headerlink" title="状态指引 Progress Indicators"></a>状态指引 Progress Indicators</h5><p>在一些花费时间加载的页面，需要让用户感知到加载的状态和进度，且不必占用过多的空间。</p>
+<p><img src="https://image.uisdc.com/wp-content/uploads/2018/11/uisdc-yk-20181104-145.jpg" alt></p>
+<h4 id="色彩"><a href="#色彩" class="headerlink" title="色彩"></a>色彩</h4><p>Material Design 的色彩选择通常非常鲜亮，在明度和纯度上较为适中。MD 非常重视背景与文字的色彩对比，需要最大化保证文字的可读性。配色时注意三原则：</p>
+<blockquote>
+<ul>
+<li>分级：通过使用不同的颜色来告诉用户，哪些是可交互的，哪些是装饰的；并且信息的逻辑关系也可以通过色彩表现出来</li>
+<li>清晰：文本与背景要有一定的色彩反差，以防用户无法准确阅读信息</li>
+<li>品牌：明确的主色调会给用户深刻的印象，如网易云音乐的红色与QQ音乐的黄绿色</li>
+</ul>
+</blockquote>
+<h5 id="色系参考"><a href="#色系参考" class="headerlink" title="色系参考"></a>色系参考</h5><p>MD 已提供了色系列表以供参考。注意，颜色不可以选择比较“脏”（脏一般体现于颜色纯度、明度，以及跨颜色跨度）的颜色。</p>
+<p><img src="https://image.uisdc.com/wp-content/uploads/2018/11/uisdc-yk-20181104-45.jpg" alt></p>
+<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">&lt;!-- material design 调色板 --&gt;</span><br><span class="line">&lt;!--red--&gt;</span><br><span class="line">&lt;color name&#x3D;&quot;md_red_50&quot;&gt;#FFEBEE&lt;&#x2F;color&gt;</span><br><span class="line">&lt;color name&#x3D;&quot;md_red_100&quot;&gt;#FFCDD2&lt;&#x2F;color&gt;</span><br><span class="line">&lt;color name&#x3D;&quot;md_red_200&quot;&gt;#EF9A9A&lt;&#x2F;color&gt;</span><br><span class="line">&lt;color name&#x3D;&quot;md_red_300&quot;&gt;#E57373&lt;&#x2F;color&gt;</span><br><span class="line">&lt;color name&#x3D;&quot;md_red_400&quot;&gt;#EF5350&lt;&#x2F;color&gt;</span><br><span class="line">&lt;color name&#x3D;&quot;md_red_500&quot;&gt;#F44336&lt;&#x2F;color&gt;</span><br><span class="line">&lt;color name&#x3D;&quot;md_red_600&quot;&gt;#E53935&lt;&#x2F;color&gt;</span><br><span class="line">&lt;color name&#x3D;&quot;md_red_700&quot;&gt;#D32F2F&lt;&#x2F;color&gt;</span><br><span class="line">&lt;color name&#x3D;&quot;md_red_800&quot;&gt;#C62828&lt;&#x2F;color&gt;</span><br><span class="line">&lt;color name&#x3D;&quot;md_red_900&quot;&gt;#B71C1C&lt;&#x2F;color&gt;</span><br><span class="line">&lt;color name&#x3D;&quot;md_red_A100&quot;&gt;#FF8A80&lt;&#x2F;color&gt;</span><br><span class="line">&lt;color name&#x3D;&quot;md_red_A200&quot;&gt;#FF5252&lt;&#x2F;color&gt;</span><br><span class="line">&lt;color name&#x3D;&quot;md_red_A400&quot;&gt;#FF1744&lt;&#x2F;color&gt;</span><br><span class="line">&lt;color name&#x3D;&quot;md_red_A700&quot;&gt;#D50000&lt;&#x2F;color&gt;</span><br><span class="line"></span><br><span class="line">&lt;!--pink--&gt;</span><br><span class="line">&lt;color name&#x3D;&quot;md_pink_50&quot;&gt;#FCE4EC&lt;&#x2F;color&gt;</span><br><span class="line">&lt;color name&#x3D;&quot;md_pink_100&quot;&gt;#F8BBD0&lt;&#x2F;color&gt;</span><br><span class="line">&lt;color name&#x3D;&quot;md_pink_200&quot;&gt;#F48FB1&lt;&#x2F;color&gt;</span><br><span class="line">&lt;color name&#x3D;&quot;md_pink_300&quot;&gt;#F06292&lt;&#x2F;color&gt;</span><br><span class="line">&lt;color name&#x3D;&quot;md_pink_400&quot;&gt;#EC407A&lt;&#x2F;color&gt;</span><br><span class="line">&lt;color name&#x3D;&quot;md_pink_500&quot;&gt;#E91E63&lt;&#x2F;color&gt;</span><br><span class="line">&lt;color name&#x3D;&quot;md_pink_600&quot;&gt;#D81B60&lt;&#x2F;color&gt;</span><br><span class="line">&lt;color name&#x3D;&quot;md_pink_700&quot;&gt;#C2185B&lt;&#x2F;color&gt;</span><br><span class="line">&lt;color name&#x3D;&quot;md_pink_800&quot;&gt;#AD1457&lt;&#x2F;color&gt;</span><br><span class="line">&lt;color name&#x3D;&quot;md_pink_900&quot;&gt;#880E4F&lt;&#x2F;color&gt;</span><br><span class="line">&lt;color name&#x3D;&quot;md_pink_A100&quot;&gt;#FF80AB&lt;&#x2F;color&gt;</span><br><span class="line">&lt;color name&#x3D;&quot;md_pink_A200&quot;&gt;#FF4081&lt;&#x2F;color&gt;</span><br><span class="line">&lt;color name&#x3D;&quot;md_pink_A400&quot;&gt;#F50057&lt;&#x2F;color&gt;</span><br><span class="line">&lt;color name&#x3D;&quot;md_pink_A700&quot;&gt;#C51162&lt;&#x2F;color&gt;</span><br><span class="line"></span><br><span class="line">&lt;!--purple--&gt;</span><br><span class="line">&lt;color name&#x3D;&quot;md_purple_50&quot;&gt;#F3E5F5&lt;&#x2F;color&gt;</span><br><span class="line">&lt;color name&#x3D;&quot;md_purple_100&quot;&gt;#E1BEE7&lt;&#x2F;color&gt;</span><br><span class="line">&lt;color name&#x3D;&quot;md_purple_200&quot;&gt;#CE93D8&lt;&#x2F;color&gt;</span><br><span class="line">&lt;color name&#x3D;&quot;md_purple_300&quot;&gt;#BA68C8&lt;&#x2F;color&gt;</span><br><span class="line">&lt;color name&#x3D;&quot;md_purple_400&quot;&gt;#AB47BC&lt;&#x2F;color&gt;</span><br><span class="line">&lt;color name&#x3D;&quot;md_purple_500&quot;&gt;#9C27B0&lt;&#x2F;color&gt;</span><br><span class="line">&lt;color name&#x3D;&quot;md_purple_600&quot;&gt;#8E24AA&lt;&#x2F;color&gt;</span><br><span class="line">&lt;color name&#x3D;&quot;md_purple_700&quot;&gt;#7B1FA2&lt;&#x2F;color&gt;</span><br><span class="line">&lt;color name&#x3D;&quot;md_purple_800&quot;&gt;#6A1B9A&lt;&#x2F;color&gt;</span><br><span class="line">&lt;color name&#x3D;&quot;md_purple_900&quot;&gt;#4A148C&lt;&#x2F;color&gt;</span><br><span class="line">&lt;color name&#x3D;&quot;md_purple_A100&quot;&gt;#EA80FC&lt;&#x2F;color&gt;</span><br><span class="line">&lt;color name&#x3D;&quot;md_purple_A200&quot;&gt;#E040FB&lt;&#x2F;color&gt;</span><br><span class="line">&lt;color name&#x3D;&quot;md_purple_A400&quot;&gt;#D500F9&lt;&#x2F;color&gt;</span><br><span class="line">&lt;color name&#x3D;&quot;md_purple_A700&quot;&gt;#AA00FF&lt;&#x2F;color&gt;</span><br><span class="line"></span><br><span class="line">&lt;!--deep_purple--&gt;</span><br><span class="line">&lt;color name&#x3D;&quot;md_deep_purple_50&quot;&gt;#EDE7F6&lt;&#x2F;color&gt;</span><br><span class="line">&lt;color name&#x3D;&quot;md_deep_purple_100&quot;&gt;#D1C4E9&lt;&#x2F;color&gt;</span><br><span class="line">&lt;color name&#x3D;&quot;md_deep_purple_200&quot;&gt;#B39DDB&lt;&#x2F;color&gt;</span><br><span class="line">&lt;color name&#x3D;&quot;md_deep_purple_300&quot;&gt;#9575CD&lt;&#x2F;color&gt;</span><br><span class="line">&lt;color name&#x3D;&quot;md_deep_purple_400&quot;&gt;#7E57C2&lt;&#x2F;color&gt;</span><br><span class="line">&lt;color name&#x3D;&quot;md_deep_purple_500&quot;&gt;#673AB7&lt;&#x2F;color&gt;</span><br><span class="line">&lt;color name&#x3D;&quot;md_deep_purple_600&quot;&gt;#5E35B1&lt;&#x2F;color&gt;</span><br><span class="line">&lt;color name&#x3D;&quot;md_deep_purple_700&quot;&gt;#512DA8&lt;&#x2F;color&gt;</span><br><span class="line">&lt;color name&#x3D;&quot;md_deep_purple_800&quot;&gt;#4527A0&lt;&#x2F;color&gt;</span><br><span class="line">&lt;color name&#x3D;&quot;md_deep_purple_900&quot;&gt;#311B92&lt;&#x2F;color&gt;</span><br><span class="line">&lt;color name&#x3D;&quot;md_deep_purple_A100&quot;&gt;#B388FF&lt;&#x2F;color&gt;</span><br><span class="line">&lt;color name&#x3D;&quot;md_deep_purple_A200&quot;&gt;#7C4DFF&lt;&#x2F;color&gt;</span><br><span class="line">&lt;color name&#x3D;&quot;md_deep_purple_A400&quot;&gt;#651FFF&lt;&#x2F;color&gt;</span><br><span class="line">&lt;color name&#x3D;&quot;md_deep_purple_A700&quot;&gt;#6200EA&lt;&#x2F;color&gt;</span><br><span class="line"></span><br><span class="line">&lt;!--indigo--&gt;</span><br><span class="line">&lt;color name&#x3D;&quot;md_indigo_50&quot;&gt;#E8EAF6&lt;&#x2F;color&gt;</span><br><span class="line">&lt;color name&#x3D;&quot;md_indigo_100&quot;&gt;#C5CAE9&lt;&#x2F;color&gt;</span><br><span class="line">&lt;color name&#x3D;&quot;md_indigo_200&quot;&gt;#9FA8DA&lt;&#x2F;color&gt;</span><br><span class="line">&lt;color name&#x3D;&quot;md_indigo_300&quot;&gt;#7986CB&lt;&#x2F;color&gt;</span><br><span class="line">&lt;color name&#x3D;&quot;md_indigo_400&quot;&gt;#5C6BC0&lt;&#x2F;color&gt;</span><br><span class="line">&lt;color name&#x3D;&quot;md_indigo_500&quot;&gt;#3F51B5&lt;&#x2F;color&gt;</span><br><span class="line">&lt;color name&#x3D;&quot;md_indigo_600&quot;&gt;#3949AB&lt;&#x2F;color&gt;</span><br><span class="line">&lt;color name&#x3D;&quot;md_indigo_700&quot;&gt;#303F9F&lt;&#x2F;color&gt;</span><br><span class="line">&lt;color name&#x3D;&quot;md_indigo_800&quot;&gt;#283593&lt;&#x2F;color&gt;</span><br><span class="line">&lt;color name&#x3D;&quot;md_indigo_900&quot;&gt;#1A237E&lt;&#x2F;color&gt;</span><br><span class="line">&lt;color name&#x3D;&quot;md_indigo_A100&quot;&gt;#8C9EFF&lt;&#x2F;color&gt;</span><br><span class="line">&lt;color name&#x3D;&quot;md_indigo_A200&quot;&gt;#536DFE&lt;&#x2F;color&gt;</span><br><span class="line">&lt;color name&#x3D;&quot;md_indigo_A400&quot;&gt;#3D5AFE&lt;&#x2F;color&gt;</span><br><span class="line">&lt;color name&#x3D;&quot;md_indigo_A700&quot;&gt;#304FFE&lt;&#x2F;color&gt;</span><br><span class="line"></span><br><span class="line">&lt;!--blue--&gt;</span><br><span class="line">&lt;color name&#x3D;&quot;md_blue_50&quot;&gt;#E3F2FD&lt;&#x2F;color&gt;</span><br><span class="line">&lt;color name&#x3D;&quot;md_blue_100&quot;&gt;#BBDEFB&lt;&#x2F;color&gt;</span><br><span class="line">&lt;color name&#x3D;&quot;md_blue_200&quot;&gt;#90CAF9&lt;&#x2F;color&gt;</span><br><span class="line">&lt;color name&#x3D;&quot;md_blue_300&quot;&gt;#64B5F6&lt;&#x2F;color&gt;</span><br><span class="line">&lt;color name&#x3D;&quot;md_blue_400&quot;&gt;#42A5F5&lt;&#x2F;color&gt;</span><br><span class="line">&lt;color name&#x3D;&quot;md_blue_500&quot;&gt;#2196F3&lt;&#x2F;color&gt;</span><br><span class="line">&lt;color name&#x3D;&quot;md_blue_600&quot;&gt;#1E88E5&lt;&#x2F;color&gt;</span><br><span class="line">&lt;color name&#x3D;&quot;md_blue_700&quot;&gt;#1976D2&lt;&#x2F;color&gt;</span><br><span class="line">&lt;color name&#x3D;&quot;md_blue_800&quot;&gt;#1565C0&lt;&#x2F;color&gt;</span><br><span class="line">&lt;color name&#x3D;&quot;md_blue_900&quot;&gt;#0D47A1&lt;&#x2F;color&gt;</span><br><span class="line">&lt;color name&#x3D;&quot;md_blue_A100&quot;&gt;#82B1FF&lt;&#x2F;color&gt;</span><br><span class="line">&lt;color name&#x3D;&quot;md_blue_A200&quot;&gt;#448AFF&lt;&#x2F;color&gt;</span><br><span class="line">&lt;color name&#x3D;&quot;md_blue_A400&quot;&gt;#2979FF&lt;&#x2F;color&gt;</span><br><span class="line">&lt;color name&#x3D;&quot;md_blue_A700&quot;&gt;#2962FF&lt;&#x2F;color&gt;</span><br><span class="line"></span><br><span class="line">&lt;!--light_blue--&gt;</span><br><span class="line">&lt;color name&#x3D;&quot;md_light_blue_50&quot;&gt;#E1F5FE&lt;&#x2F;color&gt;</span><br><span class="line">&lt;color name&#x3D;&quot;md_light_blue_100&quot;&gt;#B3E5FC&lt;&#x2F;color&gt;</span><br><span class="line">&lt;color name&#x3D;&quot;md_light_blue_200&quot;&gt;#81D4FA&lt;&#x2F;color&gt;</span><br><span class="line">&lt;color name&#x3D;&quot;md_light_blue_300&quot;&gt;#4FC3F7&lt;&#x2F;color&gt;</span><br><span class="line">&lt;color name&#x3D;&quot;md_light_blue_400&quot;&gt;#29B6F6&lt;&#x2F;color&gt;</span><br><span class="line">&lt;color name&#x3D;&quot;md_light_blue_500&quot;&gt;#03A9F4&lt;&#x2F;color&gt;</span><br><span class="line">&lt;color name&#x3D;&quot;md_light_blue_600&quot;&gt;#039BE5&lt;&#x2F;color&gt;</span><br><span class="line">&lt;color name&#x3D;&quot;md_light_blue_700&quot;&gt;#0288D1&lt;&#x2F;color&gt;</span><br><span class="line">&lt;color name&#x3D;&quot;md_light_blue_800&quot;&gt;#0277BD&lt;&#x2F;color&gt;</span><br><span class="line">&lt;color name&#x3D;&quot;md_light_blue_900&quot;&gt;#01579B&lt;&#x2F;color&gt;</span><br><span class="line">&lt;color name&#x3D;&quot;md_light_blue_A100&quot;&gt;#80D8FF&lt;&#x2F;color&gt;</span><br><span class="line">&lt;color name&#x3D;&quot;md_light_blue_A200&quot;&gt;#40C4FF&lt;&#x2F;color&gt;</span><br><span class="line">&lt;color name&#x3D;&quot;md_light_blue_A400&quot;&gt;#00B0FF&lt;&#x2F;color&gt;</span><br><span class="line">&lt;color name&#x3D;&quot;md_light_blue_A700&quot;&gt;#0091EA&lt;&#x2F;color&gt;</span><br><span class="line"></span><br><span class="line">&lt;!--cyan--&gt;</span><br><span class="line">&lt;color name&#x3D;&quot;md_cyan_50&quot;&gt;#E0F7FA&lt;&#x2F;color&gt;</span><br><span class="line">&lt;color name&#x3D;&quot;md_cyan_100&quot;&gt;#B2EBF2&lt;&#x2F;color&gt;</span><br><span class="line">&lt;color name&#x3D;&quot;md_cyan_200&quot;&gt;#80DEEA&lt;&#x2F;color&gt;</span><br><span class="line">&lt;color name&#x3D;&quot;md_cyan_300&quot;&gt;#4DD0E1&lt;&#x2F;color&gt;</span><br><span class="line">&lt;color name&#x3D;&quot;md_cyan_400&quot;&gt;#26C6DA&lt;&#x2F;color&gt;</span><br><span class="line">&lt;color name&#x3D;&quot;md_cyan_500&quot;&gt;#00BCD4&lt;&#x2F;color&gt;</span><br><span class="line">&lt;color name&#x3D;&quot;md_cyan_600&quot;&gt;#00ACC1&lt;&#x2F;color&gt;</span><br><span class="line">&lt;color name&#x3D;&quot;md_cyan_700&quot;&gt;#0097A7&lt;&#x2F;color&gt;</span><br><span class="line">&lt;color name&#x3D;&quot;md_cyan_800&quot;&gt;#00838F&lt;&#x2F;color&gt;</span><br><span class="line">&lt;color name&#x3D;&quot;md_cyan_900&quot;&gt;#006064&lt;&#x2F;color&gt;</span><br><span class="line">&lt;color name&#x3D;&quot;md_cyan_A100&quot;&gt;#84FFFF&lt;&#x2F;color&gt;</span><br><span class="line">&lt;color name&#x3D;&quot;md_cyan_A200&quot;&gt;#18FFFF&lt;&#x2F;color&gt;</span><br><span class="line">&lt;color name&#x3D;&quot;md_cyan_A400&quot;&gt;#00E5FF&lt;&#x2F;color&gt;</span><br><span class="line">&lt;color name&#x3D;&quot;md_cyan_A700&quot;&gt;#00B8D4&lt;&#x2F;color&gt;</span><br><span class="line"></span><br><span class="line">&lt;!--teal--&gt;</span><br><span class="line">&lt;color name&#x3D;&quot;md_teal_50&quot;&gt;#E0F2F1&lt;&#x2F;color&gt;</span><br><span class="line">&lt;color name&#x3D;&quot;md_teal_100&quot;&gt;#B2DFDB&lt;&#x2F;color&gt;</span><br><span class="line">&lt;color name&#x3D;&quot;md_teal_200&quot;&gt;#80CBC4&lt;&#x2F;color&gt;</span><br><span class="line">&lt;color name&#x3D;&quot;md_teal_300&quot;&gt;#4DB6AC&lt;&#x2F;color&gt;</span><br><span class="line">&lt;color name&#x3D;&quot;md_teal_400&quot;&gt;#26A69A&lt;&#x2F;color&gt;</span><br><span class="line">&lt;color name&#x3D;&quot;md_teal_500&quot;&gt;#009688&lt;&#x2F;color&gt;</span><br><span class="line">&lt;color name&#x3D;&quot;md_teal_600&quot;&gt;#00897B&lt;&#x2F;color&gt;</span><br><span class="line">&lt;color name&#x3D;&quot;md_teal_700&quot;&gt;#00796B&lt;&#x2F;color&gt;</span><br><span class="line">&lt;color name&#x3D;&quot;md_teal_800&quot;&gt;#00695C&lt;&#x2F;color&gt;</span><br><span class="line">&lt;color name&#x3D;&quot;md_teal_900&quot;&gt;#004D40&lt;&#x2F;color&gt;</span><br><span class="line">&lt;color name&#x3D;&quot;md_teal_A100&quot;&gt;#A7FFEB&lt;&#x2F;color&gt;</span><br><span class="line">&lt;color name&#x3D;&quot;md_teal_A200&quot;&gt;#64FFDA&lt;&#x2F;color&gt;</span><br><span class="line">&lt;color name&#x3D;&quot;md_teal_A400&quot;&gt;#1DE9B6&lt;&#x2F;color&gt;</span><br><span class="line">&lt;color name&#x3D;&quot;md_teal_A700&quot;&gt;#00BFA5&lt;&#x2F;color&gt;</span><br><span class="line"></span><br><span class="line">&lt;!--green--&gt;</span><br><span class="line">&lt;color name&#x3D;&quot;md_green_50&quot;&gt;#E8F5E9&lt;&#x2F;color&gt;</span><br><span class="line">&lt;color name&#x3D;&quot;md_green_100&quot;&gt;#C8E6C9&lt;&#x2F;color&gt;</span><br><span class="line">&lt;color name&#x3D;&quot;md_green_200&quot;&gt;#A5D6A7&lt;&#x2F;color&gt;</span><br><span class="line">&lt;color name&#x3D;&quot;md_green_300&quot;&gt;#81C784&lt;&#x2F;color&gt;</span><br><span class="line">&lt;color name&#x3D;&quot;md_green_400&quot;&gt;#66BB6A&lt;&#x2F;color&gt;</span><br><span class="line">&lt;color name&#x3D;&quot;md_green_500&quot;&gt;#4CAF50&lt;&#x2F;color&gt;</span><br><span class="line">&lt;color name&#x3D;&quot;md_green_600&quot;&gt;#43A047&lt;&#x2F;color&gt;</span><br><span class="line">&lt;color name&#x3D;&quot;md_green_700&quot;&gt;#388E3C&lt;&#x2F;color&gt;</span><br><span class="line">&lt;color name&#x3D;&quot;md_green_800&quot;&gt;#2E7D32&lt;&#x2F;color&gt;</span><br><span class="line">&lt;color name&#x3D;&quot;md_green_900&quot;&gt;#1B5E20&lt;&#x2F;color&gt;</span><br><span class="line">&lt;color name&#x3D;&quot;md_green_A100&quot;&gt;#B9F6CA&lt;&#x2F;color&gt;</span><br><span class="line">&lt;color name&#x3D;&quot;md_green_A200&quot;&gt;#69F0AE&lt;&#x2F;color&gt;</span><br><span class="line">&lt;color name&#x3D;&quot;md_green_A400&quot;&gt;#00E676&lt;&#x2F;color&gt;</span><br><span class="line">&lt;color name&#x3D;&quot;md_green_A700&quot;&gt;#00C853&lt;&#x2F;color&gt;</span><br><span class="line"></span><br><span class="line">&lt;!--light_green--&gt;</span><br><span class="line">&lt;color name&#x3D;&quot;md_light_green_50&quot;&gt;#F1F8E9&lt;&#x2F;color&gt;</span><br><span class="line">&lt;color name&#x3D;&quot;md_light_green_100&quot;&gt;#DCEDC8&lt;&#x2F;color&gt;</span><br><span class="line">&lt;color name&#x3D;&quot;md_light_green_200&quot;&gt;#C5E1A5&lt;&#x2F;color&gt;</span><br><span class="line">&lt;color name&#x3D;&quot;md_light_green_300&quot;&gt;#AED581&lt;&#x2F;color&gt;</span><br><span class="line">&lt;color name&#x3D;&quot;md_light_green_400&quot;&gt;#9CCC65&lt;&#x2F;color&gt;</span><br><span class="line">&lt;color name&#x3D;&quot;md_light_green_500&quot;&gt;#8BC34A&lt;&#x2F;color&gt;</span><br><span class="line">&lt;color name&#x3D;&quot;md_light_green_600&quot;&gt;#7CB342&lt;&#x2F;color&gt;</span><br><span class="line">&lt;color name&#x3D;&quot;md_light_green_700&quot;&gt;#689F38&lt;&#x2F;color&gt;</span><br><span class="line">&lt;color name&#x3D;&quot;md_light_green_800&quot;&gt;#558B2F&lt;&#x2F;color&gt;</span><br><span class="line">&lt;color name&#x3D;&quot;md_light_green_900&quot;&gt;#33691E&lt;&#x2F;color&gt;</span><br><span class="line">&lt;color name&#x3D;&quot;md_light_green_A100&quot;&gt;#CCFF90&lt;&#x2F;color&gt;</span><br><span class="line">&lt;color name&#x3D;&quot;md_light_green_A200&quot;&gt;#B2FF59&lt;&#x2F;color&gt;</span><br><span class="line">&lt;color name&#x3D;&quot;md_light_green_A400&quot;&gt;#76FF03&lt;&#x2F;color&gt;</span><br><span class="line">&lt;color name&#x3D;&quot;md_light_green_A700&quot;&gt;#64DD17&lt;&#x2F;color&gt;</span><br><span class="line"></span><br><span class="line">&lt;!--lime--&gt;</span><br><span class="line">&lt;color name&#x3D;&quot;md_lime_50&quot;&gt;#F9FBE7&lt;&#x2F;color&gt;</span><br><span class="line">&lt;color name&#x3D;&quot;md_lime_100&quot;&gt;#F0F4C3&lt;&#x2F;color&gt;</span><br><span class="line">&lt;color name&#x3D;&quot;md_lime_200&quot;&gt;#E6EE9C&lt;&#x2F;color&gt;</span><br><span class="line">&lt;color name&#x3D;&quot;md_lime_300&quot;&gt;#DCE775&lt;&#x2F;color&gt;</span><br><span class="line">&lt;color name&#x3D;&quot;md_lime_400&quot;&gt;#D4E157&lt;&#x2F;color&gt;</span><br><span class="line">&lt;color name&#x3D;&quot;md_lime_500&quot;&gt;#CDDC39&lt;&#x2F;color&gt;</span><br><span class="line">&lt;color name&#x3D;&quot;md_lime_600&quot;&gt;#C0CA33&lt;&#x2F;color&gt;</span><br><span class="line">&lt;color name&#x3D;&quot;md_lime_700&quot;&gt;#AFB42B&lt;&#x2F;color&gt;</span><br><span class="line">&lt;color name&#x3D;&quot;md_lime_800&quot;&gt;#9E9D24&lt;&#x2F;color&gt;</span><br><span class="line">&lt;color name&#x3D;&quot;md_lime_900&quot;&gt;#827717&lt;&#x2F;color&gt;</span><br><span class="line">&lt;color name&#x3D;&quot;md_lime_A100&quot;&gt;#F4FF81&lt;&#x2F;color&gt;</span><br><span class="line">&lt;color name&#x3D;&quot;md_lime_A200&quot;&gt;#EEFF41&lt;&#x2F;color&gt;</span><br><span class="line">&lt;color name&#x3D;&quot;md_lime_A400&quot;&gt;#C6FF00&lt;&#x2F;color&gt;</span><br><span class="line">&lt;color name&#x3D;&quot;md_lime_A700&quot;&gt;#AEEA00&lt;&#x2F;color&gt;</span><br><span class="line"></span><br><span class="line">&lt;!--yellow--&gt;</span><br><span class="line">&lt;color name&#x3D;&quot;md_yellow_50&quot;&gt;#FFFDE7&lt;&#x2F;color&gt;</span><br><span class="line">&lt;color name&#x3D;&quot;md_yellow_100&quot;&gt;#FFF9C4&lt;&#x2F;color&gt;</span><br><span class="line">&lt;color name&#x3D;&quot;md_yellow_200&quot;&gt;#FFF59D&lt;&#x2F;color&gt;</span><br><span class="line">&lt;color name&#x3D;&quot;md_yellow_300&quot;&gt;#FFF176&lt;&#x2F;color&gt;</span><br><span class="line">&lt;color name&#x3D;&quot;md_yellow_400&quot;&gt;#FFEE58&lt;&#x2F;color&gt;</span><br><span class="line">&lt;color name&#x3D;&quot;md_yellow_500&quot;&gt;#FFEB3B&lt;&#x2F;color&gt;</span><br><span class="line">&lt;color name&#x3D;&quot;md_yellow_600&quot;&gt;#FDD835&lt;&#x2F;color&gt;</span><br><span class="line">&lt;color name&#x3D;&quot;md_yellow_700&quot;&gt;#FBC02D&lt;&#x2F;color&gt;</span><br><span class="line">&lt;color name&#x3D;&quot;md_yellow_800&quot;&gt;#F9A825&lt;&#x2F;color&gt;</span><br><span class="line">&lt;color name&#x3D;&quot;md_yellow_900&quot;&gt;#F57F17&lt;&#x2F;color&gt;</span><br><span class="line">&lt;color name&#x3D;&quot;md_yellow_A100&quot;&gt;#FFFF8D&lt;&#x2F;color&gt;</span><br><span class="line">&lt;color name&#x3D;&quot;md_yellow_A200&quot;&gt;#FFFF00&lt;&#x2F;color&gt;</span><br><span class="line">&lt;color name&#x3D;&quot;md_yellow_A400&quot;&gt;#FFEA00&lt;&#x2F;color&gt;</span><br><span class="line">&lt;color name&#x3D;&quot;md_yellow_A700&quot;&gt;#FFD600&lt;&#x2F;color&gt;</span><br><span class="line"></span><br><span class="line">&lt;!--amber--&gt;</span><br><span class="line">&lt;color name&#x3D;&quot;md_amber_50&quot;&gt;#FFF8E1&lt;&#x2F;color&gt;</span><br><span class="line">&lt;color name&#x3D;&quot;md_amber_100&quot;&gt;#FFECB3&lt;&#x2F;color&gt;</span><br><span class="line">&lt;color name&#x3D;&quot;md_amber_200&quot;&gt;#FFE082&lt;&#x2F;color&gt;</span><br><span class="line">&lt;color name&#x3D;&quot;md_amber_300&quot;&gt;#FFD54F&lt;&#x2F;color&gt;</span><br><span class="line">&lt;color name&#x3D;&quot;md_amber_400&quot;&gt;#FFCA28&lt;&#x2F;color&gt;</span><br><span class="line">&lt;color name&#x3D;&quot;md_amber_500&quot;&gt;#FFC107&lt;&#x2F;color&gt;</span><br><span class="line">&lt;color name&#x3D;&quot;md_amber_600&quot;&gt;#FFB300&lt;&#x2F;color&gt;</span><br><span class="line">&lt;color name&#x3D;&quot;md_amber_700&quot;&gt;#FFA000&lt;&#x2F;color&gt;</span><br><span class="line">&lt;color name&#x3D;&quot;md_amber_800&quot;&gt;#FF8F00&lt;&#x2F;color&gt;</span><br><span class="line">&lt;color name&#x3D;&quot;md_amber_900&quot;&gt;#FF6F00&lt;&#x2F;color&gt;</span><br><span class="line">&lt;color name&#x3D;&quot;md_amber_A100&quot;&gt;#FFE57F&lt;&#x2F;color&gt;</span><br><span class="line">&lt;color name&#x3D;&quot;md_amber_A200&quot;&gt;#FFD740&lt;&#x2F;color&gt;</span><br><span class="line">&lt;color name&#x3D;&quot;md_amber_A400&quot;&gt;#FFC400&lt;&#x2F;color&gt;</span><br><span class="line">&lt;color name&#x3D;&quot;md_amber_A700&quot;&gt;#FFAB00&lt;&#x2F;color&gt;</span><br><span class="line"></span><br><span class="line">&lt;!--orange--&gt;</span><br><span class="line">&lt;color name&#x3D;&quot;md_orange_50&quot;&gt;#FFF3E0&lt;&#x2F;color&gt;</span><br><span class="line">&lt;color name&#x3D;&quot;md_orange_100&quot;&gt;#FFE0B2&lt;&#x2F;color&gt;</span><br><span class="line">&lt;color name&#x3D;&quot;md_orange_200&quot;&gt;#FFCC80&lt;&#x2F;color&gt;</span><br><span class="line">&lt;color name&#x3D;&quot;md_orange_300&quot;&gt;#FFB74D&lt;&#x2F;color&gt;</span><br><span class="line">&lt;color name&#x3D;&quot;md_orange_400&quot;&gt;#FFA726&lt;&#x2F;color&gt;</span><br><span class="line">&lt;color name&#x3D;&quot;md_orange_500&quot;&gt;#FF9800&lt;&#x2F;color&gt;</span><br><span class="line">&lt;color name&#x3D;&quot;md_orange_600&quot;&gt;#FB8C00&lt;&#x2F;color&gt;</span><br><span class="line">&lt;color name&#x3D;&quot;md_orange_700&quot;&gt;#F57C00&lt;&#x2F;color&gt;</span><br><span class="line">&lt;color name&#x3D;&quot;md_orange_800&quot;&gt;#EF6C00&lt;&#x2F;color&gt;</span><br><span class="line">&lt;color name&#x3D;&quot;md_orange_900&quot;&gt;#E65100&lt;&#x2F;color&gt;</span><br><span class="line">&lt;color name&#x3D;&quot;md_orange_A100&quot;&gt;#FFD180&lt;&#x2F;color&gt;</span><br><span class="line">&lt;color name&#x3D;&quot;md_orange_A200&quot;&gt;#FFAB40&lt;&#x2F;color&gt;</span><br><span class="line">&lt;color name&#x3D;&quot;md_orange_A400&quot;&gt;#FF9100&lt;&#x2F;color&gt;</span><br><span class="line">&lt;color name&#x3D;&quot;md_orange_A700&quot;&gt;#FF6D00&lt;&#x2F;color&gt;</span><br><span class="line"></span><br><span class="line">&lt;!--deep_orange--&gt;</span><br><span class="line">&lt;color name&#x3D;&quot;md_deep_orange_50&quot;&gt;#FBE9E7&lt;&#x2F;color&gt;</span><br><span class="line">&lt;color name&#x3D;&quot;md_deep_orange_100&quot;&gt;#FFCCBC&lt;&#x2F;color&gt;</span><br><span class="line">&lt;color name&#x3D;&quot;md_deep_orange_200&quot;&gt;#FFAB91&lt;&#x2F;color&gt;</span><br><span class="line">&lt;color name&#x3D;&quot;md_deep_orange_300&quot;&gt;#FF8A65&lt;&#x2F;color&gt;</span><br><span class="line">&lt;color name&#x3D;&quot;md_deep_orange_400&quot;&gt;#FF7043&lt;&#x2F;color&gt;</span><br><span class="line">&lt;color name&#x3D;&quot;md_deep_orange_500&quot;&gt;#FF5722&lt;&#x2F;color&gt;</span><br><span class="line">&lt;color name&#x3D;&quot;md_deep_orange_600&quot;&gt;#F4511E&lt;&#x2F;color&gt;</span><br><span class="line">&lt;color name&#x3D;&quot;md_deep_orange_700&quot;&gt;#E64A19&lt;&#x2F;color&gt;</span><br><span class="line">&lt;color name&#x3D;&quot;md_deep_orange_800&quot;&gt;#D84315&lt;&#x2F;color&gt;</span><br><span class="line">&lt;color name&#x3D;&quot;md_deep_orange_900&quot;&gt;#BF360C&lt;&#x2F;color&gt;</span><br><span class="line">&lt;color name&#x3D;&quot;md_deep_orange_A100&quot;&gt;#FF9E80&lt;&#x2F;color&gt;</span><br><span class="line">&lt;color name&#x3D;&quot;md_deep_orange_A200&quot;&gt;#FF6E40&lt;&#x2F;color&gt;</span><br><span class="line">&lt;color name&#x3D;&quot;md_deep_orange_A400&quot;&gt;#FF3D00&lt;&#x2F;color&gt;</span><br><span class="line">&lt;color name&#x3D;&quot;md_deep_orange_A700&quot;&gt;#DD2C00&lt;&#x2F;color&gt;</span><br><span class="line"></span><br><span class="line">&lt;!--brown--&gt;</span><br><span class="line">&lt;color name&#x3D;&quot;md_brown_50&quot;&gt;#EFEBE9&lt;&#x2F;color&gt;</span><br><span class="line">&lt;color name&#x3D;&quot;md_brown_100&quot;&gt;#D7CCC8&lt;&#x2F;color&gt;</span><br><span class="line">&lt;color name&#x3D;&quot;md_brown_200&quot;&gt;#BCAAA4&lt;&#x2F;color&gt;</span><br><span class="line">&lt;color name&#x3D;&quot;md_brown_300&quot;&gt;#A1887F&lt;&#x2F;color&gt;</span><br><span class="line">&lt;color name&#x3D;&quot;md_brown_400&quot;&gt;#8D6E63&lt;&#x2F;color&gt;</span><br><span class="line">&lt;color name&#x3D;&quot;md_brown_500&quot;&gt;#795548&lt;&#x2F;color&gt;</span><br><span class="line">&lt;color name&#x3D;&quot;md_brown_600&quot;&gt;#6D4C41&lt;&#x2F;color&gt;</span><br><span class="line">&lt;color name&#x3D;&quot;md_brown_700&quot;&gt;#5D4037&lt;&#x2F;color&gt;</span><br><span class="line">&lt;color name&#x3D;&quot;md_brown_800&quot;&gt;#4E342E&lt;&#x2F;color&gt;</span><br><span class="line">&lt;color name&#x3D;&quot;md_brown_900&quot;&gt;#3E2723&lt;&#x2F;color&gt;</span><br><span class="line"></span><br><span class="line">&lt;!--grey--&gt;</span><br><span class="line">&lt;color name&#x3D;&quot;md_grey_50&quot;&gt;#FAFAFA&lt;&#x2F;color&gt;</span><br><span class="line">&lt;color name&#x3D;&quot;md_grey_100&quot;&gt;#F5F5F5&lt;&#x2F;color&gt;</span><br><span class="line">&lt;color name&#x3D;&quot;md_grey_200&quot;&gt;#EEEEEE&lt;&#x2F;color&gt;</span><br><span class="line">&lt;color name&#x3D;&quot;md_grey_300&quot;&gt;#E0E0E0&lt;&#x2F;color&gt;</span><br><span class="line">&lt;color name&#x3D;&quot;md_grey_400&quot;&gt;#BDBDBD&lt;&#x2F;color&gt;</span><br><span class="line">&lt;color name&#x3D;&quot;md_grey_500&quot;&gt;#9E9E9E&lt;&#x2F;color&gt;</span><br><span class="line">&lt;color name&#x3D;&quot;md_grey_600&quot;&gt;#757575&lt;&#x2F;color&gt;</span><br><span class="line">&lt;color name&#x3D;&quot;md_grey_700&quot;&gt;#616161&lt;&#x2F;color&gt;</span><br><span class="line">&lt;color name&#x3D;&quot;md_grey_800&quot;&gt;#424242&lt;&#x2F;color&gt;</span><br><span class="line">&lt;color name&#x3D;&quot;md_grey_900&quot;&gt;#212121&lt;&#x2F;color&gt;</span><br><span class="line"></span><br><span class="line">&lt;!--blue_grey--&gt;</span><br><span class="line">&lt;color name&#x3D;&quot;md_blue_grey_50&quot;&gt;#ECEFF1&lt;&#x2F;color&gt;</span><br><span class="line">&lt;color name&#x3D;&quot;md_blue_grey_100&quot;&gt;#CFD8DC&lt;&#x2F;color&gt;</span><br><span class="line">&lt;color name&#x3D;&quot;md_blue_grey_200&quot;&gt;#B0BEC5&lt;&#x2F;color&gt;</span><br><span class="line">&lt;color name&#x3D;&quot;md_blue_grey_300&quot;&gt;#90A4AE&lt;&#x2F;color&gt;</span><br><span class="line">&lt;color name&#x3D;&quot;md_blue_grey_400&quot;&gt;#78909C&lt;&#x2F;color&gt;</span><br><span class="line">&lt;color name&#x3D;&quot;md_blue_grey_500&quot;&gt;#607D8B&lt;&#x2F;color&gt;</span><br><span class="line">&lt;color name&#x3D;&quot;md_blue_grey_600&quot;&gt;#546E7A&lt;&#x2F;color&gt;</span><br><span class="line">&lt;color name&#x3D;&quot;md_blue_grey_700&quot;&gt;#455A64&lt;&#x2F;color&gt;</span><br><span class="line">&lt;color name&#x3D;&quot;md_blue_grey_800&quot;&gt;#37474F&lt;&#x2F;color&gt;</span><br><span class="line">&lt;color name&#x3D;&quot;md_blue_grey_900&quot;&gt;#263238&lt;&#x2F;color&gt;</span><br><span class="line"></span><br><span class="line">&lt;!--black--&gt;</span><br><span class="line">&lt;color name&#x3D;&quot;md_black&quot;&gt;#000000&lt;&#x2F;color&gt;</span><br><span class="line"></span><br><span class="line">&lt;!--white--&gt;</span><br><span class="line">&lt;color name&#x3D;&quot;md_white&quot;&gt;#FFFFFF&lt;&#x2F;color&gt;</span><br></pre></td></tr></table></figure>
+<h5 id="界面中的色彩"><a href="#界面中的色彩" class="headerlink" title="界面中的色彩"></a>界面中的色彩</h5><p>在界面中，考虑状态栏、顶部导航栏、底部应用栏和FAB在色彩上的关系。状态栏和顶部导航栏一般采用邻近色，而底部应用栏和FAB一般使用对比色。</p>
+<p><img src="https://image.uisdc.com/wp-content/uploads/2018/11/uisdc-yk-20181104-5.jpg" alt></p>
+<p><img src="https://image.uisdc.com/wp-content/uploads/2018/11/uisdc-yk-20181104-77.jpg" alt></p>
+<h4 id="文字"><a href="#文字" class="headerlink" title="文字"></a>文字</h4><p>在 MD 中，中文使用思源字体，英文使用 Roboto 字体。</p>
+<h5 id="字体单位"><a href="#字体单位" class="headerlink" title="字体单位"></a>字体单位</h5><p><img src="https://image.uisdc.com/wp-content/uploads/2018/11/uisdc-yk-20181104-150.jpg" alt></p>
+<h5 id="字体大小"><a href="#字体大小" class="headerlink" title="字体大小"></a>字体大小</h5><p>MD 对于不同控件或部分的字体大小给出了一个参考表。</p>
+<p><img src="https://image.uisdc.com/wp-content/uploads/2018/11/uisdc-yk-20181104-47.jpg" alt></p>
+<h4 id="产品图标"><a href="#产品图标" class="headerlink" title="产品图标"></a>产品图标</h4><p>优秀的产品图标，应以简单、友好、大胆的方式传达产品的核心理念和意图。</p>
+<p><img src="https://image.uisdc.com/wp-content/uploads/2018/11/uisdc-yk-20181104-29.jpg" alt></p>
+<h5 id="图标网格与参考线"><a href="#图标网格与参考线" class="headerlink" title="图标网格与参考线"></a>图标网格与参考线</h5><p>如果想设计一个48dp的图标，建议将画布放大到400%（192dp x 192dp）来设计。</p>
+<p><img src="https://image.uisdc.com/wp-content/uploads/2018/11/uisdc-yk-20181104-48.jpg" alt></p>
+<p>(我怀疑上图中的圆形的宽度标注错了，应该是176dp)</p>
+<h4 id="系统图标"><a href="#系统图标" class="headerlink" title="系统图标"></a>系统图标</h4><p>系统图标需要设计简单，现代，友好，在尽可能简化的情况下表达最基本或最明显的特征。</p>
+<p><img src="https://image.uisdc.com/wp-content/uploads/2018/11/uisdc-yk-20181104-138.jpg" alt></p>
+<h5 id="字体图标"><a href="#字体图标" class="headerlink" title="字体图标"></a>字体图标</h5><p>如果需要，可以在不下载使用图标文件的情况下，使用字体格式来节省控件。MD 和阿里都有提供图标网站：</p>
+<p><a href="https://link.uisdc.com/?redirect=https%3A%2F%2Fmaterial.io%2Ftools%2Ficons">Material Design</a></p>
+<p><a href="https://www.iconfont.cn/">IconFont</a></p>
+<h5 id="造型接近几何形"><a href="#造型接近几何形" class="headerlink" title="造型接近几何形"></a>造型接近几何形</h5><p>MD 无需特别细致的细节，尽量使用几何形造型的图标。</p>
+<p><img src="https://image.uisdc.com/wp-content/uploads/2018/11/uisdc-yk-20181104-144.jpg" alt></p>
+<h5 id="图标点击状态"><a href="#图标点击状态" class="headerlink" title="图标点击状态"></a>图标点击状态</h5><p>以下透明度供参考：</p>
+<p><img src="https://image.uisdc.com/wp-content/uploads/2018/11/uisdc-yk-20181104-109.jpg" alt></p>
+<p>看了下后面的内容，属于设计的范畴，就不参考了。</p>
+<h4 id="交互"><a href="#交互" class="headerlink" title="交互"></a>交互</h4><h5 id="空状态"><a href="#空状态" class="headerlink" title="空状态"></a>空状态</h5><p>空状态应使用幽默和可爱的情感化设计来和用户产生亲和感，但是不应该体现可操作性。不应使用口号和可点击的暗示。</p>
+<p><img src="https://image.uisdc.com/wp-content/uploads/2018/11/uisdc-yk-20181104-95.jpg" alt></p>
+<h5 id="警告对话框"><a href="#警告对话框" class="headerlink" title="警告对话框"></a>警告对话框</h5><p>警告对话框可以让用户明白下一步会发生什么，并提供取消的选项，比如删除操作通常都会弹出警告。</p>
+<h5 id="闪屏页"><a href="#闪屏页" class="headerlink" title="闪屏页"></a>闪屏页</h5><p>大约即启动页。</p>
+<h5 id="离线功能Offline-states"><a href="#离线功能Offline-states" class="headerlink" title="离线功能Offline states"></a>离线功能Offline states</h5><p>有些功能会因为无网络而无法完全使用，这时需要设计一些状态来表示当前的无网络状态。</p>
+<h2 id="一些设计概念"><a href="#一些设计概念" class="headerlink" title="一些设计概念"></a>一些设计概念</h2><h3 id="信噪比"><a href="#信噪比" class="headerlink" title="信噪比"></a>信噪比</h3><p>参考文章：</p>
+<blockquote>
+<ul>
+<li><a href="https://www.sohu.com/a/280346052_505826">界面设计中的“信噪比”</a></li>
+</ul>
+</blockquote>
+<p>“信号”指有效或用户的目标信息，“噪声”指无用或干扰信息。信噪比越高，将信息传达给用户的效率也就越高。通常有两种方法来提高信噪比，一是<strong>加大信号</strong>，二是<strong>降低噪声</strong>。</p>
+<p>比如下面这张图：</p>
+<p><img src="http://5b0988e595225.cdn.sohucs.com/images/20181207/f71d3e67b75d453dbe1cbdc442b2e195.jpeg" alt></p>
+<p>在右侧的界面中，分割线的颜色深浅与列表文字保持了一致。这就使得在视觉效果上呈现出，列表里的文字内容与分割线的信息处理等级是一致的。而实际上，应用想展示给用户的优先处理信息，是列表里的文字内容。所以，这里需要将分割线的颜色设置为浅色，以减少干扰信息。</p>
+<p>再比如这张图：</p>
+<p><img src="http://5b0988e595225.cdn.sohucs.com/images/20181207/717debfaa24344bcadf0bda9757249c9.jpeg" alt></p>
+<p>iOS7 将拟物化图标改为扁平化图标。拟物化图标拥有充足的细节表现，比如高光、阴影、纹理、材质等；而扁平化图标经过了抽象、简化与符号化，与前者相比，去掉了很多不必要的细节，减少了用户的信息提取量。背景从拟真的深色图片更换为毛玻璃化的浅色背景，也降低了噪声<del>（与文章里的加大信号观点不同，我反而认为是这些处理是着重弱化了噪声）</del>。此外，iOS6 的主界面说不上脏，但 iOS7 的主界面看起来更“干净”一些，这是因为后者的界面里的颜色纯度与明度更高，颜色跨度比较小（也可以看得出相对地，iOS7 四个带有一些黑色元素的图标更容易吸引视线）。</p>
+<p>关于“信噪比”，我之前在学习游戏开发的视频中也看到过，只不过一时找不到视频了。等我找到后来这里补个链接。</p>
+<h3 id="情感化"><a href="#情感化" class="headerlink" title="情感化"></a>情感化</h3><p>参考文章</p>
+<blockquote>
+<ul>
+<li><a href="https://zhuanlan.zhihu.com/p/109625598">APP引导页设计技巧，让你的设计更上一层楼</a></li>
+<li><a href="http://www.woshipm.com/pd/12750.html">情感化移动应用设计</a></li>
+<li><a href="https://zhuanlan.zhihu.com/p/43085292">界面情感化设计</a></li>
+</ul>
+</blockquote>
+<p>情绪是一个很主观、很微妙的东西。情感化设计，是指设计师利用界面元素，激发和带给用户一些设计目标内的情绪。当然，有时也可能处于设计目标之外。这样易引起用户的兴趣或共鸣，提升用户的粘度。</p>
+<p>情感化设计常通过色彩、图案、布局、交互来达成感染情绪的结果。比如：</p>
+<blockquote>
+<ul>
+<li>色彩：黄红色常作为积极的色彩和主色调使用，给人以热情、快乐等正面情绪；蓝绿黑色常作为消极的色彩和配色使用，给人以安静祥和、自由舒适等情绪。</li>
+<li>图案：类似于下面的生动表情图案，能较准确地表达出一个人的情绪</li>
+<li>布局：具有清晰、直观的结构化和层次化的界面，能让用户感觉到清爽与舒适；杂乱无章的布局容易让用户感到烦躁与不快。</li>
+<li>交互：活泼有趣的交互设计，能激发用户对应用的使用兴趣；规矩死板的交互，会让用户觉得生硬无趣。</li>
+</ul>
+</blockquote>
+<p><img src="http://5b0988e595225.cdn.sohucs.com/images/20200422/b8006cac55204b8dbc91dc85c59af452.gif" alt></p>
+]]></content>
+      <categories>
+        <category>Android</category>
       </categories>
   </entry>
   <entry>
