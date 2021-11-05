@@ -1,0 +1,610 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=2">
+<meta name="theme-color" content="#222">
+<meta name="generator" content="Hexo 5.2.0">
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/logo.png">
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/logo.png">
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/logo.png">
+  <link rel="mask-icon" href="/images/logo.png" color="#222">
+
+<link rel="stylesheet" href="/css/main.css">
+
+
+<link rel="stylesheet" href="/lib/font-awesome/css/all.min.css">
+
+<script id="hexo-configurations">
+    var NexT = window.NexT || {};
+    var CONFIG = {"hostname":"example.com","root":"/","scheme":"Mist","version":"7.8.0","exturl":false,"sidebar":{"position":"right","display":"post","padding":18,"offset":12,"onmobile":false},"copycode":{"enable":false,"show_result":false,"style":null},"back2top":{"enable":true,"sidebar":false,"scrollpercent":false},"bookmark":{"enable":false,"color":"#222","save":"auto"},"fancybox":false,"mediumzoom":false,"lazyload":false,"pangu":false,"comments":{"style":"tabs","active":null,"storage":true,"lazyload":false,"nav":null},"algolia":{"hits":{"per_page":10},"labels":{"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}},"localsearch":{"enable":true,"trigger":"auto","top_n_per_article":1,"unescape":false,"preload":false},"motion":{"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}},"path":"search.xml"};
+  </script>
+
+  <meta name="description" content="先来两篇原文与机翻：">
+<meta property="og:type" content="article">
+<meta property="og:title" content="拟态UI">
+<meta property="og:url" content="http://example.com/2021/11/03/%E6%8B%9F%E6%80%81UI/index.html">
+<meta property="og:site_name" content="希夏">
+<meta property="og:description" content="先来两篇原文与机翻：">
+<meta property="og:locale" content="zh_CN">
+<meta property="og:image" content="http://example.com/2021/11/03/%E6%8B%9F%E6%80%81UI/1.png">
+<meta property="og:image" content="http://example.com/2021/11/03/%E6%8B%9F%E6%80%81UI/2.png">
+<meta property="og:image" content="http://example.com/2021/11/03/%E6%8B%9F%E6%80%81UI/3.png">
+<meta property="og:image" content="http://example.com/2021/11/03/%E6%8B%9F%E6%80%81UI/4.jpeg">
+<meta property="og:image" content="http://example.com/2021/11/03/%E6%8B%9F%E6%80%81UI/5.jpeg">
+<meta property="og:image" content="http://example.com/2021/11/03/%E6%8B%9F%E6%80%81UI/6.jpeg">
+<meta property="og:image" content="http://example.com/2021/11/03/%E6%8B%9F%E6%80%81UI/7.jpeg">
+<meta property="og:image" content="http://example.com/2021/11/03/%E6%8B%9F%E6%80%81UI/8.jpeg">
+<meta property="og:image" content="http://example.com/2021/11/03/%E6%8B%9F%E6%80%81UI/9.jpeg">
+<meta property="og:image" content="http://example.com/2021/11/03/%E6%8B%9F%E6%80%81UI/10.jpeg">
+<meta property="og:image" content="http://example.com/2021/11/03/%E6%8B%9F%E6%80%81UI/11.jpeg">
+<meta property="og:image" content="http://example.com/2021/11/03/%E6%8B%9F%E6%80%81UI/12.jpeg">
+<meta property="og:image" content="https://miro.medium.com/max/2400/1*ZmOxKYNFSPAZuDZZgyq6Vw.gif">
+<meta property="og:image" content="https://miro.medium.com/max/640/1*-0qEq5AuadrpE7EQqM8AtQ.gif">
+<meta property="og:image" content="https://miro.medium.com/max/640/1*RafVUj-OpvmO31EyO5VrJw.gif">
+<meta property="og:image" content="https://miro.medium.com/max/2400/1*mCXyV0pMee_nAwciSyMQ_Q.jpeg">
+<meta property="og:image" content="https://miro.medium.com/max/640/1*eUn4Pxv8WFliFLdKEIfysg.gif">
+<meta property="og:image" content="http://example.com/2021/11/03/%E6%8B%9F%E6%80%81UI/13.jpeg">
+<meta property="og:image" content="http://example.com/2021/11/03/%E6%8B%9F%E6%80%81UI/14.jpeg">
+<meta property="article:published_time" content="2021-11-03T09:24:22.000Z">
+<meta property="article:modified_time" content="2021-11-04T08:21:16.707Z">
+<meta property="article:author" content="希夏">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="http://example.com/2021/11/03/%E6%8B%9F%E6%80%81UI/1.png">
+
+<link rel="canonical" href="http://example.com/2021/11/03/%E6%8B%9F%E6%80%81UI/">
+
+
+<script id="page-configurations">
+  // https://hexo.io/docs/variables.html
+  CONFIG.page = {
+    sidebar: "",
+    isHome : false,
+    isPost : true,
+    lang   : 'zh-CN'
+  };
+</script>
+
+  <title>拟态UI | 希夏</title>
+  
+
+
+
+
+
+
+  <noscript>
+  <style>
+  .use-motion .brand,
+  .use-motion .menu-item,
+  .sidebar-inner,
+  .use-motion .post-block,
+  .use-motion .pagination,
+  .use-motion .comments,
+  .use-motion .post-header,
+  .use-motion .post-body,
+  .use-motion .collection-header { opacity: initial; }
+
+  .use-motion .site-title,
+  .use-motion .site-subtitle {
+    opacity: initial;
+    top: initial;
+  }
+
+  .use-motion .logo-line-before i { left: initial; }
+  .use-motion .logo-line-after i { right: initial; }
+  </style>
+</noscript>
+
+<!-- hexo injector head_end start -->
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.12.0/dist/katex.min.css">
+
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/hexo-math@4.0.0/dist/style.css">
+<!-- hexo injector head_end end --></head>
+
+<body itemscope itemtype="http://schema.org/WebPage">
+  <div class="container use-motion">
+    <div class="headband"></div>
+
+    <header class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-container">
+  <div class="site-nav-toggle">
+    <div class="toggle" aria-label="切换导航栏">
+      <span class="toggle-line toggle-line-first"></span>
+      <span class="toggle-line toggle-line-middle"></span>
+      <span class="toggle-line toggle-line-last"></span>
+    </div>
+  </div>
+
+  <div class="site-meta">
+
+    <a href="/" class="brand" rel="start">
+      <span class="logo-line-before"><i></i></span>
+      <h1 class="site-title">希夏</h1>
+      <span class="logo-line-after"><i></i></span>
+    </a>
+  </div>
+
+  <div class="site-nav-right">
+    <div class="toggle popup-trigger">
+        <i class="fa fa-search fa-fw fa-lg"></i>
+    </div>
+  </div>
+</div>
+
+
+
+
+<nav class="site-nav">
+  <ul id="menu" class="main-menu menu">
+        <li class="menu-item menu-item-home">
+
+    <a href="/" rel="section"><i class="fa fa-home fa-fw"></i>首页</a>
+
+  </li>
+        <li class="menu-item menu-item-about">
+
+    <a href="/about/" rel="section"><i class="fa fa-user fa-fw"></i>关于</a>
+
+  </li>
+        <li class="menu-item menu-item-categories">
+
+    <a href="/categories/" rel="section"><i class="fa fa-th fa-fw"></i>分类</a>
+
+  </li>
+        <li class="menu-item menu-item-archives">
+
+    <a href="/archives/" rel="section"><i class="fa fa-archive fa-fw"></i>归档</a>
+
+  </li>
+        <li class="menu-item menu-item-reviewme">
+
+    <a href="/reviewme/" rel="section"><i class="fa fa-user fa-fw"></i>关于我</a>
+
+  </li>
+      <li class="menu-item menu-item-search">
+        <a role="button" class="popup-trigger"><i class="fa fa-search fa-fw"></i>搜索
+        </a>
+      </li>
+  </ul>
+</nav>
+
+
+
+  <div class="search-pop-overlay">
+    <div class="popup search-popup">
+        <div class="search-header">
+  <span class="search-icon">
+    <i class="fa fa-search"></i>
+  </span>
+  <div class="search-input-container">
+    <input autocomplete="off" autocapitalize="off"
+           placeholder="搜索..." spellcheck="false"
+           type="search" class="search-input">
+  </div>
+  <span class="popup-btn-close">
+    <i class="fa fa-times-circle"></i>
+  </span>
+</div>
+<div id="search-result">
+  <div id="no-result">
+    <i class="fa fa-spinner fa-pulse fa-5x fa-fw"></i>
+  </div>
+</div>
+
+    </div>
+  </div>
+
+</div>
+    </header>
+
+    
+  <div class="back-to-top">
+    <i class="fa fa-arrow-up"></i>
+    <span>0%</span>
+  </div>
+
+
+    <main class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          
+
+          <div class="content post posts-expand">
+            
+
+    
+  
+  
+  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="zh-CN">
+    <link itemprop="mainEntityOfPage" href="http://example.com/2021/11/03/%E6%8B%9F%E6%80%81UI/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar.jpg">
+      <meta itemprop="name" content="希夏">
+      <meta itemprop="description" content="我还在幻想着，能找到一个喜欢的人">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="希夏">
+    </span>
+      <header class="post-header">
+        <h1 class="post-title" itemprop="name headline">
+          拟态UI
+        </h1>
+
+        <div class="post-meta">
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-calendar"></i>
+              </span>
+              <span class="post-meta-item-text">发表于</span>
+
+              <time title="创建时间：2021-11-03 17:24:22" itemprop="dateCreated datePublished" datetime="2021-11-03T17:24:22+08:00">2021-11-03</time>
+            </span>
+              <span class="post-meta-item">
+                <span class="post-meta-item-icon">
+                  <i class="far fa-calendar-check"></i>
+                </span>
+                <span class="post-meta-item-text">更新于</span>
+                <time title="修改时间：2021-11-04 16:21:16" itemprop="dateModified" datetime="2021-11-04T16:21:16+08:00">2021-11-04</time>
+              </span>
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-folder"></i>
+              </span>
+              <span class="post-meta-item-text">分类于</span>
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/Android/" itemprop="url" rel="index"><span itemprop="name">Android</span></a>
+                </span>
+            </span>
+
+          <br>
+            <span class="post-meta-item" title="本文字数">
+              <span class="post-meta-item-icon">
+                <i class="far fa-file-word"></i>
+              </span>
+                <span class="post-meta-item-text">本文字数：</span>
+              <span>5.2k</span>
+            </span>
+            <span class="post-meta-item" title="阅读时长">
+              <span class="post-meta-item-icon">
+                <i class="far fa-clock"></i>
+              </span>
+                <span class="post-meta-item-text">阅读时长 &asymp;</span>
+              <span>5 分钟</span>
+            </span>
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+        <p>先来两篇原文与机翻：</p>
+<a id="more"></a>
+<h1 id="关于拟态的两篇文章"><a href="#关于拟态的两篇文章" class="headerlink" title="关于拟态的两篇文章"></a>关于拟态的两篇文章</h1><h2 id="用户界面的拟态"><a href="#用户界面的拟态" class="headerlink" title="用户界面的拟态"></a>用户界面的拟态</h2><p>原文：<a target="_blank" rel="noopener" href="https://uxdesign.cc/neumorphism-in-user-interfaces-b47cef3bf3a6">用户界面的拟态</a></p>
+<p>如何在现实世界中获取UI趋势的灵感，以及我们必须要解决哪些问题才能使得它们发挥作用。</p>
+<p><img src="/2021/11/03/%E6%8B%9F%E6%80%81UI/1.png" alt></p>
+<p>上周我们探讨了 UI 设计的一些潜在新趋势，其中一种特殊趋势最近在 Dribbble 和 Instagram 上引起了很多关注。这种“新拟物化”在评论中被 Jason Kalley 称为拟态（Neuomorphism）。我决定跳过 “o”，这样 Neuomorphism 这个名字就活跃起来了。</p>
+<p>（也感谢所有很棒的评论———我知道拟物化总是“就在角落里”，但这就是关于设计师感知到的趋势和现实。）</p>
+<p>你也可以看看<a target="_blank" rel="noopener" href="https://www.youtube.com/c/malewiczhype">我的 Youtube 视频</a>，其中涵盖了许多设计趋势，包括此项。</p>
+<p><strong>有人知道拟物化吗？</strong></p>
+<p>虽然各种形式的拟物化仍然存在于 UI 中（例如桌面操作系统的垃圾桶），但这种风格的特定部分的趋势更加明显。</p>
+<p>比如</p>
+<p>Kamil Falana 指出，从毫无生气的“表现”到某种中途的现实主义的转变开始发生。</p>
+<p><img src="/2021/11/03/%E6%8B%9F%E6%80%81UI/2.png" alt></p>
+<p>我们不久前还注意到，这种变化开始在我们周围发生—— Apple 就是一个很好的例子，对“超级扁平和极简”的推动受到了阻力，最终获得了更多那种无纹理的 3D 感觉。人们似乎也喜欢这种。</p>
+<p><strong>事半功倍？</strong></p>
+<p>整个炒作始于一个迅速走红的 Dribble 图片。</p>
+<p><img src="/2021/11/03/%E6%8B%9F%E6%80%81UI/3.png" alt></p>
+<p>这张图片开启了一个趋势，虽然其中的一部分没有多大意义（一个滑动后退箭头？），但这正是我们再次对 UI 感到兴奋所需要的。谢谢 Alex！</p>
+<p><strong>有什么不同？</strong></p>
+<p>由于按钮没有太大变化，所以我们关注一下实际的卡片概念，从而创造出如此出色的视觉风格。</p>
+<p><img src="/2021/11/03/%E6%8B%9F%E6%80%81UI/4.jpeg" alt></p>
+<p><strong>Modern / Material Cards</strong></p>
+<p>Modern / Material（升级）Cards 通常是一个漂浮在我们感知的背景之上的表面层，并在其下投下阴影。阴影不仅赋予它深度，而且在很多情况下也定义了形状本身——因为它通常是无边界的。</p>
+<p><strong>拟物化卡片</strong></p>
+<p>然而，拟物化卡片假装从背景中挤出来。这是一个凸起的形状，由与背景完全相同的材料制成。当我们从侧面看它时，我们会看到它并没有“漂浮”。</p>
+<p>这个效果很容易通过使用两个阴影来实现，一个在负值，另一个在正值。但是为了让它工作，我们的背景不能是全黑或全白。它至少需要一点点色调，以便可以看到深色和“浅色”阴影。你可以为背景使用任意色调，根据你的选择，它可以是更暖的或更冷的。但白色和黑色的阴影必须是可见的，即使很轻微。</p>
+<p>秘诀就在这里——根据你的喜好来调整：</p>
+<p><img src="/2021/11/03/%E6%8B%9F%E6%80%81UI/5.jpeg" alt></p>
+<p><strong>利与弊</strong></p>
+<p>这种风格的主要好处是“新鲜”（至少在这种趋势持续的时间内）。它为界面带来了“新感觉”并使其脱颖而出。它也可以与其他样式混合使用，因此它不会到处都是“软挤压塑料”。</p>
+<p>然而，它也有一些需要解决的问题。到目前为止我们发现的两个主要问题（但我们仍在寻找）是：</p>
+<ul>
+<li>可访问性</li>
+<li>有效编码的方法</li>
+</ul>
+<p><strong>可见性——可访问性</strong></p>
+<p>图形与背景对比度的主要问题是，当它们都是相同的颜色时，就没有要测量的对比度;-)。客观上有存在一个阴影，以便我们可以近似并尝试测量它外面的第一个像素。在我们上面的例子中，我们最终得到了这些对比度值。</p>
+<p><img src="/2021/11/03/%E6%8B%9F%E6%80%81UI/6.jpeg" alt></p>
+<p>正如你所看到的，Material Cards 和拟物化卡的对比度都非常低。当然，这部分是它们的吸引力，而且卡片本身并不用于活动元素——所以只要我们保持按钮突出并具有足够高的对比度，我们就应该没问题。</p>
+<p>他们之间的差异很小，如果我们想对卡片使用更好的对比度，我们必须这样做：</p>
+<p><img src="/2021/11/03/%E6%8B%9F%E6%80%81UI/7.jpeg" alt></p>
+<p>而且由于几乎没有人将阴影设置得如此强烈，这意味着剩下的 UI 元素必须是可访问的。这个假设得出的结论是，如果我们通过排版、接近度和与重要元素的对比来进行正确的层次结构，那么这些卡片/挤压塑料卡片并不是那么重要。</p>
+<p>这还亟待测试（我会尽量找时间去做），但现在我们假设下面元素的两个“版本”都是“OK”的。即使有些人没有看到它上面的柔和阴影，仍然有足够的对比度让他们看到图标并“使用它”。</p>
+<p><img src="/2021/11/03/%E6%8B%9F%E6%80%81UI/8.jpeg" alt></p>
+<p><strong>可访问性</strong></p>
+<p>虽然“按钮”应该看起来像一个按钮，但如果图标本身与背景的对比足够好，它仍然可以工作。 所以这里要记住的主要事情是，如果你采用这种风格，请将所有重要元素保持在足够高的对比度上。</p>
+<p>毕竟大多数“现代”卡片视图也没有通过其阴影的对比度测试。</p>
+<p><strong>只有卡片？</strong></p>
+<p>但是，如果我们决定将组件用作按钮而不是卡片，则会出现可访问性的主要问题。</p>
+<p>我们可以轻松地创建具有倒置内部阴影的按下状态，如下例所示。</p>
+<p><img src="/2021/11/03/%E6%8B%9F%E6%80%81UI/9.jpeg" alt></p>
+<p>这里的问题其实很严重。</p>
+<p>这种按下状态的对比度太小，无法表示差异。如果界面的其余部分提供，卡片可以“消失”，则活动元素需要始终传达其状态。</p>
+<p>这里有几个想法，比如使用轮廓和填充图标、下划线甚至用颜色填充按下状态。 </p>
+<p><img src="/2021/11/03/%E6%8B%9F%E6%80%81UI/10.jpeg" alt></p>
+<p>设计时请记住这一点。 我们都喜欢“漂亮”，但我们也需要记住它是每个人都可以使用的。</p>
+<p><strong>编码</strong></p>
+<p>让我们在这里将编码视为一种奖励，因为在 CSS 中实现“软塑料”外观实际上比我们想象的要容易。 我们还没有研究 Swift 和 Kotlin，但我认为这应该不是问题。</p>
+<p><img src="/2021/11/03/%E6%8B%9F%E6%80%81UI/11.jpeg" alt></p>
+<p>当然，你可以用逗号将两个框阴影合在一起。</p>
+<p>如果你想要一个方便的生成器，一位创意 Web 开发人员在 <a target="_blank" rel="noopener" href="https://neumorphism.io">https://neumorphism.io</a> 上制作了一个。</p>
+<p><strong>其他效果</strong></p>
+<p>然而，背景形状是一回事。这种新风格还带有更多“图形密集”的按钮和开关。在许多情况下，我们只需要回到“过去的美好时光”并使用位图。这似乎是一种回归，但不要担心——这没有必要。您可以轻松地将现代的、完全可编码的按钮与那些卡片形状结合起来，而且效果很好。</p>
+<p><img src="/2021/11/03/%E6%8B%9F%E6%80%81UI/12.jpeg" alt></p>
+<p><strong>我们真的需要这些吗？</strong></p>
+<p>虽然这种新趋势肯定激发了很多设计师的灵感，但与以前使用的卡片组件的可访问性问题相比，它的问题并不是那么大。</p>
+<p>所以去野吧！玩转这种趋势，并对其进行调整，以使其成为您的趋势。UI 设计师的工作是移动这些框框，所以每次框框变得有点“不同”和“新”时，它都会带回一些乐趣。如果没有这种不断的探索，所有的产品都会重新看起来一样。</p>
+<p><strong>让我们找点乐子！</strong></p>
+<p>但也要记住，每一个新趋势都伴随着警告，必须经过精心设计才能使用。</p>
+<h2 id="Android-上的拟态"><a href="#Android-上的拟态" class="headerlink" title="Android 上的拟态"></a>Android 上的拟态</h2><p>原文：<a target="_blank" rel="noopener" href="https://fornewid.medium.com/neumorphism-in-android-9cf15e2122dc">Android上的拟态</a></p>
+<p>自去年年底以来，我就已经看到了几篇关于 Neumorphism 设计的帖子。就我个人而言，我对一种新设计很感兴趣，所以我想把它应用到 Android 上。但是，由于平台限制，我找不到这样的库。所以我简单地实现了一下它。（<a target="_blank" rel="noopener" href="https://github.com/fornewid/neumorphism">Github 存储库</a>）</p>
+<p>我写这篇文章是为了分享库并获得更多反馈。 🤣</p>
+<p>在开始之前，你们中的一些人可能不熟悉术语 Neumorphism。它是类似 Material Design 的 UI 概念，在绘制阴影上是有区别的。如果您想了解更多关于 Neumorphism 的信息，请阅读上文。</p>
+<p>在 Material Design 中，<a target="_blank" rel="noopener" href="https://material.io/design/environment/light-shadows.html#light">表面在阻挡光源时会投射阴影</a>。</p>
+<p>在 Neumorphism 中，对象似乎是从背景中挤出来的。</p>
+<p><img src="https://miro.medium.com/max/2400/1*ZmOxKYNFSPAZuDZZgyq6Vw.gif" alt></p>
+<p><strong>如何实现它?</strong></p>
+<p>实现起来很简单。在左上角和右下角画两个阴影。阴影应该平滑地展开。所以使用 RenderScript 模糊阴影。</p>
+<p><img src="https://miro.medium.com/max/640/1*-0qEq5AuadrpE7EQqM8AtQ.gif" alt></p>
+<p>但是，简单地应用它会导致渲染问题。 如果在视图区域外绘制阴影，则阴影会被切断。 ✂️</p>
+<p><img src="https://miro.medium.com/max/640/1*RafVUj-OpvmO31EyO5VrJw.gif" alt></p>
+<p>作为一种解决方法，首先，我尝试在 root 上使用 android:clipChilderen=”false”。但是由于操作系统版本不同或者在某些ViewGroup比如RelativeLayout中，属性不能正常工作，所以问题没有完全解决。 🤔</p>
+<p>所以最后我使用 View 的 android:padding 属性解决了它。要在视图区域内绘制，请正确设置填充。 🎉</p>
+<p><img src="https://miro.medium.com/max/2400/1*mCXyV0pMee_nAwciSyMQ_Q.jpeg" alt></p>
+<p><strong>互动：按压效果</strong></p>
+<p>移动 UI 看起来漂亮很重要。按钮按下等交互也很重要。如何在 Neumorphism 中实现按钮按下效果？</p>
+<p>首先想到的是如何根据 MotionEvent 以不同方式显示形状。 这实际上是一些人建议的方式。 不幸的是，这种方式的交互不够自然。 🤔</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line">override fun onTouchEvent(event: MotionEvent): Boolean &#123;</span><br><span class="line">    when (event.action) &#123;</span><br><span class="line">        MotionEvent.ACTION_DOWN -&gt;</span><br><span class="line">            setShapeType(ShapeType.PRESSED)</span><br><span class="line">        MotionEvent.ACTION_UP -&gt;</span><br><span class="line">            setShapeType(ShapeType.FLAT)</span><br><span class="line">    &#125;</span><br><span class="line">    return super.onTouchEvent(event)</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>那么像 Material Button 一样使用 StateListAnimator 怎么样？如果根据 TranslationZ 使阴影移动，则按钮按下效果会更自然地显示。 🥳</p>
+<p><img src="https://miro.medium.com/max/640/1*eUn4Pxv8WFliFLdKEIfysg.gif" alt></p>
+<p><strong>入门</strong></p>
+<p>我通过实现我到目前为止所讨论的内容构建了一个库。 它提供了 CardView、Button、ImageView 等 View 组件。</p>
+<p>以下是使用该库的方法：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">&lt;soup.neumorphism.NeumorphCardView</span><br><span class="line">    style&#x3D;&quot;@style&#x2F;Widget.Neumorph.CardView&quot;&gt;</span><br><span class="line">    &lt;ConstraintLayout&gt;</span><br><span class="line">        ...</span><br><span class="line">    &lt;&#x2F;ConstraintLayout&gt;</span><br><span class="line">&lt;&#x2F;soup.neumorphism.NeumorphCardView&gt;</span><br></pre></td></tr></table></figure>
+<p>👏 完成！ （基本上，使用布局 XML。）</p>
+<p>接下来，让我们看看小部件提供了哪些属性。</p>
+<p><strong>特点：阴影</strong></p>
+<p>你可以调整阴影的颜色和高度。</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">&lt;soup.neumorphism.NeumorphCardView</span><br><span class="line">    app:neumorph_shadowElevation&#x3D;&quot;6dp&quot;</span><br><span class="line">    app:neumorph_shadowColorLight&#x3D;&quot;@color&#x2F;light_color&quot;</span><br><span class="line">    app:neumorph_shadowColorDark&#x3D;&quot;@color&#x2F;dark_color&quot; &#x2F;&gt;</span><br></pre></td></tr></table></figure>
+<p><strong>特征：形状</strong></p>
+<p>你可以更改视图表面和角的形状。</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line">&lt;soup.neumorphism.NeumorphCardView</span><br><span class="line">    app:neumorph_shapeType&#x3D;&quot;&#123;flat|pressed|basin&#125;&quot;</span><br><span class="line">    app:neumorph_shapeAppearance&#x3D;&quot;@style&#x2F;ShapeAppearance&quot; &#x2F;&gt;</span><br><span class="line">&lt;style name&#x3D;&quot;ShapeAppearance&quot;&gt;</span><br><span class="line">    &lt;item name&#x3D;&quot;neumorph_cornerFamily&quot;&gt;&#123;rounded|oval&#125;&lt;&#x2F;item&gt;</span><br><span class="line">    &lt;item name&#x3D;&quot;neumorph_cornerSize&quot;&gt;32dp&lt;&#x2F;item&gt;</span><br><span class="line">&lt;&#x2F;style&gt;</span><br></pre></td></tr></table></figure>
+<p><img src="/2021/11/03/%E6%8B%9F%E6%80%81UI/13.jpeg" alt></p>
+<p><strong>特点：颜色</strong></p>
+<p>你可以指定视图的背景和边框颜色。</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">&lt;soup.neumorphism.NeumorphCardView</span><br><span class="line">    app:neumorph_backgroundColor&#x3D;&quot;@color&#x2F;background_color&quot;</span><br><span class="line">    app:neumorph_strokeColor&#x3D;&quot;@color&#x2F;stroke_color&quot;</span><br><span class="line">    app:neumorph_strokeWidth&#x3D;&quot;@dimen&#x2F;stroke_width&quot; &#x2F;&gt;</span><br></pre></td></tr></table></figure>
+<p><img src="/2021/11/03/%E6%8B%9F%E6%80%81UI/14.jpeg" alt></p>
+<p><strong>特征：填充</strong></p>
+<p>最后，支持 android padding 属性以防止切断阴影。 预定义的样式具有默认值。(=12dp)</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">&lt;soup.neumorphism.NeumorphCardView</span><br><span class="line">    android:padding&#x3D;&quot;12dp&quot; &#x2F;&gt;</span><br></pre></td></tr></table></figure>
+<p>当然，所有属性都可以动态更改。</p>
+<p>它是用 Drawable 实现编写的。很容易将相同的功能应用到多个 View。因此，它可以很容易地应用于 CustomView。</p>
+<center>——————————</center>
+
+<p>我们已经看到了如何在 Android 平台上实现 Neumorphism 以及如何使用该库。</p>
+<p>我认为，新设计对开发人员来说是一个有趣的灵感。Neumorphism 给了我一种新的感觉，实现起来也很有趣。</p>
+<p>但是，与 Material Design 相比，Neumorphism 有很多地方的原则和指南并不明确。也就是说，虽然实现了，但我觉得还不足以应用到生产中。</p>
+<p>因此，如果您对 Neumorphism 感兴趣，请尝试使用该库作为测试！🧪请在图书馆评论任何事情。（欢迎功能请求！）要达到生产级别，需要各种意见。 🧑‍💻</p>
+<p>如果需要，请转到 <a target="_blank" rel="noopener" href="https://github.com/fornewid/neumorphism">Github 存储库</a>！ 👀</p>
+
+    </div>
+
+    
+    
+    
+
+      <footer class="post-footer">
+
+        
+
+
+        
+    <div class="post-nav">
+      <div class="post-nav-item">
+    <a href="/2021/04/13/%E4%B8%80%E4%BA%9B%E7%AE%97%E6%B3%95%E9%A2%98/" rel="prev" title="一些算法题">
+      <i class="fa fa-chevron-left"></i> 一些算法题
+    </a></div>
+      <div class="post-nav-item"></div>
+    </div>
+      </footer>
+    
+  </article>
+  
+  
+  
+
+
+
+          </div>
+          
+
+<script>
+  window.addEventListener('tabs:register', () => {
+    let { activeClass } = CONFIG.comments;
+    if (CONFIG.comments.storage) {
+      activeClass = localStorage.getItem('comments_active') || activeClass;
+    }
+    if (activeClass) {
+      let activeTab = document.querySelector(`a[href="#comment-${activeClass}"]`);
+      if (activeTab) {
+        activeTab.click();
+      }
+    }
+  });
+  if (CONFIG.comments.storage) {
+    window.addEventListener('tabs:click', event => {
+      if (!event.target.matches('.tabs-comment .tab-content .tab-pane')) return;
+      let commentClass = event.target.classList[1];
+      localStorage.setItem('comments_active', commentClass);
+    });
+  }
+</script>
+
+        </div>
+          
+  
+  <div class="toggle sidebar-toggle">
+    <span class="toggle-line toggle-line-first"></span>
+    <span class="toggle-line toggle-line-middle"></span>
+    <span class="toggle-line toggle-line-last"></span>
+  </div>
+
+  <aside class="sidebar">
+    <div class="sidebar-inner">
+
+      <ul class="sidebar-nav motion-element">
+        <li class="sidebar-nav-toc">
+          文章目录
+        </li>
+        <li class="sidebar-nav-overview">
+          站点概览
+        </li>
+      </ul>
+
+      <!--noindex-->
+      <div class="post-toc-wrap sidebar-panel">
+          <div class="post-toc motion-element"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#%E5%85%B3%E4%BA%8E%E6%8B%9F%E6%80%81%E7%9A%84%E4%B8%A4%E7%AF%87%E6%96%87%E7%AB%A0"><span class="nav-number">1.</span> <span class="nav-text">关于拟态的两篇文章</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#%E7%94%A8%E6%88%B7%E7%95%8C%E9%9D%A2%E7%9A%84%E6%8B%9F%E6%80%81"><span class="nav-number">1.1.</span> <span class="nav-text">用户界面的拟态</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#Android-%E4%B8%8A%E7%9A%84%E6%8B%9F%E6%80%81"><span class="nav-number">1.2.</span> <span class="nav-text">Android 上的拟态</span></a></li></ol></li></ol></div>
+      </div>
+      <!--/noindex-->
+
+      <div class="site-overview-wrap sidebar-panel">
+        <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+    <img class="site-author-image" itemprop="image" alt="希夏"
+      src="/images/avatar.jpg">
+  <p class="site-author-name" itemprop="name">希夏</p>
+  <div class="site-description" itemprop="description">我还在幻想着，能找到一个喜欢的人</div>
+</div>
+<div class="site-state-wrap motion-element">
+  <nav class="site-state">
+      <div class="site-state-item site-state-posts">
+          <a href="/archives/">
+        
+          <span class="site-state-item-count">18</span>
+          <span class="site-state-item-name">日志</span>
+        </a>
+      </div>
+      <div class="site-state-item site-state-categories">
+            <a href="/categories/">
+          
+        <span class="site-state-item-count">5</span>
+        <span class="site-state-item-name">分类</span></a>
+      </div>
+  </nav>
+</div>
+
+
+
+      </div>
+
+    </div>
+  </aside>
+  <div id="sidebar-dimmer"></div>
+
+
+      </div>
+    </main>
+
+    <footer class="footer">
+      <div class="footer-inner">
+        
+
+        
+
+<div class="copyright">
+  
+  &copy; 
+  <span itemprop="copyrightYear">2021</span>
+  <span class="with-love">
+    <i class="fa fa-heart"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">希夏</span>
+    <span class="post-meta-divider">|</span>
+    <span class="post-meta-item-icon">
+      <i class="fa fa-chart-area"></i>
+    </span>
+    <span title="站点总字数">136k</span>
+    <span class="post-meta-divider">|</span>
+    <span class="post-meta-item-icon">
+      <i class="fa fa-coffee"></i>
+    </span>
+    <span title="站点阅读时长">2:03</span>
+</div>
+  <div class="powered-by">由 <a href="https://hexo.io/" class="theme-link" rel="noopener" target="_blank">Hexo</a> & <a href="https://mist.theme-next.org/" class="theme-link" rel="noopener" target="_blank">NexT.Mist</a> 强力驱动
+  </div>
+
+        
+
+
+
+
+
+
+
+
+      </div>
+    </footer>
+  </div>
+
+  
+  <script src="/lib/anime.min.js"></script>
+  <script src="/lib/velocity/velocity.min.js"></script>
+  <script src="/lib/velocity/velocity.ui.min.js"></script>
+
+<script src="/js/utils.js"></script>
+
+<script src="/js/motion.js"></script>
+
+
+<script src="/js/schemes/muse.js"></script>
+
+
+<script src="/js/next-boot.js"></script>
+
+
+
+
+  
+
+
+
+
+  
+<script src="/js/local-search.js"></script>
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+
+  
+
+  
+
+</body>
+</html>
