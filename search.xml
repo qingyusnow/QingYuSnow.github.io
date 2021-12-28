@@ -17,6 +17,48 @@
       </categories>
   </entry>
   <entry>
+    <title>2021</title>
+    <url>/2021/12/28/2021/</url>
+    <content><![CDATA[<p>接受我自己什么都做不到的事实，是一件很困难的事。</p>
+<a id="more"></a>
+<h1 id="回顾"><a href="#回顾" class="headerlink" title="回顾"></a>回顾</h1><blockquote>
+<p>建议在 PC 端右键点击图片，在新标签页中查看</p>
+</blockquote>
+<p><img src="/2021/12/28/2021/2021.png" alt></p>
+<div class="table-container">
+<table>
+<thead>
+<tr>
+<th style="text-align:center">类别</th>
+<th style="text-align:center">实际完成数量</th>
+<th style="text-align:center">计划目标数量</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td style="text-align:center">游戏</td>
+<td style="text-align:center">10</td>
+<td style="text-align:center">-</td>
+</tr>
+<tr>
+<td style="text-align:center">阅读</td>
+<td style="text-align:center">11</td>
+<td style="text-align:center">12</td>
+</tr>
+<tr>
+<td style="text-align:center">影视</td>
+<td style="text-align:center">46</td>
+<td style="text-align:center">-</td>
+</tr>
+</tbody>
+</table>
+</div>
+]]></content>
+      <categories>
+        <category>Book</category>
+      </categories>
+  </entry>
+  <entry>
     <title>Activity的生命周期</title>
     <url>/2020/06/15/Activity%E7%9A%84%E7%94%9F%E5%91%BD%E5%91%A8%E6%9C%9F/</url>
     <content><![CDATA[<p><a href="https://developer.android.google.cn/guide/components/activities/activity-lifecycle">Activity生命周期</a></p>
@@ -610,8 +652,8 @@
     <url>/2021/11/03/%E6%8B%9F%E6%80%81UI/</url>
     <content><![CDATA[<p>先来两篇原文与机翻：</p>
 <a id="more"></a>
-<h1 id="关于拟态的两篇文章"><a href="#关于拟态的两篇文章" class="headerlink" title="关于拟态的两篇文章"></a>关于拟态的两篇文章</h1><h2 id="用户界面的拟态"><a href="#用户界面的拟态" class="headerlink" title="用户界面的拟态"></a>用户界面的拟态</h2><p>原文：<a href="https://uxdesign.cc/neumorphism-in-user-interfaces-b47cef3bf3a6">用户界面的拟态</a></p>
-<p>如何在现实世界中获取UI趋势的灵感，以及我们必须要解决哪些问题才能使得它们发挥作用。</p>
+<h1 id="关于拟态的几篇文章"><a href="#关于拟态的几篇文章" class="headerlink" title="关于拟态的几篇文章"></a>关于拟态的几篇文章</h1><h2 id="用户界面的拟态"><a href="#用户界面的拟态" class="headerlink" title="用户界面的拟态"></a>用户界面的拟态</h2><p>原文：<a href="https://uxdesign.cc/neumorphism-in-user-interfaces-b47cef3bf3a6">用户界面的拟态</a></p>
+<p>如何在现实世界中获取 UI 趋势的灵感，以及我们必须要解决哪些问题才能使得它们发挥作用。</p>
 <p><img src="/2021/11/03/%E6%8B%9F%E6%80%81UI/1.png" alt></p>
 <p>上周我们探讨了 UI 设计的一些潜在新趋势，其中一种特殊趋势最近在 Dribbble 和 Instagram 上引起了很多关注。这种“新拟物化”在评论中被 Jason Kalley 称为拟态（Neuomorphism）。我决定跳过 “o”，这样 Neuomorphism 这个名字就活跃起来了。</p>
 <p>（也感谢所有很棒的评论———我知道拟物化总是“就在角落里”，但这就是关于设计师感知到的趋势和现实。）</p>
@@ -661,7 +703,7 @@
 <p><img src="/2021/11/03/%E6%8B%9F%E6%80%81UI/9.jpeg" alt></p>
 <p>这里的问题其实很严重。</p>
 <p>这种按下状态的对比度太小，无法表示差异。如果界面的其余部分提供，卡片可以“消失”，则活动元素需要始终传达其状态。</p>
-<p>这里有几个想法，比如使用轮廓和填充图标、下划线甚至用颜色填充按下状态。 </p>
+<p>这里有几个想法，比如使用轮廓和填充图标、下划线甚至用颜色填充按下状态。</p>
 <p><img src="/2021/11/03/%E6%8B%9F%E6%80%81UI/10.jpeg" alt></p>
 <p>设计时请记住这一点。 我们都喜欢“漂亮”，但我们也需要记住它是每个人都可以使用的。</p>
 <p><strong>编码</strong></p>
@@ -677,7 +719,7 @@
 <p>所以去野吧！玩转这种趋势，并对其进行调整，以使其成为您的趋势。UI 设计师的工作是移动这些框框，所以每次框框变得有点“不同”和“新”时，它都会带回一些乐趣。如果没有这种不断的探索，所有的产品都会重新看起来一样。</p>
 <p><strong>让我们找点乐子！</strong></p>
 <p>但也要记住，每一个新趋势都伴随着警告，必须经过精心设计才能使用。</p>
-<h2 id="Android-上的拟态"><a href="#Android-上的拟态" class="headerlink" title="Android 上的拟态"></a>Android 上的拟态</h2><p>原文：<a href="https://fornewid.medium.com/neumorphism-in-android-9cf15e2122dc">Android上的拟态</a></p>
+<h2 id="Android-上的拟态"><a href="#Android-上的拟态" class="headerlink" title="Android 上的拟态"></a>Android 上的拟态</h2><p>原文：<a href="https://fornewid.medium.com/neumorphism-in-android-9cf15e2122dc">Android 上的拟态</a></p>
 <p>自去年年底以来，我就已经看到了几篇关于 Neumorphism 设计的帖子。就我个人而言，我对一种新设计很感兴趣，所以我想把它应用到 Android 上。但是，由于平台限制，我找不到这样的库。所以我简单地实现了一下它。（<a href="https://github.com/fornewid/neumorphism">Github 存储库</a>）</p>
 <p>我写这篇文章是为了分享库并获得更多反馈。 🤣</p>
 <p>在开始之前，你们中的一些人可能不熟悉术语 Neumorphism。它是类似 Material Design 的 UI 概念，在绘制阴影上是有区别的。如果您想了解更多关于 Neumorphism 的信息，请阅读上文。</p>
@@ -689,7 +731,7 @@
 <p><img src="https://miro.medium.com/max/640/1*-0qEq5AuadrpE7EQqM8AtQ.gif" alt></p>
 <p>但是，简单地应用它会导致渲染问题。 如果在视图区域外绘制阴影，则阴影会被切断。 ✂️</p>
 <p><img src="https://miro.medium.com/max/640/1*RafVUj-OpvmO31EyO5VrJw.gif" alt></p>
-<p>作为一种解决方法，首先，我尝试在 root 上使用 android:clipChilderen=”false”。但是由于操作系统版本不同或者在某些ViewGroup比如RelativeLayout中，属性不能正常工作，所以问题没有完全解决。 🤔</p>
+<p>作为一种解决方法，首先，我尝试在 root 上使用 android:clipChilderen=”false”。但是由于操作系统版本不同或者在某些 ViewGroup 比如 RelativeLayout 中，属性不能正常工作，所以问题没有完全解决。 🤔</p>
 <p>所以最后我使用 View 的 android:padding 属性解决了它。要在视图区域内绘制，请正确设置填充。 🎉</p>
 <p><img src="https://miro.medium.com/max/2400/1*mCXyV0pMee_nAwciSyMQ_Q.jpeg" alt></p>
 <p><strong>互动：按压效果</strong></p>
@@ -725,8 +767,9 @@
 <p>我们已经看到了如何在 Android 平台上实现 Neumorphism 以及如何使用该库。</p>
 <p>我认为，新设计对开发人员来说是一个有趣的灵感。Neumorphism 给了我一种新的感觉，实现起来也很有趣。</p>
 <p>但是，与 Material Design 相比，Neumorphism 有很多地方的原则和指南并不明确。也就是说，虽然实现了，但我觉得还不足以应用到生产中。</p>
-<p>因此，如果您对 Neumorphism 感兴趣，请尝试使用该库作为测试！🧪请在图书馆评论任何事情。（欢迎功能请求！）要达到生产级别，需要各种意见。 🧑‍💻</p>
+<p>因此，如果您对 Neumorphism 感兴趣，请尝试使用该库作为测试！🧪 请在图书馆评论任何事情。（欢迎功能请求！）要达到生产级别，需要各种意见。 🧑‍💻</p>
 <p>如果需要，请转到 <a href="https://github.com/fornewid/neumorphism">Github 存储库</a>！ 👀</p>
+<h2 id="为什么拟物化不曾落实"><a href="#为什么拟物化不曾落实" class="headerlink" title="为什么拟物化不曾落实"></a>为什么拟物化不曾落实</h2><p><a href="https://www.uisdc.com/neumorphism-ui">为什么 2020 年初爆火的新拟物化设计，完全无法落地使用？</a></p>
 ]]></content>
       <categories>
         <category>Android</category>
