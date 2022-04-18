@@ -20,19 +20,21 @@
     var CONFIG = {"hostname":"example.com","root":"/","scheme":"Mist","version":"7.8.0","exturl":false,"sidebar":{"position":"right","display":"post","padding":18,"offset":12,"onmobile":false},"copycode":{"enable":false,"show_result":false,"style":null},"back2top":{"enable":true,"sidebar":false,"scrollpercent":false},"bookmark":{"enable":false,"color":"#222","save":"auto"},"fancybox":false,"mediumzoom":false,"lazyload":false,"pangu":false,"comments":{"style":"tabs","active":null,"storage":true,"lazyload":false,"nav":null},"algolia":{"hits":{"per_page":10},"labels":{"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}},"localsearch":{"enable":true,"trigger":"auto","top_n_per_article":1,"unescape":false,"preload":false},"motion":{"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}},"path":"search.xml"};
   </script>
 
-  <meta name="description" content="这里有东西被加密了，需要输入密码才能查看">
+  <meta name="description" content="最近在回忆时钟动画的代码实现，然后遇到一些有趣的小问题，借此记录一下。">
 <meta property="og:type" content="article">
-<meta property="og:title" content="2021-每日所想">
-<meta property="og:url" content="http://example.com/2021/02/01/2021-%E6%AF%8F%E6%97%A5%E6%89%80%E6%83%B3/index.html">
+<meta property="og:title" content="做时钟动画遇到的小问题">
+<meta property="og:url" content="http://example.com/2022/04/14/%E5%81%9A%E6%97%B6%E9%92%9F%E5%8A%A8%E7%94%BB%E9%81%87%E5%88%B0%E7%9A%84%E5%B0%8F%E9%97%AE%E9%A2%98/index.html">
 <meta property="og:site_name" content="希夏">
-<meta property="og:description" content="这里有东西被加密了，需要输入密码才能查看">
+<meta property="og:description" content="最近在回忆时钟动画的代码实现，然后遇到一些有趣的小问题，借此记录一下。">
 <meta property="og:locale" content="zh_CN">
-<meta property="article:published_time" content="2021-02-01T06:00:27.000Z">
-<meta property="article:modified_time" content="2021-02-20T06:52:26.655Z">
+<meta property="og:image" content="http://example.com/2022/04/14/%E5%81%9A%E6%97%B6%E9%92%9F%E5%8A%A8%E7%94%BB%E9%81%87%E5%88%B0%E7%9A%84%E5%B0%8F%E9%97%AE%E9%A2%98/1.png">
+<meta property="article:published_time" content="2022-04-14T12:43:06.000Z">
+<meta property="article:modified_time" content="2022-04-15T08:01:58.557Z">
 <meta property="article:author" content="希夏">
 <meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="http://example.com/2022/04/14/%E5%81%9A%E6%97%B6%E9%92%9F%E5%8A%A8%E7%94%BB%E9%81%87%E5%88%B0%E7%9A%84%E5%B0%8F%E9%97%AE%E9%A2%98/1.png">
 
-<link rel="canonical" href="http://example.com/2021/02/01/2021-%E6%AF%8F%E6%97%A5%E6%89%80%E6%83%B3/">
+<link rel="canonical" href="http://example.com/2022/04/14/%E5%81%9A%E6%97%B6%E9%92%9F%E5%8A%A8%E7%94%BB%E9%81%87%E5%88%B0%E7%9A%84%E5%B0%8F%E9%97%AE%E9%A2%98/">
 
 
 <script id="page-configurations">
@@ -45,7 +47,7 @@
   };
 </script>
 
-  <title>2021-每日所想 | 希夏</title>
+  <title>做时钟动画遇到的小问题 | 希夏</title>
   
 
 
@@ -197,7 +199,7 @@
   
   
   <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="zh-CN">
-    <link itemprop="mainEntityOfPage" href="http://example.com/2021/02/01/2021-%E6%AF%8F%E6%97%A5%E6%89%80%E6%83%B3/">
+    <link itemprop="mainEntityOfPage" href="http://example.com/2022/04/14/%E5%81%9A%E6%97%B6%E9%92%9F%E5%8A%A8%E7%94%BB%E9%81%87%E5%88%B0%E7%9A%84%E5%B0%8F%E9%97%AE%E9%A2%98/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
       <meta itemprop="image" content="/images/avatar.jpg">
@@ -210,7 +212,7 @@
     </span>
       <header class="post-header">
         <h1 class="post-title" itemprop="name headline">
-          2021-每日所想
+          做时钟动画遇到的小问题
         </h1>
 
         <div class="post-meta">
@@ -220,14 +222,14 @@
               </span>
               <span class="post-meta-item-text">发表于</span>
 
-              <time title="创建时间：2021-02-01 14:00:27" itemprop="dateCreated datePublished" datetime="2021-02-01T14:00:27+08:00">2021-02-01</time>
+              <time title="创建时间：2022-04-14 20:43:06" itemprop="dateCreated datePublished" datetime="2022-04-14T20:43:06+08:00">2022-04-14</time>
             </span>
               <span class="post-meta-item">
                 <span class="post-meta-item-icon">
                   <i class="far fa-calendar-check"></i>
                 </span>
                 <span class="post-meta-item-text">更新于</span>
-                <time title="修改时间：2021-02-20 14:52:26" itemprop="dateModified" datetime="2021-02-20T14:52:26+08:00">2021-02-20</time>
+                <time title="修改时间：2022-04-15 16:01:58" itemprop="dateModified" datetime="2022-04-15T16:01:58+08:00">2022-04-15</time>
               </span>
             <span class="post-meta-item">
               <span class="post-meta-item-icon">
@@ -235,7 +237,7 @@
               </span>
               <span class="post-meta-item-text">分类于</span>
                 <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
-                  <a href="/categories/Life/" itemprop="url" rel="index"><span itemprop="name">Life</span></a>
+                  <a href="/categories/Android/" itemprop="url" rel="index"><span itemprop="name">Android</span></a>
                 </span>
             </span>
 
@@ -245,14 +247,14 @@
                 <i class="far fa-file-word"></i>
               </span>
                 <span class="post-meta-item-text">本文字数：</span>
-              <span>1.2k</span>
+              <span>1.7k</span>
             </span>
             <span class="post-meta-item" title="阅读时长">
               <span class="post-meta-item-icon">
                 <i class="far fa-clock"></i>
               </span>
                 <span class="post-meta-item-text">阅读时长 &asymp;</span>
-              <span>1 分钟</span>
+              <span>2 分钟</span>
             </span>
 
         </div>
@@ -264,15 +266,30 @@
     <div class="post-body" itemprop="articleBody">
 
       
-        <div id="hexo-blog-encrypt" data-wpm="抱歉，密码不正确" data-whm="OOPS, these decrypted content may changed, but you can still have a look.">
-  <div class="hbe-input-container">
-  <input type="password" id="hbePass" placeholder="" />
-    <label for="hbePass">这里有东西被加密了，需要输入密码才能查看。密码为博主名字的拼音全称</label>
-    <div class="bottom-line"></div>
-  </div>
-  <script id="hbeData" type="hbeData" data-hmacdigest="afe6e4d8abf2b5b19888967708142613d494561fc00b3a5d20cd213ad073392f">cb2f22bbb697b00a427ff455da8dce5e9cca0292a8602131166e99ddb1178345f44d567db2fd918163dce69bbab15cfd23ec7bce46c23f839722237f4508dec5508646f143ae4f763b8238c662946488baaba7a54dca943859fdc5177bc3246bc59846afe799ddaab3523bd2136f8eff86839c89ade74336bc6e852e0761735c5386e82233faad066ede6cd7c864ae988c896de3337ff9f8221d921327968512800841e31ef9f4c3fa4498319d436ca44801f58d901529f55c62b917df3e707d43b0314c3e506ffb295709b0609b088e6c4d52ac9174c0b265765bbedad442189594df539e8d25944d3008ea4fd50efc5d407fde8b259d8dc525301adc40b7e27a8883f1de48208a318e706b2715a7311bdd9063b85624c9a907ce840a88e9e3852b06a09fff90a44185b8a1b31b9a5086e3ac40aadcc71fca7c6fb3920a7d535f14cc4f079af77719d884e8a1ac5c3f1a3c976703aacbf986798ae244add76eba090ae06912737a34915ea544801fe8ceeb3c2e7a4991ad21847a6d574369cdd973b49696168af8dc8d8d2cdab5e67fdc1e25f6cd60714e621c04aa1f732fec954696bc12b8fd30581b1bcb6200c8ad1c74ab706bacbd65a9df897b671f49ac6bf7827ff6fe14f0a3b8f69bdf9057a0c744e41f43a0d8834a1e58afd897dfba89f884ef968ee4c65409065f2870867237c0ca76c68a0e7650da16a21225a873955966ef1b91c7149a3be0a9b315faa6232ef9789ff2cad0a9923f356414fd7a1cbf9ff7083038bb1ea771fe14cadfdec432a190fdf252d54f9e1fd45faf6525d81c9fba1f487ea4bcdaf609ed3031756b46011ec793a387ed055be5e90baef0a708e6fade3d12b4e3207c59b534ceea4fd0d4b8d6c027bde53dfa04fa4f2edff7a4b534e6f442102196bd17515343b291b4bbfb75fe7be49c8e65cce2f267062fb230755d22bcaf8ea9f0f6fe6378c44894ea6025943132729bcb375ffbd61f097bd42d42172cb4ab573cf77e2217f1000516a3cdd394c0abbd073e23a16842e9fd4752073436502fd0b75540ba03a665ec3f23b97b7d89c426b43a875055dc4aee7f693c685090fc4acdfc535676837bbef0d4527c379f85f038ffe1eea7ce5e1abc45544767f037bf8f0364af90c1f1666118827b72a5ddbfafe05ae06028ee0432d68832e2d894625800242b6e1664d58c58202e96fd0991574040f661d8b1b2597fd370cec802a485a7c75b7fd8598f037fc768904b4e797b334e7154adcb17fab4fba13e1ae63a7b9081047f6f809e2711cf4af63756fe47dfc1102756d86edfe5c8fd9a8011c77cc2a55312f61459f6434604f0f2ff7cbc605623d4c236f385029b47c96eddc2c4a7775f3a13672092eebf41381581332c778b78f71730ac6eac8658a9e22da00b40ac7a74ca22b556094cd83fe09f78bef51d773a7f3c33553bd0889747b5f68477f60165257b65e9d8f739589d9e2b7fca0e5b4d0c22efa44edc4107676a09580284a2d4e15ce816250c4a2d82270c403059a72726b55f3130c51bb0ea17d44cca6e70898a4c7a1bbb20fce6613c44f93296761a879a5de02d08d76406c2c51c41427fc8e0463d884364fdf492524988d358ee29804996e48a85cf3622ba3dfdbb70259cb8bfc6b2667e6c0077536fd5872d6306a62809caba369224e2f1d67ac1c29202c28cb0cc55e06ef028cd2cc54d83106dfb590b0029a3a8fdb84166ed57c9b5cf1f6beb102965c3f7e1e64103ec640498cf08f9df7d4e264d623d79d867cb4b80fd3ab035156a619be19cd0e3b2a766f5515ee85806ffe61576bd7275a3462a75de9b55b207124f557564163d3cbdf0fc5465626e70531fc46e718213690d1cfedc0e9121368b47d00e331782614ac2d2257ed74fd6473d176fdf809f20a106b15c5edbb6d819bb2c9ffbe3210bd1a77e28670b943f3785e81e73af00b1971b649f30d151b04dc3dc18de5a82f70f80acfe78f855d66191d428a3b564397da8575e83a64d5ac622cd15e558a9addc39e3ad07ffd18d83277eb1445286608cef6f681daa2c85d8f2e7c06a1a532921bdb027843d4a0efbb0b8dbc8637b7dfe6c7b7b4ba45592aedbee92335624ac6282736eba0af58570001020d46daa27a62e626519bc199aa87670cbb58a2d3e9a4bbb15180112974dfe59847d21e533675cda0f3b27ade216843b69af628ef0afeae09f2cd40e19b0423513b7b3f2a1ef4803af37b33a3994608fd544c033726d04be4ebd0720833bcafde00a2c93e1776dd38fbbf247265b301b80cf6145a524c452676aca00f04622a4ab85d9cbd2e55321392b440942e59faab44c460fdfc0f35e3053e26dfbb9006f16a1f8bca51573f31aa962dcf5becdc2299117a1f459f742e4d5bd5fc755610e25a77882a18cb56768742e74c2b09afd305f75f9b7f7112e494b93cdf9ef4d17dc28be575baf28c65859b7846a23bb19622294012928e7b28515194bd0732187cdac5570753b947a42ce61e0d68bb9873da45546cb6dff5bdeee04828caa45e053bbeed782c28b56525f3222127637f0ec530429d457329ee3dbde6e152072920486383194d7e588287c4f7f36f2bfaeab5a92cebdf89986dcbb3ae3ca855e5557cce8d3354b06894d67c6eacdfc8ec8e0f727231c2b0ef5dfefb7392f0a8e4b1e4b3a0136ca4fc3172dff582a8eb50a3e3b17e4a26a6cf939d2516288fc5eb209b8b4fecf52cd51e3829e33bc606379219d9e011f76c2749670ccffb1b856a0a49394d93d5ee7b40794a40bf2ba0c38b1813c609a67fb7fc1a5e59696a1496ce2edc2e23d638ac16b77e0c890534813673bf0f6678b12d3e6e52a611123228fadea71f90cdfa17c6f3f7b3c3d3ab5c7db9da243c4928eaacf1020336c7f1d4dd32304cb47bd3564bdee4a6bb5dd8d4effe18535eb806dfa13f9f310ba7de99e107b6769c5e6ae03f10a8061e5807b12d47a6e5508b505c37b47cec2fce7f903a92caa4a8713f9b1d4308f1f9820965da3aed84d317834e8631846af1475c9e4dc44b11997c12012ef93937cb199d509a32a1e5dba6140c3cabe50aae359aeaf1507bf2796fa4d18741122d583a456980542a65b45b1d4a0cc6925dbfbcdd8efb2bd5583a376770644c9f36309645bf92dea8bbe0f64702bf5bdb7ffdd0e3e19272726177d270c5a0f0e1d5558ed089218e40bd34d680fd9a4e7f76c7ff0e0737928be73e5ae45dfb6a119a660a5cc0e50afebda3135af8c062d3346b22feda736787e61633e87c211e2430eeef2b826c34b4693c504b3bc43669f9079a74b8804a61966568b0e83cae19b7e6b3520ebc8c11c8659a9a99a511c8d2b69f03bcf4fc8d92282bdcf39ecc0daa48311e8c6c5e3d43d646b9bbc548b21fa88b7b18887ab112510235e0a0e8280527b021340057e7331e08a06e6c7605b3d1bed333a2c12a71a6c6a8c45799ebafe3cf0e28855e83eda6eec01bed01cfe56d618ab64794243424c393cae718e0b57e94199c5e8163c4eb8cacdaf845d667f2b2e03fe315af89969b28124d8b942cfb12961f7afe38ea3cc3a66b5e64eb541f8f265f3c44965707865c12eaf416c330b782adf4eccb914a336af098e9b57e7c089097cf8b452c296945ae8e7e1eab5864f20b3e588602db8e5bec00ca233e5fbf0386cdb3c90df88ef06463804684585a6b13fc280057abc1df960d3e6956e7e28c0c2d39bf04e91a7eb790be790e8d5b9d544348404648b4a518442a0233e5b89f8c9329b2db93471d4576b1c8c642f479ebd51a54ef830cca84ed84efa4eddb4d56252f53cabd60b625475c16a8601b99f2ea81e38dd26cacf2e3e432f05e588b3574c880ad9ad9c6a8b0b0f9bd7707f7aaeb3f8cc7ec133f7a8b11787d7556037211e5b7892b7afe74e4c2d8bcc1747fde3e3c23dde3259776e3231d14dc18571b051404ae5504b60855fbfac0ceaa5efe455fbc031cfad44785e4873f73e513ad22df546f04e407eb02da2798055b14f508ccea3cff69c3eb11b78b3e98734a1b33f0239682a11d3937b8fb961da41288a63f8b111983ec3642099b27f259a821f44408ebfa519956b691db237e4f1d82af2af487cdf881892a35cc745fa519d6b2f31d4356cdc5ed7af802b43abea0466f878b09d7476e309d704f20028e8fe5beb707039544a30b76e68a3af52c07f745a0dc3c7867cc7ed8460f8dfd6952b7d6a6ca1d20a3167106e9331f3769e2e00bfa7347ead553353c5c6a1f855990a2bbd55c1aab410a7923955bc0d408ad1522dc83dfa96d7dd7c4ca03d99ef39378f7a2059edf5ef242d6c73306c1d62e2755d0a62b002596743015125acaf593977c5d4bb7368c3ba14c63f88eba872c5ba6fd91c964db18b42a323ae04158bfb0b070cbf69fbbe76ebfa52538f1ca32735728f969b4cc31dda78fbd1b30984815f01585c189764a84abe2586190c436d7bab493258a4ba55f1fd1351d39ee3e4df3f02942ee9c076a5c103dc86644b63e06330fb0d9451c53ce457be3744a73dfa08d52bd9e977bc9fe3edb36245ef7fd26c5cf75ea9be96bd8dfb683157db48611214664d722c6f0ce458deeffeeeb016996ae7b676efc979e55a8d6778a929d6104125d8b58adb070287c6e98de3285ca90fb650dd43c95b1b6e07c6bd02c050be0ad35808652afa202a9efebaf0fc50a9a70b80472a43732098188c6cf1fb165e611fc58177d1e738ab736d87e2d8b8839e61297390deddaa9c5d25059a10d74ef50e84da50660b4695c0f57054e088ed721d49cf68630f536ef0286eefda93a7c5f0bae2a50a3471c837f14e64b45a6fa78322064465b3d0eb915a253f495d881ac8c6a2bcfb9cf91b4b5b9f9d761816291f4a48a902a1b1acfd9f63c8d06336ae081c7042d6bb95dd35e6dc8d79d1d88e5aa57c708e1231796bb029fc864a9c4524e94531cc2270c1897879c15b03461bbf147dbb7be3f49a5dc3ec1eb092a632fcf21dfec8ab1f3670fb238d55a48283e81da6d664c1bc2c1ca32de4f1b175dbb0cf0cb17e9675e26f1e08b9b89725e79a5d2387ef48ef8361ef0befd6607dae9e7ed1ae154726e21d9c9bfd9e413a75a067642f5dca6e02604e0f4e276ccfcfee396157e7fe0a542c963f5757739c8ca1535b4382fa21a57546fe49dd8af3d631a0cd6be8e0e53fabff33a0ec8fa7ea5ef84dba091179792cc294c7d168da3a3872a078c92bcad7efedab7c13c637881282e1de8eabd42df743b9770431baeb60add38c9cc64ff7512360b6cc62577d0ac559333304b38273e4dcc6e6a750315126fbc0168b9f2e2c16f9c3de890b96530129ff0afd0e85436c57681ea4c8be17bc05a737cb2782cde56205dc77f20f5ebbaac642d9e922c3900795a46b0487b0ba776f617c11d2178c77f2f6a9f3317f37b6f2f0e65e54e97a54018bc659d1a5f72180e231f67accf0f6b0a68102697d84d0227cefb653d8c6f0591e7d7dd2981f56ca8c28008dfd14bcd57c007d1229bd0fc5ba744c3e5a224bdcaeb189fedc89ac00ae21c792f74b7f439e4135892d81cb4cd4d592bff924bdb46e3848b35920da92e3d095b5cdb24be4e6a6b33188416fe4d0b96ebb0671ed89aa52eb5450c13b15aed9f2d5b26af61a2cc51643ce38dc2b7bde37be9b9fc8dc46fec9c611181853686adcd3529c6c56757d39e26173474971190b57d314bd395f203a944b039e0537f4d67fd1ac8d0c39e48cfd338a5ffa247e3d3f1f9804aead8a564560c78e54fd62e7ce2a993261c5c68a45f5c4a1f0f9edb3c715380408a68b27c752704ac2c609cafddfaee007abf6a783e306e06066036340c341e61db1782196f852f080d1422f75a84abb9d32efc70e0a2084b55fa8d1cc6c421141ba62e84952d0da3973bc76</script>
-</div>
-<script src="/lib/blog-encrypt.js"></script><link href="/css/blog-encrypt.css" rel="stylesheet" type="text/css">
+        <p>最近在回忆时钟动画的代码实现，然后遇到一些有趣的小问题，借此记录一下。</p>
+<a id="more"></a>
+<h1 id="获取时间"><a href="#获取时间" class="headerlink" title="获取时间"></a>获取时间</h1><h2 id="System-currentTimeMillis"><a href="#System-currentTimeMillis" class="headerlink" title="System.currentTimeMillis()"></a>System.currentTimeMillis()</h2><p>该方法获取的是从 1970 年 1 月 1 日午夜，到当前时间的时间差，单位为毫秒数。使用该方法可以方便地计算小时、分钟、秒与毫秒，计算方法如下：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">long hour &#x3D; time &#x2F; 1000 &#x2F; 60 &#x2F; 60 % 24;         &#x2F;&#x2F;小时</span><br><span class="line">long minute &#x3D; time &#x2F; 1000 &#x2F; 60 % 60;            &#x2F;&#x2F;分</span><br><span class="line">long second &#x3D; time &#x2F; 1000 % 60;                 &#x2F;&#x2F;秒</span><br><span class="line">long millisSecond &#x3D; time % 1000;                &#x2F;&#x2F;毫秒</span><br></pre></td></tr></table></figure>
+<p>打印下此时获取到的值：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">Log.d(&quot;Time&quot;, &quot;当前时间：&quot; + hourStr + &quot;:&quot; + minuteStr + &quot;:&quot; + secondStr);</span><br><span class="line"></span><br><span class="line">当前时间：02:46:21</span><br></pre></td></tr></table></figure>
+<p>这时会发现，获取到的时间，与我的本地时间相差了 8 个小时。这是怎么回事？</p>
+<p>这个时候就要涉及到一些有趣的知识了。</p>
+<h3 id="GMT-与-UTC"><a href="#GMT-与-UTC" class="headerlink" title="GMT 与 UTC"></a>GMT 与 UTC</h3><p>详细原文：<a target="_blank" rel="noopener" href="https://zhuanlan.zhihu.com/p/135951778">彻底弄懂GMT、UTC、时区和夏令时</a></p>
+<p>在一个我常用的<a target="_blank" rel="noopener" href="https://time.is">时间网站</a>，可以看到这样的信息：</p>
+<p><img src="/2022/04/14/%E5%81%9A%E6%97%B6%E9%92%9F%E5%8A%A8%E7%94%BB%E9%81%87%E5%88%B0%E7%9A%84%E5%B0%8F%E9%97%AE%E9%A2%98/1.png" alt></p>
+<p>UTC，英文全名 Coordinated Universal Time，名为协调世界时（与英文全名的简称顺序 CUT 不同，是因为法文全名为 TUC，最后双方妥协使用 UTC）。该时间由 GMT、地轴运动修正后的时间与原子时间三者综合计算而来。</p>
+<p>GMT，全名 Greenwich Means Time，即格林尼治时间。格林尼治是英国伦敦南郊原皇家格林尼治天文台所在地，地球本初子午线的标界处，世界计算时间和经度的起点。北京时间 = GMT 时间 + 8 小时。</p>
+<p>不过，GMT 是前世界标准时，UTC 是现世界标准时，划分时间线为 1972 年。在不精确到秒的情况下，UTC 时间与 GMT 时间可视为一致。</p>
+<p>这么一看就明白了，System.currentTimeMillis() 方法返回的就是 UTC 时间。而 UTC 时间是基于 GMT 时间的，故此产生了 8 个小时的时差。该方法获取到的时间是一定的，与时区无关。</p>
+<p>那这里就有个问题了，为什么伦敦的时差是 7 个小时呢？这是因为英国现在处于夏令时（3 月最后一个星期日开始，10月最后一个星期日结束），时间均提前了一个小时。</p>
+<h2 id="DateFormat"><a href="#DateFormat" class="headerlink" title="DateFormat"></a>DateFormat</h2><p><a target="_blank" rel="noopener" href="https://www.jianshu.com/p/c63160a7c55c">SimpleDateFormat.getInstance 格式化</a></p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">Locale locale &#x3D; new Locale(Locale.SIMPLIFIED_CHINESE.getLanguage(), Locale.CHINA.getCountry());</span><br><span class="line">DateFormat format &#x3D; DateFormat.getTimeInstance(DateFormat.FULL, locale);</span><br><span class="line">Date date &#x3D; new Date(time);</span><br><span class="line">Log.d(&quot;Time&quot;, &quot;格式化时间：&quot; + format.format(date));</span><br></pre></td></tr></table></figure>
+<p>打印下结果：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">中国标准时间 下午12:22:15</span><br></pre></td></tr></table></figure>
+<p>这个类在格式化 time 的时候，默认会根据系统的时区来生成对应的当地时间。由于这个经常与 System.currentTimeMillis() 方法结合使用，所以<strong>要特别注意下，是在哪个过程中发生了本地化</strong>。</p>
+<h2 id="Calendar"><a href="#Calendar" class="headerlink" title="Calendar"></a>Calendar</h2><p>使用 Calendar 获取时间方式如下：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">Calendar calendar &#x3D; Calendar.getInstance();</span><br><span class="line">long hour &#x3D; calendar.get(Calendar.HOUR_OF_DAY);</span><br><span class="line">long minute &#x3D; calendar.get(Calendar.MINUTE);</span><br><span class="line">long second &#x3D; calendar.get(Calendar.SECOND);</span><br><span class="line">long millisSecond &#x3D; calendar.get(Calendar.MILLISECOND);</span><br><span class="line">......</span><br></pre></td></tr></table></figure>
+
     </div>
 
     
@@ -287,13 +304,10 @@
         
     <div class="post-nav">
       <div class="post-nav-item">
-    <a href="/2020/12/20/%E4%BA%8C%E8%BD%BD%E6%88%90%E5%B0%B1%E6%9D%82%E8%B0%88/" rel="prev" title="二载成就杂谈">
-      <i class="fa fa-chevron-left"></i> 二载成就杂谈
+    <a href="/2021/12/28/2021/" rel="prev" title="2021 报告">
+      <i class="fa fa-chevron-left"></i> 2021 报告
     </a></div>
-      <div class="post-nav-item">
-    <a href="/2021/03/17/%E5%8F%91%E5%B8%83%E7%AC%AC%E4%B8%80%E4%B8%AA%E8%87%AA%E5%B7%B1%E7%9A%84%E5%BA%93/" rel="next" title="发布第一个自己的库">
-      发布第一个自己的库 <i class="fa fa-chevron-right"></i>
-    </a></div>
+      <div class="post-nav-item"></div>
     </div>
       </footer>
     
@@ -352,6 +366,7 @@
 
       <!--noindex-->
       <div class="post-toc-wrap sidebar-panel">
+          <div class="post-toc motion-element"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#%E8%8E%B7%E5%8F%96%E6%97%B6%E9%97%B4"><span class="nav-number">1.</span> <span class="nav-text">获取时间</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#System-currentTimeMillis"><span class="nav-number">1.1.</span> <span class="nav-text">System.currentTimeMillis()</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#GMT-%E4%B8%8E-UTC"><span class="nav-number">1.1.1.</span> <span class="nav-text">GMT 与 UTC</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#DateFormat"><span class="nav-number">1.2.</span> <span class="nav-text">DateFormat</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#Calendar"><span class="nav-number">1.3.</span> <span class="nav-text">Calendar</span></a></li></ol></li></ol></div>
       </div>
       <!--/noindex-->
 
@@ -367,14 +382,14 @@
       <div class="site-state-item site-state-posts">
           <a href="/archives/">
         
-          <span class="site-state-item-count">19</span>
+          <span class="site-state-item-count">18</span>
           <span class="site-state-item-name">日志</span>
         </a>
       </div>
       <div class="site-state-item site-state-categories">
             <a href="/categories/">
           
-        <span class="site-state-item-count">6</span>
+        <span class="site-state-item-count">4</span>
         <span class="site-state-item-name">分类</span></a>
       </div>
   </nav>
@@ -401,7 +416,7 @@
 <div class="copyright">
   
   &copy; 
-  <span itemprop="copyrightYear">2021</span>
+  <span itemprop="copyrightYear">2022</span>
   <span class="with-love">
     <i class="fa fa-heart"></i>
   </span>
@@ -410,12 +425,12 @@
     <span class="post-meta-item-icon">
       <i class="fa fa-chart-area"></i>
     </span>
-    <span title="站点总字数">109k</span>
+    <span title="站点总字数">137k</span>
     <span class="post-meta-divider">|</span>
     <span class="post-meta-item-icon">
       <i class="fa fa-coffee"></i>
     </span>
-    <span title="站点阅读时长">1:39</span>
+    <span title="站点阅读时长">2:04</span>
 </div>
   <div class="powered-by">由 <a href="https://hexo.io/" class="theme-link" rel="noopener" target="_blank">Hexo</a> & <a href="https://mist.theme-next.org/" class="theme-link" rel="noopener" target="_blank">NexT.Mist</a> 强力驱动
   </div>
