@@ -29,6 +29,185 @@
       </categories>
   </entry>
   <entry>
+    <title>Activity的生命周期</title>
+    <url>/2020/06/15/Activity%E7%9A%84%E7%94%9F%E5%91%BD%E5%91%A8%E6%9C%9F/</url>
+    <content><![CDATA[<p><a href="https://developer.android.google.cn/guide/components/activities/activity-lifecycle">Activity生命周期</a></p>
+<p>了解Activity的生命周期，在一定程度上，对修正或完善代码内 <strong>各种情况下</strong> <em>业务的执行顺序与发生时机</em> ，会有很大的帮助。</p>
+<a id="more"></a>
+<h1 id="先行知识"><a href="#先行知识" class="headerlink" title="先行知识"></a>先行知识</h1><p><img src="/2020/06/15/Activity%E7%9A%84%E7%94%9F%E5%91%BD%E5%91%A8%E6%9C%9F/activity_lifecycle.png" alt="Android开发官网的生命周期图例"></p>
+<h2 id="onCreate"><a href="#onCreate" class="headerlink" title="onCreate"></a>onCreate</h2><p>在创建activity时触发，生命周期中第一个调用的方法，在整个生命周期内也只应发生一次（存在打破此规则的可行性操作）。<strong>此时还在后台，对用户不可见</strong>。</p>
+<p>在这一步，应该初始化布局资源，绑定数据，还有所有静态资源。要注意此时视图还在构建，是无法调用布局动画以及获取或设置布局的长宽及位置信息的。</p>
+<h2 id="onStart"><a href="#onStart" class="headerlink" title="onStart"></a>onStart</h2><p>activity进入“已启动”状态。对于这个阶段的描述，各博客的说法不一。我的理解为，<strong>此时对用户可见，但不处于前台，无法与用户进行交互</strong>。这个阶段很短，大概像是activity的整个界面在初现到完整展现中的过渡阶段，这个阶段的确符合“可见，不处于前台，无法交互”三个要素。</p>
+<p>在这一步，可以尝试检测一些必要条件，比如检查一些权限等。</p>
+<h2 id="onResume"><a href="#onResume" class="headerlink" title="onResume"></a>onResume</h2><p>调用此方法后，activity可与用户进行交互。<strong>此时位于前台，对用户可见，且可进行交互</strong>。</p>
+<p>在这一步，初始化一些“独占设备”（比如相机、录音机等）的相关设置。</p>
+<h2 id="onPause"><a href="#onPause" class="headerlink" title="onPause"></a>onPause</h2><p>activity失去焦点，并进入“已暂停”状态。<strong>此时尚且位于前台，对用户可见，但已不可进行交互</strong>。一般来说，如果当前方法在500ms内未执行完毕，会强制关闭当前activity。</p>
+<p>此时，考虑到<strong>各种情况</strong>，调用的下一个方法会是onResume或onStop；当然，杀进程这种特别少见的情况也是有可能存在的。这里的<strong>各种情况</strong>，会在下面尝试通过操作实现。</p>
+<p>在这一步，只能释放一些必要资源，以防下一个activity会用到，比如上文刚提过的“独占设备”资源。考虑到onPause有默认限时，这一步最好不要做很多操作，以防业务提前中断，造成崩溃或数据丢失等。</p>
+<h2 id="onStop"><a href="#onStop" class="headerlink" title="onStop"></a>onStop</h2><p>activity已停止。<strong>此时已位于后台，对用户不可见</strong>。但此时activity还存在于内存中，尚未被销毁。</p>
+<p>在这一步，可以着重做很多资源的回收工作。阿里巴巴的Android规范手册要求，尽量不要在onDestroy中释放资源，因为onDestroy的执行时机可能较晚。所以，一些线程资源的释放，数据的保存，都可以在这一步做。</p>
+<h2 id="onDestroy"><a href="#onDestroy" class="headerlink" title="onDestroy"></a>onDestroy</h2><p>activity被销毁。<strong>此时对用户不可见</strong>。</p>
+<p>在这一步，释放其他未释放的资源，特别是onCreate中初始化的静态资源等。</p>
+<h2 id="onRestart"><a href="#onRestart" class="headerlink" title="onRestart"></a>onRestart</h2><p>处于“已停止”状态即将重启时，会调用此方法。此回调后面总跟着onStart。</p>
+<h1 id="状态变更"><a href="#状态变更" class="headerlink" title="状态变更"></a>状态变更</h1><p>在使用应用的过程中，用户总会做出些令人意想不到的预料外的操作，这样一来，就需要了解一下状态变更的详情，以便开发者整理出一套趋于完美的业务逻辑。</p>
+<p>以下是我所能设想到的所有操作。这其中有两种操作，属于配置更改。这类操作会重新创建activity。</p>
+<h2 id="activity的切换"><a href="#activity的切换" class="headerlink" title="activity的切换"></a>activity的切换</h2><h3 id="activity-A-启动-activity-B"><a href="#activity-A-启动-activity-B" class="headerlink" title="activity A 启动 activity B"></a>activity A 启动 activity B</h3><p>onPause()(A) -&gt; onCreate()(B) -&gt; onStart()(B) -&gt; onResume()(B) -&gt; onStop()(A) -&gt; onSaveInstanceState()(A)</p>
+<h3 id="activity-B-返回-activity-A"><a href="#activity-B-返回-activity-A" class="headerlink" title="activity B 返回 activity A"></a>activity B 返回 activity A</h3><p>onPause()(B) -&gt; onRestart()(A) -&gt; onStart()(A) -&gt; onResume()(A) -&gt; onStop()(B) -&gt; onDestroy()(B)</p>
+<h2 id="息亮屏"><a href="#息亮屏" class="headerlink" title="息亮屏"></a>息亮屏</h2><h3 id="息屏"><a href="#息屏" class="headerlink" title="息屏"></a>息屏</h3><p>onPause() -&gt; onStop() -&gt; onSaveInstanceState()</p>
+<h3 id="亮屏"><a href="#亮屏" class="headerlink" title="亮屏"></a>亮屏</h3><p>onRestart() -&gt; onStart() -&gt; onResume()</p>
+<h2 id="来电"><a href="#来电" class="headerlink" title="来电"></a>来电</h2><p>一般来说，现在的手机系统很少会有不经用户允许直接切换至电话接听界面的操作了。相对以往来说，这里的操作其实也无特别之处了。</p>
+<h3 id="切换至接听界面"><a href="#切换至接听界面" class="headerlink" title="切换至接听界面"></a>切换至接听界面</h3><p>onPause() -&gt; onStop() -&gt; onSaveInstanceState()</p>
+<h3 id="拒绝来电"><a href="#拒绝来电" class="headerlink" title="拒绝来电"></a>拒绝来电</h3><p>onRestart() -&gt; onStart() -&gt; onResume()</p>
+<h2 id="横竖屏切换（第一类配置更改操作）"><a href="#横竖屏切换（第一类配置更改操作）" class="headerlink" title="横竖屏切换（第一类配置更改操作）"></a>横竖屏切换（第一类配置更改操作）</h2><p>onPause() -&gt; onStop() -&gt; onSaveInstanceState() -&gt; onDestroy() -&gt; onCreate() -&gt; onStart() -&gt; onRestoreInstanceState() -&gt; onResume()</p>
+<h2 id="窗口模式"><a href="#窗口模式" class="headerlink" title="窗口模式"></a>窗口模式</h2><h3 id="按下任务键，应用变为窗口"><a href="#按下任务键，应用变为窗口" class="headerlink" title="按下任务键，应用变为窗口"></a>按下任务键，应用变为窗口</h3><p>onPause() -&gt; onStop() -&gt; onSaveInstanceState()</p>
+<h3 id="选中窗口，应用变为全屏"><a href="#选中窗口，应用变为全屏" class="headerlink" title="选中窗口，应用变为全屏"></a>选中窗口，应用变为全屏</h3><p>onRestart() -&gt; onStart() -&gt; onResume()</p>
+<h3 id="切换至多窗口（即分屏）模式（第二类配置更改操作）"><a href="#切换至多窗口（即分屏）模式（第二类配置更改操作）" class="headerlink" title="切换至多窗口（即分屏）模式（第二类配置更改操作）"></a>切换至多窗口（即分屏）模式（第二类配置更改操作）</h3><p>onDestroy() -&gt; onCreate() -&gt; onStart() -&gt; onRestoreInstanceState() -&gt; onResume() -&gt; onPause()</p>
+<p>这让我发现了一个有趣的东西。在切换至分屏且未添加第二个分屏应用时，主activity的生命周期会运行至onPause()。此时若是点击应用，会发现应用不响应点击事件，似是获取不到用户输入，即失去焦点。</p>
+<p><strong>添加第二个分屏应用之后，测试应用调用 onResume()</strong>，此时可以响应点击事件。</p>
+<p>接下来可有两种操作。</p>
+<h4 id="1、将测试应用拉至全屏"><a href="#1、将测试应用拉至全屏" class="headerlink" title="1、将测试应用拉至全屏"></a>1、将测试应用拉至全屏</h4><p>onPause() -&gt; onStop() -&gt; onSaveInstanceState() -&gt; onDestroy() -&gt; onCreate() -&gt; onStart() -&gt; onRestoreInstanceState() -&gt; onResume()</p>
+<h4 id="2-1、将另一个分屏应用拉至全屏"><a href="#2-1、将另一个分屏应用拉至全屏" class="headerlink" title="2-1、将另一个分屏应用拉至全屏"></a>2-1、将另一个分屏应用拉至全屏</h4><p>onPause() -&gt; onStop() -&gt; onSaveInstanceState()</p>
+<h4 id="2-2、再切换至测试应用"><a href="#2-2、再切换至测试应用" class="headerlink" title="2-2、再切换至测试应用"></a>2-2、再切换至测试应用</h4><p>onDestroy() -&gt; onCreate() -&gt; onStart() -&gt; onRestoreInstanceState() -&gt; onResume()</p>
+<h1 id="本章相关知识点"><a href="#本章相关知识点" class="headerlink" title="本章相关知识点"></a>本章相关知识点</h1><blockquote>
+<ul>
+<li><a href="https://developer.android.google.cn/topic/libraries/architecture/saving-states">保存界面状态</a></li>
+<li><a href="https://developer.android.google.cn/guide/topics/ui/multi-window">多窗口支持</a></li>
+<li><a href="https://developer.android.google.cn/topic/libraries/architecture/lifecycle">生命周期感知能力的组件</a></li>
+</ul>
+</blockquote>
+]]></content>
+      <categories>
+        <category>Android</category>
+      </categories>
+  </entry>
+  <entry>
+    <title>Android 版本变更改动</title>
+    <url>/2022/06/15/Android-%E7%89%88%E6%9C%AC%E5%8F%98%E6%9B%B4%E6%94%B9%E5%8A%A8/</url>
+    <content><![CDATA[<p>对历代 Android 版本的新变动做一个简单的汇总，以便进行版本的适配。</p>
+<a id="more"></a>
+<p>参考文章：<a href="https://www.jianshu.com/p/9a9d260e10b0">Android 版本适配全套指南</a></p>
+<h1 id="版本名称与-API-Level"><a href="#版本名称与-API-Level" class="headerlink" title="版本名称与 API Level"></a>版本名称与 API Level</h1><div class="table-container">
+<table>
+<thead>
+<tr>
+<th style="text-align:center">版本</th>
+<th style="text-align:center">API 等级</th>
+<th style="text-align:center">版本代号</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td style="text-align:center">Android 12.0</td>
+<td style="text-align:center">31</td>
+<td style="text-align:center">S</td>
+</tr>
+<tr>
+<td style="text-align:center">Android 11.0</td>
+<td style="text-align:center">30</td>
+<td style="text-align:center">R</td>
+</tr>
+<tr>
+<td style="text-align:center">Android 10.0</td>
+<td style="text-align:center">29</td>
+<td style="text-align:center">Q</td>
+</tr>
+<tr>
+<td style="text-align:center">Android 9.0</td>
+<td style="text-align:center">28</td>
+<td style="text-align:center">Pie</td>
+</tr>
+<tr>
+<td style="text-align:center">Android 8.1</td>
+<td style="text-align:center">27</td>
+<td style="text-align:center">Oreo</td>
+</tr>
+<tr>
+<td style="text-align:center">Android 8.0</td>
+<td style="text-align:center">26</td>
+<td style="text-align:center">Oreo</td>
+</tr>
+<tr>
+<td style="text-align:center">Android 7.1.1</td>
+<td style="text-align:center">25</td>
+<td style="text-align:center">Nougat</td>
+</tr>
+<tr>
+<td style="text-align:center">Android 7.0</td>
+<td style="text-align:center">24</td>
+<td style="text-align:center">Nougat</td>
+</tr>
+<tr>
+<td style="text-align:center">Android 6.0</td>
+<td style="text-align:center">23</td>
+<td style="text-align:center">Marshmallow</td>
+</tr>
+<tr>
+<td style="text-align:center">Android 5.1</td>
+<td style="text-align:center">22</td>
+<td style="text-align:center">Lollipop</td>
+</tr>
+<tr>
+<td style="text-align:center">Android 5.0</td>
+<td style="text-align:center">21</td>
+<td style="text-align:center">Lollipop</td>
+</tr>
+<tr>
+<td style="text-align:center">Android 4.4</td>
+<td style="text-align:center">19</td>
+<td style="text-align:center">KitKat</td>
+</tr>
+</tbody>
+</table>
+</div>
+<h2 id="Android-12"><a href="#Android-12" class="headerlink" title="Android 12"></a>Android 12</h2><p><a href="https://developer.android.google.cn/about/versions/12/features?hl=zh-cn">Android 12.0 新特性</a></p>
+<h2 id="Android-11"><a href="#Android-11" class="headerlink" title="Android 11"></a>Android 11</h2><div class="table-container">
+<table>
+<thead>
+<tr>
+<th style="text-align:center">隐私权变更</th>
+<th style="text-align:center">受影响的应用</th>
+<th style="text-align:center">解决策略</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td style="text-align:center"><strong>强制执行分区存储机制</strong></td>
+<td style="text-align:center">以 Android 11 或更高版本为目标平台的应用，以及以 Android 10 为目标平台且未将 requestLegacyExternalStorage 设为 true 以停用分区存储的应用</td>
+<td style="text-align:center"><a href="https://developer.android.google.cn/about/versions/11/privacy/storage?hl=zh-cn">详细了解分区存储</a></td>
+</tr>
+<tr>
+<td style="text-align:center"><strong>单次授权</strong>&lt;/p&gt;用户可以授予对位置信息、麦克风和摄像头的临时访问权限</td>
+<td style="text-align:center">在 Android 11 或更高版本上运行且请求位置信息、麦克风或摄像头权限的应用</td>
+<td style="text-align:center"><a href="https://developer.android.google.cn/training/permissions/requesting?hl=zh-cn">请求应用权限</a></td>
+</tr>
+<tr>
+<td style="text-align:center"><strong>自动重置权限</strong>&lt;/p&gt;如果用户在 Android 11 或更高版本上几个月未与应用互动，系统会自动重置应用的敏感权限</td>
+<td style="text-align:center">以 Android 11 或更高版本为目标平台且在后台执行大部分工作的应用</td>
+<td style="text-align:center"><a href="https://developer.android.google.cn/about/versions/11/privacy/permissions?hl=zh-cn#auto-reset">自动重置未使用的应用的权限</a></td>
+</tr>
+<tr>
+<td style="text-align:center"><strong>后台位置信息访问权限</strong></td>
+<td style="text-align:center">以 Android 11 或更高版本为目标平台且需要<a href="https://developer.android.google.cn/training/location/permissions?hl=zh-cn#background">在后台访问位置信息</a>的应用</td>
+<td style="text-align:center"><a href="https://developer.android.google.cn/about/versions/11/privacy/location?hl=zh-cn#background-location">Android 11 中的位置信息更新</a></td>
+</tr>
+<tr>
+<td style="text-align:center"><strong>软件包可见性</strong>&lt;/p&gt;Android 11 更改了应用查询同一设备上的其他已安装应用及与之互动的方式</td>
+<td style="text-align:center">以 Android 11 或更高版本为目标平台且与设备上的其他已安装应用交互的应用</td>
+</tr>
+<tr>
+<td style="text-align:center"><strong>前台服务</strong>&lt;/p&gt;更改了前台服务访问位置信息、摄像头和麦克风相关数据的方式</td>
+<td style="text-align:center">在 Android 11 或更高版本上运行且在前台服务中访问位置信息、摄像头或麦克风的应用</td>
+<td style="text-align:center"><a href="https://developer.android.google.cn/about/versions/11/privacy/foreground-services?hl=zh-cn">Android 11 中的前台服务</a></td>
+</tr>
+</tbody>
+</table>
+</div>
+]]></content>
+      <categories>
+        <category>Android</category>
+      </categories>
+  </entry>
+  <entry>
     <title>2021 报告</title>
     <url>/2021/12/28/2021/</url>
     <content><![CDATA[<p>接受我自己什么都做不到的事实，是一件很困难的事。</p>
@@ -105,58 +284,6 @@
 ]]></content>
       <categories>
         <category>Book</category>
-      </categories>
-  </entry>
-  <entry>
-    <title>Activity的生命周期</title>
-    <url>/2020/06/15/Activity%E7%9A%84%E7%94%9F%E5%91%BD%E5%91%A8%E6%9C%9F/</url>
-    <content><![CDATA[<p><a href="https://developer.android.google.cn/guide/components/activities/activity-lifecycle">Activity生命周期</a></p>
-<p>了解Activity的生命周期，在一定程度上，对修正或完善代码内 <strong>各种情况下</strong> <em>业务的执行顺序与发生时机</em> ，会有很大的帮助。</p>
-<a id="more"></a>
-<h1 id="先行知识"><a href="#先行知识" class="headerlink" title="先行知识"></a>先行知识</h1><p><img src="/2020/06/15/Activity%E7%9A%84%E7%94%9F%E5%91%BD%E5%91%A8%E6%9C%9F/activity_lifecycle.png" alt="Android开发官网的生命周期图例"></p>
-<h2 id="onCreate"><a href="#onCreate" class="headerlink" title="onCreate"></a>onCreate</h2><p>在创建activity时触发，生命周期中第一个调用的方法，在整个生命周期内也只应发生一次（存在打破此规则的可行性操作）。<strong>此时还在后台，对用户不可见</strong>。</p>
-<p>在这一步，应该初始化布局资源，绑定数据，还有所有静态资源。要注意此时视图还在构建，是无法调用布局动画以及获取或设置布局的长宽及位置信息的。</p>
-<h2 id="onStart"><a href="#onStart" class="headerlink" title="onStart"></a>onStart</h2><p>activity进入“已启动”状态。对于这个阶段的描述，各博客的说法不一。我的理解为，<strong>此时对用户可见，但不处于前台，无法与用户进行交互</strong>。这个阶段很短，大概像是activity的整个界面在初现到完整展现中的过渡阶段，这个阶段的确符合“可见，不处于前台，无法交互”三个要素。</p>
-<p>在这一步，可以尝试检测一些必要条件，比如检查一些权限等。</p>
-<h2 id="onResume"><a href="#onResume" class="headerlink" title="onResume"></a>onResume</h2><p>调用此方法后，activity可与用户进行交互。<strong>此时位于前台，对用户可见，且可进行交互</strong>。</p>
-<p>在这一步，初始化一些“独占设备”（比如相机、录音机等）的相关设置。</p>
-<h2 id="onPause"><a href="#onPause" class="headerlink" title="onPause"></a>onPause</h2><p>activity失去焦点，并进入“已暂停”状态。<strong>此时尚且位于前台，对用户可见，但已不可进行交互</strong>。一般来说，如果当前方法在500ms内未执行完毕，会强制关闭当前activity。</p>
-<p>此时，考虑到<strong>各种情况</strong>，调用的下一个方法会是onResume或onStop；当然，杀进程这种特别少见的情况也是有可能存在的。这里的<strong>各种情况</strong>，会在下面尝试通过操作实现。</p>
-<p>在这一步，只能释放一些必要资源，以防下一个activity会用到，比如上文刚提过的“独占设备”资源。考虑到onPause有默认限时，这一步最好不要做很多操作，以防业务提前中断，造成崩溃或数据丢失等。</p>
-<h2 id="onStop"><a href="#onStop" class="headerlink" title="onStop"></a>onStop</h2><p>activity已停止。<strong>此时已位于后台，对用户不可见</strong>。但此时activity还存在于内存中，尚未被销毁。</p>
-<p>在这一步，可以着重做很多资源的回收工作。阿里巴巴的Android规范手册要求，尽量不要在onDestroy中释放资源，因为onDestroy的执行时机可能较晚。所以，一些线程资源的释放，数据的保存，都可以在这一步做。</p>
-<h2 id="onDestroy"><a href="#onDestroy" class="headerlink" title="onDestroy"></a>onDestroy</h2><p>activity被销毁。<strong>此时对用户不可见</strong>。</p>
-<p>在这一步，释放其他未释放的资源，特别是onCreate中初始化的静态资源等。</p>
-<h2 id="onRestart"><a href="#onRestart" class="headerlink" title="onRestart"></a>onRestart</h2><p>处于“已停止”状态即将重启时，会调用此方法。此回调后面总跟着onStart。</p>
-<h1 id="状态变更"><a href="#状态变更" class="headerlink" title="状态变更"></a>状态变更</h1><p>在使用应用的过程中，用户总会做出些令人意想不到的预料外的操作，这样一来，就需要了解一下状态变更的详情，以便开发者整理出一套趋于完美的业务逻辑。</p>
-<p>以下是我所能设想到的所有操作。这其中有两种操作，属于配置更改。这类操作会重新创建activity。</p>
-<h2 id="activity的切换"><a href="#activity的切换" class="headerlink" title="activity的切换"></a>activity的切换</h2><h3 id="activity-A-启动-activity-B"><a href="#activity-A-启动-activity-B" class="headerlink" title="activity A 启动 activity B"></a>activity A 启动 activity B</h3><p>onPause()(A) -&gt; onCreate()(B) -&gt; onStart()(B) -&gt; onResume()(B) -&gt; onStop()(A) -&gt; onSaveInstanceState()(A)</p>
-<h3 id="activity-B-返回-activity-A"><a href="#activity-B-返回-activity-A" class="headerlink" title="activity B 返回 activity A"></a>activity B 返回 activity A</h3><p>onPause()(B) -&gt; onRestart()(A) -&gt; onStart()(A) -&gt; onResume()(A) -&gt; onStop()(B) -&gt; onDestroy()(B)</p>
-<h2 id="息亮屏"><a href="#息亮屏" class="headerlink" title="息亮屏"></a>息亮屏</h2><h3 id="息屏"><a href="#息屏" class="headerlink" title="息屏"></a>息屏</h3><p>onPause() -&gt; onStop() -&gt; onSaveInstanceState()</p>
-<h3 id="亮屏"><a href="#亮屏" class="headerlink" title="亮屏"></a>亮屏</h3><p>onRestart() -&gt; onStart() -&gt; onResume()</p>
-<h2 id="来电"><a href="#来电" class="headerlink" title="来电"></a>来电</h2><p>一般来说，现在的手机系统很少会有不经用户允许直接切换至电话接听界面的操作了。相对以往来说，这里的操作其实也无特别之处了。</p>
-<h3 id="切换至接听界面"><a href="#切换至接听界面" class="headerlink" title="切换至接听界面"></a>切换至接听界面</h3><p>onPause() -&gt; onStop() -&gt; onSaveInstanceState()</p>
-<h3 id="拒绝来电"><a href="#拒绝来电" class="headerlink" title="拒绝来电"></a>拒绝来电</h3><p>onRestart() -&gt; onStart() -&gt; onResume()</p>
-<h2 id="横竖屏切换（第一类配置更改操作）"><a href="#横竖屏切换（第一类配置更改操作）" class="headerlink" title="横竖屏切换（第一类配置更改操作）"></a>横竖屏切换（第一类配置更改操作）</h2><p>onPause() -&gt; onStop() -&gt; onSaveInstanceState() -&gt; onDestroy() -&gt; onCreate() -&gt; onStart() -&gt; onRestoreInstanceState() -&gt; onResume()</p>
-<h2 id="窗口模式"><a href="#窗口模式" class="headerlink" title="窗口模式"></a>窗口模式</h2><h3 id="按下任务键，应用变为窗口"><a href="#按下任务键，应用变为窗口" class="headerlink" title="按下任务键，应用变为窗口"></a>按下任务键，应用变为窗口</h3><p>onPause() -&gt; onStop() -&gt; onSaveInstanceState()</p>
-<h3 id="选中窗口，应用变为全屏"><a href="#选中窗口，应用变为全屏" class="headerlink" title="选中窗口，应用变为全屏"></a>选中窗口，应用变为全屏</h3><p>onRestart() -&gt; onStart() -&gt; onResume()</p>
-<h3 id="切换至多窗口（即分屏）模式（第二类配置更改操作）"><a href="#切换至多窗口（即分屏）模式（第二类配置更改操作）" class="headerlink" title="切换至多窗口（即分屏）模式（第二类配置更改操作）"></a>切换至多窗口（即分屏）模式（第二类配置更改操作）</h3><p>onDestroy() -&gt; onCreate() -&gt; onStart() -&gt; onRestoreInstanceState() -&gt; onResume() -&gt; onPause()</p>
-<p>这让我发现了一个有趣的东西。在切换至分屏且未添加第二个分屏应用时，主activity的生命周期会运行至onPause()。此时若是点击应用，会发现应用不响应点击事件，似是获取不到用户输入，即失去焦点。</p>
-<p><strong>添加第二个分屏应用之后，测试应用调用 onResume()</strong>，此时可以响应点击事件。</p>
-<p>接下来可有两种操作。</p>
-<h4 id="1、将测试应用拉至全屏"><a href="#1、将测试应用拉至全屏" class="headerlink" title="1、将测试应用拉至全屏"></a>1、将测试应用拉至全屏</h4><p>onPause() -&gt; onStop() -&gt; onSaveInstanceState() -&gt; onDestroy() -&gt; onCreate() -&gt; onStart() -&gt; onRestoreInstanceState() -&gt; onResume()</p>
-<h4 id="2-1、将另一个分屏应用拉至全屏"><a href="#2-1、将另一个分屏应用拉至全屏" class="headerlink" title="2-1、将另一个分屏应用拉至全屏"></a>2-1、将另一个分屏应用拉至全屏</h4><p>onPause() -&gt; onStop() -&gt; onSaveInstanceState()</p>
-<h4 id="2-2、再切换至测试应用"><a href="#2-2、再切换至测试应用" class="headerlink" title="2-2、再切换至测试应用"></a>2-2、再切换至测试应用</h4><p>onDestroy() -&gt; onCreate() -&gt; onStart() -&gt; onRestoreInstanceState() -&gt; onResume()</p>
-<h1 id="本章相关知识点"><a href="#本章相关知识点" class="headerlink" title="本章相关知识点"></a>本章相关知识点</h1><blockquote>
-<ul>
-<li><a href="https://developer.android.google.cn/topic/libraries/architecture/saving-states">保存界面状态</a></li>
-<li><a href="https://developer.android.google.cn/guide/topics/ui/multi-window">多窗口支持</a></li>
-<li><a href="https://developer.android.google.cn/topic/libraries/architecture/lifecycle">生命周期感知能力的组件</a></li>
-</ul>
-</blockquote>
-]]></content>
-      <categories>
-        <category>Android</category>
       </categories>
   </entry>
   <entry>
@@ -391,41 +518,6 @@
       </categories>
   </entry>
   <entry>
-    <title>任务和返回堆栈</title>
-    <url>/2020/07/08/%E4%BB%BB%E5%8A%A1%E5%92%8C%E8%BF%94%E5%9B%9E%E5%A0%86%E6%A0%88/</url>
-    <content><![CDATA[<p>了解任务与返回堆栈的内容，对于合适地设置activity的启动模式，有很大的启发作用。</p>
-<a id="more"></a>
-<h1 id="前言"><a href="#前言" class="headerlink" title="前言"></a>前言</h1><p><strong>任务</strong>，是用户在使用时，产生的一系列activity的集合。一般来说，当启动一个新的activity时，系统会创建一个activity的新实例，并将这个实例放到一个堆栈中，这个堆栈即是<strong>返回堆栈</strong>。一般情况下，在第一次启动应用时，一个应用会创建一个相对应的任务和返回堆栈；同时，该应用的主activity也会作为返回堆栈的根activity。</p>
-<p>返回堆栈的特点是，activity遵循<strong>“先进后出”（也可为“后进先出”）</strong>的原则，而且不会被重新排列。</p>
-<p><img src="/2020/07/08/%E4%BB%BB%E5%8A%A1%E5%92%8C%E8%BF%94%E5%9B%9E%E5%A0%86%E6%A0%88/1.png" alt></p>
-<p>图示即演示了新activity是如何添加到返回堆栈的。当用户按返回按钮时，当前activity会销毁，上一个activity将恢复。当堆栈中所有activity被移除后，任务也将不复存在。</p>
-<p>Activity和任务的默认行为总结如下：（这段官网的描述很详细）</p>
-<ul>
-<li><p>当 Activity A 启动 Activity B 时，Activity A 会停止，但系统会保留其状态（例如滚动位置和输入到表单中的文本）。如果用户在 Activity B 中按返回按钮，系统会恢复 Activity A 及其状态。</p>
-</li>
-<li><p>当用户通过按主屏幕按钮离开任务时，当前 Activity 会停止，其任务会转到后台。系统会保留任务中每个 Activity 的状态。如果用户稍后通过点按该任务的启动器图标来恢复该任务，该任务会进入前台并恢复堆栈顶部的 Activity。</p>
-</li>
-<li><p>如果用户按返回按钮，当前 Activity 将从堆栈中退出并销毁。堆栈中的上一个 Activity 将恢复。Activity 被销毁后，系统不会保留该 Activity 的状态。</p>
-</li>
-<li><p>Activity 可以多次实例化，甚至是从其他任务对其进行实例化。</p>
-</li>
-</ul>
-<h1 id="launchMode"><a href="#launchMode" class="headerlink" title="launchMode"></a>launchMode</h1><h2 id="standard"><a href="#standard" class="headerlink" title="standard"></a>standard</h2><p><strong>Activity的默认模式</strong>，这种模式下activity可以多次实例化。<strong>每个实例可以属于不同的任务，一个任务可以拥有多个实例。</strong></p>
-<p>适用场景：大多数应用场景</p>
-<h2 id="singleTop"><a href="#singleTop" class="headerlink" title="singleTop"></a>singleTop</h2><p><strong>栈顶复用模式</strong>。若堆栈的顶部已为当前activity实例，系统则会调用onNewIntent()方法获取已有实例；若栈顶不为当前activity实例，则会创建新的activity实例。</p>
-<p>适用场景：通知消息打开的页面；登录页面等。</p>
-<p>反面教材：<strong>微博</strong>：在A用户主页，<em>不进入单条微博详情</em>，点击任意一条微博的A用户头像，都会再次进入A用户主页，即生成新的Activity实例，进入一种“俄罗斯套娃”的怪圈。</p>
-<p>正面教材：<strong>QQ</strong>和<strong>微博国际版</strong>：同样是在主页进行以上操作，QQ不会再次进入用户主页，微博国际版更是有屏幕抖动的效果来提醒当前已是目标用户主页。</p>
-<h2 id="singleTask"><a href="#singleTask" class="headerlink" title="singleTask"></a>singleTask</h2><p><strong>栈内复用模式</strong>。与singleTop不同的是，此模式会检索栈内所有activity实例，而非仅限于栈顶。若存在对应实例，则调用onNewIntent()方法获取已有实例，并将其之上的所有activity实例出栈；若不存在对应实例，则新建实例。</p>
-<p>适用场景：大多数APP的主页。这样的话，在退至主页时，之上的activity都会出栈，保证了退出应用时所有activity都会被销毁。</p>
-<h2 id="singleInstance"><a href="#singleInstance" class="headerlink" title="singleInstance"></a>singleInstance</h2><p><strong>单一实例模式</strong>。这种模式下，activity实例会<strong>单独占用一个栈</strong>，在系统中具有全局唯一性。与前两者的区别在于，此模式的检索范围要扩大至整个系统。</p>
-<p>适用场景：呼叫来电、闹钟响铃等界面。</p>
-]]></content>
-      <categories>
-        <category>Android</category>
-      </categories>
-  </entry>
-  <entry>
     <title>二载成就杂谈</title>
     <url>/2020/12/20/%E4%BA%8C%E8%BD%BD%E6%88%90%E5%B0%B1%E6%9D%82%E8%B0%88/</url>
     <content><![CDATA[<p>我活的太过随心所欲，生活便迷失了方向。</p>
@@ -611,6 +703,41 @@
       </categories>
   </entry>
   <entry>
+    <title>任务和返回堆栈</title>
+    <url>/2020/07/08/%E4%BB%BB%E5%8A%A1%E5%92%8C%E8%BF%94%E5%9B%9E%E5%A0%86%E6%A0%88/</url>
+    <content><![CDATA[<p>了解任务与返回堆栈的内容，对于合适地设置activity的启动模式，有很大的启发作用。</p>
+<a id="more"></a>
+<h1 id="前言"><a href="#前言" class="headerlink" title="前言"></a>前言</h1><p><strong>任务</strong>，是用户在使用时，产生的一系列activity的集合。一般来说，当启动一个新的activity时，系统会创建一个activity的新实例，并将这个实例放到一个堆栈中，这个堆栈即是<strong>返回堆栈</strong>。一般情况下，在第一次启动应用时，一个应用会创建一个相对应的任务和返回堆栈；同时，该应用的主activity也会作为返回堆栈的根activity。</p>
+<p>返回堆栈的特点是，activity遵循<strong>“先进后出”（也可为“后进先出”）</strong>的原则，而且不会被重新排列。</p>
+<p><img src="/2020/07/08/%E4%BB%BB%E5%8A%A1%E5%92%8C%E8%BF%94%E5%9B%9E%E5%A0%86%E6%A0%88/1.png" alt></p>
+<p>图示即演示了新activity是如何添加到返回堆栈的。当用户按返回按钮时，当前activity会销毁，上一个activity将恢复。当堆栈中所有activity被移除后，任务也将不复存在。</p>
+<p>Activity和任务的默认行为总结如下：（这段官网的描述很详细）</p>
+<ul>
+<li><p>当 Activity A 启动 Activity B 时，Activity A 会停止，但系统会保留其状态（例如滚动位置和输入到表单中的文本）。如果用户在 Activity B 中按返回按钮，系统会恢复 Activity A 及其状态。</p>
+</li>
+<li><p>当用户通过按主屏幕按钮离开任务时，当前 Activity 会停止，其任务会转到后台。系统会保留任务中每个 Activity 的状态。如果用户稍后通过点按该任务的启动器图标来恢复该任务，该任务会进入前台并恢复堆栈顶部的 Activity。</p>
+</li>
+<li><p>如果用户按返回按钮，当前 Activity 将从堆栈中退出并销毁。堆栈中的上一个 Activity 将恢复。Activity 被销毁后，系统不会保留该 Activity 的状态。</p>
+</li>
+<li><p>Activity 可以多次实例化，甚至是从其他任务对其进行实例化。</p>
+</li>
+</ul>
+<h1 id="launchMode"><a href="#launchMode" class="headerlink" title="launchMode"></a>launchMode</h1><h2 id="standard"><a href="#standard" class="headerlink" title="standard"></a>standard</h2><p><strong>Activity的默认模式</strong>，这种模式下activity可以多次实例化。<strong>每个实例可以属于不同的任务，一个任务可以拥有多个实例。</strong></p>
+<p>适用场景：大多数应用场景</p>
+<h2 id="singleTop"><a href="#singleTop" class="headerlink" title="singleTop"></a>singleTop</h2><p><strong>栈顶复用模式</strong>。若堆栈的顶部已为当前activity实例，系统则会调用onNewIntent()方法获取已有实例；若栈顶不为当前activity实例，则会创建新的activity实例。</p>
+<p>适用场景：通知消息打开的页面；登录页面等。</p>
+<p>反面教材：<strong>微博</strong>：在A用户主页，<em>不进入单条微博详情</em>，点击任意一条微博的A用户头像，都会再次进入A用户主页，即生成新的Activity实例，进入一种“俄罗斯套娃”的怪圈。</p>
+<p>正面教材：<strong>QQ</strong>和<strong>微博国际版</strong>：同样是在主页进行以上操作，QQ不会再次进入用户主页，微博国际版更是有屏幕抖动的效果来提醒当前已是目标用户主页。</p>
+<h2 id="singleTask"><a href="#singleTask" class="headerlink" title="singleTask"></a>singleTask</h2><p><strong>栈内复用模式</strong>。与singleTop不同的是，此模式会检索栈内所有activity实例，而非仅限于栈顶。若存在对应实例，则调用onNewIntent()方法获取已有实例，并将其之上的所有activity实例出栈；若不存在对应实例，则新建实例。</p>
+<p>适用场景：大多数APP的主页。这样的话，在退至主页时，之上的activity都会出栈，保证了退出应用时所有activity都会被销毁。</p>
+<h2 id="singleInstance"><a href="#singleInstance" class="headerlink" title="singleInstance"></a>singleInstance</h2><p><strong>单一实例模式</strong>。这种模式下，activity实例会<strong>单独占用一个栈</strong>，在系统中具有全局唯一性。与前两者的区别在于，此模式的检索范围要扩大至整个系统。</p>
+<p>适用场景：呼叫来电、闹钟响铃等界面。</p>
+]]></content>
+      <categories>
+        <category>Android</category>
+      </categories>
+  </entry>
+  <entry>
     <title>做时钟动画遇到的小问题</title>
     <url>/2022/04/14/%E5%81%9A%E6%97%B6%E9%92%9F%E5%8A%A8%E7%94%BB%E9%81%87%E5%88%B0%E7%9A%84%E5%B0%8F%E9%97%AE%E9%A2%98/</url>
     <content><![CDATA[<p>最近在回忆时钟动画的代码实现，然后遇到一些有趣的小问题，借此记录一下。</p>
@@ -770,17 +897,56 @@
       </categories>
   </entry>
   <entry>
-    <title>沉浸式状态栏的实现</title>
-    <url>/2022/05/16/%E6%B2%89%E6%B5%B8%E5%BC%8F%E7%8A%B6%E6%80%81%E6%A0%8F%E7%9A%84%E5%AE%9E%E7%8E%B0/</url>
-    <content><![CDATA[]]></content>
+    <title>牧场物语：重聚矿石镇个人记</title>
+    <url>/2020/08/25/%E9%87%8D%E8%81%9A%E7%9F%BF%E7%9F%B3%E9%95%87/</url>
+    <content><![CDATA[<p>游玩日期：2020-07-20 —— 2020-08-18</p>
+<a id="more"></a>
+<p>之前一段时间，突然对任天堂感兴趣了起来，就去买了几本关于任天堂的书，读完之后好感大增，于是来体验一下任天堂的游戏。</p>
+<p>牧场物语确实挺好玩的，剧情上要比星露谷更生动一些。很感谢牧场物语，让我重拾了当年玩星露谷的快乐和悸动（牧场物语竟然还能磕CP，太甜了，多来几对不要停）。</p>
+<p>放一些兰的图：</p>
+<center style="font-size:15px;color:#C0C0C0">告白</center>
+
+<p><img src="/2020/08/25/%E9%87%8D%E8%81%9A%E7%9F%BF%E7%9F%B3%E9%95%87/1.jpg" alt></p>
+<center style="font-size:15px;color:#C0C0C0">情侣事件</center>
+
+<p><img src="/2020/08/25/%E9%87%8D%E8%81%9A%E7%9F%BF%E7%9F%B3%E9%95%87/2.jpg" alt></p>
+<center style="font-size:15px;color:#C0C0C0">求婚</center>
+
+<p><img src="/2020/08/25/%E9%87%8D%E8%81%9A%E7%9F%BF%E7%9F%B3%E9%95%87/3.jpg" alt></p>
+<center style="font-size:15px;color:#C0C0C0">求婚</center>
+
+<p><img src="/2020/08/25/%E9%87%8D%E8%81%9A%E7%9F%BF%E7%9F%B3%E9%95%87/4.jpg" alt></p>
+<center style="font-size:15px;color:#C0C0C0">求婚</center>
+
+<p><img src="/2020/08/25/%E9%87%8D%E8%81%9A%E7%9F%BF%E7%9F%B3%E9%95%87/5.jpg" alt></p>
+<center style="font-size:15px;color:#C0C0C0">婚礼前</center>
+
+<p><img src="/2020/08/25/%E9%87%8D%E8%81%9A%E7%9F%BF%E7%9F%B3%E9%95%87/6.jpg" alt></p>
+<center style="font-size:15px;color:#C0C0C0">婚礼</center>
+
+<p><img src="/2020/08/25/%E9%87%8D%E8%81%9A%E7%9F%BF%E7%9F%B3%E9%95%87/7.jpg" alt></p>
+<center style="font-size:15px;color:#C0C0C0">这一张兰的立绘实在是太可爱了</center>
+
+<p><img src="/2020/08/25/%E9%87%8D%E8%81%9A%E7%9F%BF%E7%9F%B3%E9%95%87/8.jpg" alt></p>
+<center style="font-size:15px;color:#C0C0C0">婚礼当天晚上</center>
+
+<p><img src="/2020/08/25/%E9%87%8D%E8%81%9A%E7%9F%BF%E7%9F%B3%E9%95%87/9.jpg" alt></p>
+<center style="font-size:15px;color:#C0C0C0">婚礼当天晚上</center>
+
+<p><img src="/2020/08/25/%E9%87%8D%E8%81%9A%E7%9F%BF%E7%9F%B3%E9%95%87/10.jpg" alt></p>
+<center style="font-size:15px;color:#C0C0C0">幸福生活第一天</center>
+
+<p><img src="/2020/08/25/%E9%87%8D%E8%81%9A%E7%9F%BF%E7%9F%B3%E9%95%87/11.jpg" alt></p>
+]]></content>
       <categories>
-        <category>Android</category>
+        <category>Game</category>
       </categories>
   </entry>
   <entry>
     <title>面试时的问题</title>
     <url>/2019/03/13/%E9%9D%A2%E8%AF%95%E6%97%B6%E7%9A%84%E9%97%AE%E9%A2%98/</url>
-    <content><![CDATA[<h1 id="Activity之间传递数据的方式"><a href="#Activity之间传递数据的方式" class="headerlink" title="Activity之间传递数据的方式"></a>Activity之间传递数据的方式</h1><p><a href="https://pennhan.github.io/2019/04/14/Android-Activity%E4%B9%8B%E9%97%B4%E7%9A%84%E9%80%9A%E4%BF%A1%E6%96%B9%E5%BC%8F/">Android Activity之间的通信方式</a></p>
+    <content><![CDATA[<a id="more"></a>
+<h1 id="Activity之间传递数据的方式"><a href="#Activity之间传递数据的方式" class="headerlink" title="Activity之间传递数据的方式"></a>Activity之间传递数据的方式</h1><p><a href="https://pennhan.github.io/2019/04/14/Android-Activity%E4%B9%8B%E9%97%B4%E7%9A%84%E9%80%9A%E4%BF%A1%E6%96%B9%E5%BC%8F/">Android Activity之间的通信方式</a></p>
 <blockquote>
 <ul>
 <li>Activity 之间跳转或者是发送广播</li>
@@ -898,6 +1064,83 @@
 </ul>
 </blockquote>
 <p>WebView 的 Callback 常持有 Activity 引用，造成即使调用 WebView.destroy() 等方法也无法释放。正确的方案是需要先将 WebView 从父容器移除，再进行销毁。</p>
+<h1 id="调起支付宝支付的流程"><a href="#调起支付宝支付的流程" class="headerlink" title="调起支付宝支付的流程"></a>调起支付宝支付的流程</h1><p><img src="/2019/03/13/%E9%9D%A2%E8%AF%95%E6%97%B6%E7%9A%84%E9%97%AE%E9%A2%98/Alipay_Process.png" alt></p>
+<h1 id="https-加密"><a href="#https-加密" class="headerlink" title="https 加密"></a>https 加密</h1><p>客户端向服务器端发起第一次请求，服务器将自己的一对秘钥和公钥中的公钥发送给客户端，然后客户端对公钥进行验证。验证合格后，客户端生成一个秘钥，然后用服务器的公钥对这个秘钥进行加密。</p>
+<p>客户端发起第二次请求，将加密过后的秘钥发送过去，服务器用自己的私钥进行解密，解密之后得到客户端秘钥，然后利用客户端秘钥对数据进行加密，将加密后的数据发送给客户端。客户端得到数据后，用秘钥再进行解密，得到数据。</p>
+<h1 id="类与接口"><a href="#类与接口" class="headerlink" title="类与接口"></a>类与接口</h1><p>类可以同时继承两个吗？有什么方法可以继承两个？接口里有变量吗？</p>
+<h2 id="类"><a href="#类" class="headerlink" title="类"></a>类</h2><h3 id="单继承"><a href="#单继承" class="headerlink" title="单继承"></a>单继承</h3><p>Java 只允许一个class继承自一个类，即<strong>可有且仅有一个父类</strong>。除 Object 特殊，没有父类。</p>
+<p>子类无法访问父类的 private 字段或 private 方法。为了访问，可以将 private 修改为 protected。</p>
+<p>在构造方法中，系统会自动隐式调用父类的无参构造函数。如果父类没有默认的构造方法，子类必须显式调用 super() 并给出参数以便定位到父类的构造方法。</p>
+<h3 id="阻止继承"><a href="#阻止继承" class="headerlink" title="阻止继承"></a>阻止继承</h3><p>final 关键字修饰的变量的值不可以更改；final 关键字修饰的类不可被继承；final 关键字修饰的方法可以被继承，但不能被子类重写。</p>
+<p><a href="https://xie.infoq.cn/article/0c8e1a434f94bc0d6be4eff2d">Java 新技术：封闭类</a></p>
+<p>Java 15 开始，也可使用 sealed 修饰 class，并通过 permits 明确写出能够继承该 class 的子类名称。</p>
+<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">public sealed class Shape permits Rect, Circle, Triangle &#123;</span><br><span class="line">    ...</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>继承它的类必须声明为 终极类(final)、封闭类(sealed) 或解封类 (non-sealed) 其中一种。</p>
+<h3 id="向上转型-（子类类型转父类类型）"><a href="#向上转型-（子类类型转父类类型）" class="headerlink" title="向上转型 （子类类型转父类类型）"></a>向上转型 （子类类型转父类类型）</h3><p>比如 Student 类继承与 Person 类，则可以：</p>
+<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">Person p &#x3D; new Student();</span><br></pre></td></tr></table></figure>
+<h3 id="向下转型-（父类类型转子类类型）"><a href="#向下转型-（父类类型转子类类型）" class="headerlink" title="向下转型 （父类类型转子类类型）"></a>向下转型 （父类类型转子类类型）</h3><p>如上，以下是不可以的：</p>
+<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">Student s &#x3D; new Person();</span><br></pre></td></tr></table></figure>
+<p>由于子类功能比父类要多，导致向下转型很可能会失败，报 ClassCastException 错误。</p>
+<h2 id="接口"><a href="#接口" class="headerlink" title="接口"></a>接口</h2><h3 id="特性"><a href="#特性" class="headerlink" title="特性"></a>特性</h3><blockquote>
+<ul>
+<li>可以有变量，但会被隐式指定为 public static final 类型</li>
+<li>方法默认为隐式抽象方法，被隐式指定为 public abstract 类型，必须被重写；(Java 1.8)也可定义 default 修饰且被实现的方法，可被重写；(Java1.8)静态方法只能通过接口名调用。</li>
+</ul>
+</blockquote>
+<h2 id="接口的实现"><a href="#接口的实现" class="headerlink" title="接口的实现"></a>接口的实现</h2><p>实现接口时，必须要实现接口中的所有方法。想不必实现所有，则该类须声明为抽象类。</p>
+<h1 id="一些常用的关键字"><a href="#一些常用的关键字" class="headerlink" title="一些常用的关键字"></a>一些常用的关键字</h1><h2 id="四种访问修饰符的作用域"><a href="#四种访问修饰符的作用域" class="headerlink" title="四种访问修饰符的作用域"></a>四种访问修饰符的作用域</h2><div class="table-container">
+<table>
+<thead>
+<tr>
+<th style="text-align:center">作用域</th>
+<th style="text-align:center">当前类</th>
+<th style="text-align:center">同一包内</th>
+<th style="text-align:center">子孙类(不同包)</th>
+<th style="text-align:center">其他包</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td style="text-align:center">public</td>
+<td style="text-align:center">√</td>
+<td style="text-align:center">√</td>
+<td style="text-align:center">√</td>
+<td style="text-align:center">√</td>
+</tr>
+<tr>
+<td style="text-align:center">protected</td>
+<td style="text-align:center">√</td>
+<td style="text-align:center">√</td>
+<td style="text-align:center">√</td>
+<td style="text-align:center">×</td>
+</tr>
+<tr>
+<td style="text-align:center">default</td>
+<td style="text-align:center">√</td>
+<td style="text-align:center">√</td>
+<td style="text-align:center">×</td>
+<td style="text-align:center">×</td>
+</tr>
+<tr>
+<td style="text-align:center">private</td>
+<td style="text-align:center">√</td>
+<td style="text-align:center">×</td>
+<td style="text-align:center">×</td>
+<td style="text-align:center">×</td>
+</tr>
+</tbody>
+</table>
+</div>
+<h2 id="final"><a href="#final" class="headerlink" title="final"></a>final</h2><p>final 修饰的类不可被继承；final 修饰的方法不可被重写；final 修饰的变量一经初始化后不可更改。</p>
+<h2 id="static"><a href="#static" class="headerlink" title="static"></a>static</h2><p>static 修饰的变量为静态变量，被所有的对象所共享，在内存中只有一个副本，当且仅当在类初次加载时被初始化一次。</p>
+<p>static 修饰的方法为静态方法，不依赖于任何对象即可调用。静态方法中不可访问非静态成员方法和非静态成员变量。</p>
+<p>static 还可用来形成静态代码块，可多个置于类中的不同地方，初次加载时按照顺序依次加载且仅加载此次一次。</p>
+<h2 id="abstract"><a href="#abstract" class="headerlink" title="abstract"></a>abstract</h2><p>abstract 可以修饰类和方法，修饰类为抽象类，修饰方法为抽象方法。只有接口和类中才能有抽象方法。</p>
+<p>抽象方法被子类继承后必须重写。已实现的方法可选择性重写。</p>
+<p>抽象方法仅可被 public、protected 两种修饰，若不为抽象方法则不限制。</p>
+<p>abstract 不可与 final 和 private 共存，因为前者要求继承实现，后两者修饰后不可被继承，相矛盾冲突。</p>
+<p>abstract 不可与 static 共存，因为抽象方法还未实现，static 修饰的方法可被外部直接调用，相矛盾冲突。</p>
+<p>但抽象类中是可以有 private 或 final 修饰的方法的，只不过无法被外部调用或继承重写。</p>
 <h2 id="拓展小知识"><a href="#拓展小知识" class="headerlink" title="拓展小知识"></a>拓展小知识</h2><div class="table-container">
 <table>
 <thead>
@@ -930,232 +1173,34 @@
 </tbody>
 </table>
 </div>
-<h1 id="播放云端多媒体技术"><a href="#播放云端多媒体技术" class="headerlink" title="播放云端多媒体技术"></a>播放云端多媒体技术</h1><h1 id="调起支付宝支付的流程"><a href="#调起支付宝支付的流程" class="headerlink" title="调起支付宝支付的流程"></a>调起支付宝支付的流程</h1><p><img src="/2019/03/13/%E9%9D%A2%E8%AF%95%E6%97%B6%E7%9A%84%E9%97%AE%E9%A2%98/Alipay_Process.png" alt></p>
-<h1 id="Android-多线程"><a href="#Android-多线程" class="headerlink" title="Android 多线程"></a>Android 多线程</h1>]]></content>
-      <categories>
-        <category>Android</category>
-      </categories>
-  </entry>
-  <entry>
-    <title>牧场物语：重聚矿石镇个人记</title>
-    <url>/2020/08/25/%E9%87%8D%E8%81%9A%E7%9F%BF%E7%9F%B3%E9%95%87/</url>
-    <content><![CDATA[<p>游玩日期：2020-07-20 —— 2020-08-18</p>
-<a id="more"></a>
-<p>之前一段时间，突然对任天堂感兴趣了起来，就去买了几本关于任天堂的书，读完之后好感大增，于是来体验一下任天堂的游戏。</p>
-<p>牧场物语确实挺好玩的，剧情上要比星露谷更生动一些。很感谢牧场物语，让我重拾了当年玩星露谷的快乐和悸动（牧场物语竟然还能磕CP，太甜了，多来几对不要停）。</p>
-<p>放一些兰的图：</p>
-<center style="font-size:15px;color:#C0C0C0">告白</center>
-
-<p><img src="/2020/08/25/%E9%87%8D%E8%81%9A%E7%9F%BF%E7%9F%B3%E9%95%87/1.jpg" alt></p>
-<center style="font-size:15px;color:#C0C0C0">情侣事件</center>
-
-<p><img src="/2020/08/25/%E9%87%8D%E8%81%9A%E7%9F%BF%E7%9F%B3%E9%95%87/2.jpg" alt></p>
-<center style="font-size:15px;color:#C0C0C0">求婚</center>
-
-<p><img src="/2020/08/25/%E9%87%8D%E8%81%9A%E7%9F%BF%E7%9F%B3%E9%95%87/3.jpg" alt></p>
-<center style="font-size:15px;color:#C0C0C0">求婚</center>
-
-<p><img src="/2020/08/25/%E9%87%8D%E8%81%9A%E7%9F%BF%E7%9F%B3%E9%95%87/4.jpg" alt></p>
-<center style="font-size:15px;color:#C0C0C0">求婚</center>
-
-<p><img src="/2020/08/25/%E9%87%8D%E8%81%9A%E7%9F%BF%E7%9F%B3%E9%95%87/5.jpg" alt></p>
-<center style="font-size:15px;color:#C0C0C0">婚礼前</center>
-
-<p><img src="/2020/08/25/%E9%87%8D%E8%81%9A%E7%9F%BF%E7%9F%B3%E9%95%87/6.jpg" alt></p>
-<center style="font-size:15px;color:#C0C0C0">婚礼</center>
-
-<p><img src="/2020/08/25/%E9%87%8D%E8%81%9A%E7%9F%BF%E7%9F%B3%E9%95%87/7.jpg" alt></p>
-<center style="font-size:15px;color:#C0C0C0">这一张兰的立绘实在是太可爱了</center>
-
-<p><img src="/2020/08/25/%E9%87%8D%E8%81%9A%E7%9F%BF%E7%9F%B3%E9%95%87/8.jpg" alt></p>
-<center style="font-size:15px;color:#C0C0C0">婚礼当天晚上</center>
-
-<p><img src="/2020/08/25/%E9%87%8D%E8%81%9A%E7%9F%BF%E7%9F%B3%E9%95%87/9.jpg" alt></p>
-<center style="font-size:15px;color:#C0C0C0">婚礼当天晚上</center>
-
-<p><img src="/2020/08/25/%E9%87%8D%E8%81%9A%E7%9F%BF%E7%9F%B3%E9%95%87/10.jpg" alt></p>
-<center style="font-size:15px;color:#C0C0C0">幸福生活第一天</center>
-
-<p><img src="/2020/08/25/%E9%87%8D%E8%81%9A%E7%9F%BF%E7%9F%B3%E9%95%87/11.jpg" alt></p>
-]]></content>
-      <categories>
-        <category>Game</category>
-      </categories>
-  </entry>
-  <entry>
-    <title>Android绘画学习-Paint相关</title>
-    <url>/2018/10/09/Android%E7%BB%98%E7%94%BB%E5%AD%A6%E4%B9%A0-Paint%E7%9B%B8%E5%85%B3/</url>
-    <content><![CDATA[<p>想做Android动画的时候，有的时候又需要自己画一些图形，比如自定义的进度条这样的。所以，学一些基础的绘画代码也是必要的。</p>
-<a id="more"></a>
-<p>我这里的Androi动画学习笔记是从CSDN的一位大佬的动画博客教程那里学来的，其实很多部分都与原博客相似，且内容不如原博客详细。这里直接贴上原博客，原博客有更丰富、更全面的教程，以方便大家学习，毕竟我自己的学习习惯有些问题，笔记并不一定全面。</p>
-<p>原博客：<a href="https://blog.csdn.net/harvic880925/article/details/50995268">Android自定义控件学习三部曲</a></p>
-<h1 id="Paint与Canvas"><a href="#Paint与Canvas" class="headerlink" title="Paint与Canvas"></a>Paint与Canvas</h1><p>Paint是画笔，Canvas是画布。画笔可以负责的，比如颜色，粗细，透明度等；而画布负责的，是画笔在画布上画的位置，大小，形状等。所以，搞清楚各部分负责的职能，逻辑会更清晰些。</p>
-<p>参数稍后再写，先写怎么能让应用运行起来，这样，在改一些参数设置的时候，就用不着只是看，可以亲自感受变化了。</p>
-<h2 id="基本实现方法"><a href="#基本实现方法" class="headerlink" title="基本实现方法"></a>基本实现方法</h2><p>1、先将布局更换为FrameLayout，并添加id，用于添加视图</p>
-<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">&lt;FrameLayout xmlns:android&#x3D;&quot;http:&#x2F;&#x2F;schemas.android.com&#x2F;apk&#x2F;res&#x2F;android&quot;</span><br><span class="line">    xmlns:app&#x3D;&quot;http:&#x2F;&#x2F;schemas.android.com&#x2F;apk&#x2F;res-auto&quot;</span><br><span class="line">    android:id&#x3D;&quot;@+id&#x2F;main_frame&quot;</span><br><span class="line">    xmlns:tools&#x3D;&quot;http:&#x2F;&#x2F;schemas.android.com&#x2F;tools&quot;</span><br><span class="line">    android:layout_width&#x3D;&quot;match_parent&quot;</span><br><span class="line">    android:layout_height&#x3D;&quot;match_parent&quot;</span><br><span class="line">    tools:context&#x3D;&quot;com.example.administrator.animationtest.activity.MainActivity&quot;&gt;</span><br><span class="line">&lt;&#x2F;FrameLayout&gt;</span><br></pre></td></tr></table></figure>
-<p>2、创建一个自定义视图类，继承自View类。在这个类中，重点在于重写OnDraw()函数。</p>
-<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">public class CustomView extends View &#123;</span><br><span class="line"></span><br><span class="line">    Context context;</span><br><span class="line"></span><br><span class="line">    public CustomView(Context context) &#123;</span><br><span class="line">        super(context);</span><br><span class="line">        this.context &#x3D; context;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    @Override</span><br><span class="line">    protected void onDraw(Canvas canvas) &#123;</span><br><span class="line">        super.onDraw(canvas);</span><br><span class="line"></span><br><span class="line">		&#x2F;&#x2F;示例代码</span><br><span class="line">		&#x2F;&#x2F;设置画笔基本属性</span><br><span class="line">        Paint paint &#x3D; new Paint();</span><br><span class="line">        paint.setAntiAlias(true);           &#x2F;&#x2F;抗锯齿</span><br><span class="line">        paint.setColor(Color.RED);          &#x2F;&#x2F;画笔颜色</span><br><span class="line">        paint.setStyle(Paint.Style.FILL);   &#x2F;&#x2F;填充样式</span><br><span class="line">        paint.setStrokeWidth(5);            &#x2F;&#x2F;画笔宽度</span><br><span class="line">        &#x2F;&#x2F;paint.setShadowLayer(1,15,15,Color.GREEN);      &#x2F;&#x2F;设置阴影</span><br><span class="line"></span><br><span class="line">        canvas.drawRGB(255,255,255);</span><br><span class="line">        &#x2F;&#x2F;画图</span><br><span class="line">        canvas.drawCircle(200,200,150,paint);</span><br><span class="line"></span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-<p>3、在Activity类中添加绘画显示代码。</p>
-<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">@Bind(R.id.main_frame) FrameLayout mainFrame;</span><br><span class="line"></span><br><span class="line">@Override</span><br><span class="line">    protected void onCreate(Bundle savedInstanceState) &#123;</span><br><span class="line">        ...</span><br><span class="line">        mainFrame.addView(new CustomView(MainActivity.this));</span><br><span class="line"></span><br><span class="line">    &#125;</span><br><span class="line"></span><br></pre></td></tr></table></figure>
-<p>运行效果如下：</p>
-<p><img src="/2018/10/09/Android%E7%BB%98%E7%94%BB%E5%AD%A6%E4%B9%A0-Paint%E7%9B%B8%E5%85%B3/1.jpg" alt></p>
-<p>我记得还有一个实现方法，是在布局文件中直接引用view类，不通过addView()方法也可以显示view。但由于忘了一些细节，没办法实现这个操作，所以在这里插个眼，等找到实现方法了TP回来。</p>
-<h2 id="Paint的基本参数设置"><a href="#Paint的基本参数设置" class="headerlink" title="Paint的基本参数设置"></a>Paint的基本参数设置</h2><ul>
-<li><p>setAntiAlias(Boolean boolean)    设置是否开启抗锯齿</p>
-</li>
-<li><p>setColor(int color)                设置画笔颜色</p>
-</li>
-<li><p>setStrokeWidth(int width)        设置画笔宽度</p>
-</li>
-<li><p>setStyle(Paint.Style style)        设置填充样式</p>
-</li>
-</ul>
-<p>样式有三种：</p>
-<p>Paint.Style.FILL                  填充内部</p>
-<p>Paint.Style.FILL_AND_STROKE        填充内部以及描边</p>
-<p>Paint.STyle.STROKE                仅描边</p>
-<p>其中一和二其实没有什么区别。（起初我以为画笔如果够宽，一和二就会有明显的内部、边框之分，但实验过后发现并没有区别）</p>
+<h1 id="多线程"><a href="#多线程" class="headerlink" title="多线程"></a>多线程</h1><p><a href="https://juejin.cn/post/6844903874671673357">多线程知识总结</a></p>
+<h2 id="线程池"><a href="#线程池" class="headerlink" title="线程池"></a>线程池</h2><p><a href="https://www.jianshu.com/p/0e4a5e70bf0e">线程池TheradPool解析</a></p>
+<p><a href="https://developer.aliyun.com/article/653145">获取多条线程的执行结果</a></p>
+<h1 id="性能优化"><a href="#性能优化" class="headerlink" title="性能优化"></a>性能优化</h1><h2 id="APK-瘦身"><a href="#APK-瘦身" class="headerlink" title="APK 瘦身"></a>APK 瘦身</h2><blockquote>
 <ul>
-<li>setShadowLayer(float radius, float dx, float dy, int shadowColor)        设置阴影（对图形无效，对字体有效）</li>
+<li>删除冗余资源</li>
+<li>优化重复资源</li>
+<li><p>压缩图片</p>
+</li>
+<li><p>不使用重复功能的库</p>
+</li>
 </ul>
-<p>其中radius指角度，即阴影倾斜度，dx水平位移，dy垂直位移</p>
-<h2 id="基本几何图形绘制"><a href="#基本几何图形绘制" class="headerlink" title="基本几何图形绘制"></a>基本几何图形绘制</h2><p>canvas本身就提供了一些基础图形的绘制方法，接下来就是各个方法的使用设置。</p>
-<h3 id="一条直线"><a href="#一条直线" class="headerlink" title="一条直线"></a>一条直线</h3><p>方法：drawLine (float startX, float startY, float stopX, float stopY, Paint paint)</p>
-<p>参数不用多解释，起点的横纵坐标，终点的横纵坐标，最后就是已经设置好参数的画笔。最后一项参数，在后面的绘制方法里也会有，就不再赘述了。示例如下：</p>
-<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">canvas.drawLine(100,200,300,400,paint);</span><br></pre></td></tr></table></figure>
-<p><img src="/2018/10/09/Android%E7%BB%98%E7%94%BB%E5%AD%A6%E4%B9%A0-Paint%E7%9B%B8%E5%85%B3/2.png" alt></p>
-<h3 id="多条直线"><a href="#多条直线" class="headerlink" title="多条直线"></a>多条直线</h3><ul>
-<li>方法：drawLines (float[] pts, Paint paint)</li>
-</ul>
-<p>由于每个pts的元素，都必须是以四个数，即一组点，即一条线为单位的，所以，在写多条直线的数组时，要<strong>注意数组的元素个数是否符合标准，即数的个数是否能被4整除</strong>。示例如下：</p>
-<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">float []opts&#x3D;&#123;10,10,100,100,200,200,300,300,400,400,500,500&#125;;</span><br><span class="line">canvas.drawLines(opts,paint);</span><br></pre></td></tr></table></figure>
-<p><img src="/2018/10/09/Android%E7%BB%98%E7%94%BB%E5%AD%A6%E4%B9%A0-Paint%E7%9B%B8%E5%85%B3/3.png" alt></p>
+</blockquote>
+<h2 id="稳定性"><a href="#稳定性" class="headerlink" title="稳定性"></a>稳定性</h2><h3 id="ANR"><a href="#ANR" class="headerlink" title="ANR"></a>ANR</h3><blockquote>
 <ul>
-<li>方法：drawLines (float[] pts, int offset, int count, Paint paint)</li>
+<li>用户的输入在 5S 内未被 APP 响应</li>
+<li>BroadcastReceiver 的 onReceiver() 超过10s</li>
+<li>Service 中各生命周期函数执行超过 20s</li>
 </ul>
-<p>这个方法与上个方法相比，多出来两个不同的参数。offset表示跳过的数据个数，count表示实际参与绘制的数据个数。什么意思呢？就是在绘制的时候，会先跳过已设置的offset个数的点，只将接下来的count个数的点所构成的直线绘制出来。由此可以得知，两个参数均必须是4的倍数，且两者之和不超过数据的长度。示例如下：</p>
-<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">float []opts&#x3D;&#123;10,10,100,100,200,200,300,300,400,400,500,500&#125;;</span><br><span class="line">canvas.drawLines(opts,4,8,paint);</span><br><span class="line">&#x2F;&#x2F;canvas.drawLines(opts,4,4,paint);</span><br></pre></td></tr></table></figure>
-<p><img src="/2018/10/09/Android%E7%BB%98%E7%94%BB%E5%AD%A6%E4%B9%A0-Paint%E7%9B%B8%E5%85%B3/4.png" alt></p>
-<p><img src="/2018/10/09/Android%E7%BB%98%E7%94%BB%E5%AD%A6%E4%B9%A0-Paint%E7%9B%B8%E5%85%B3/5.png" alt></p>
-<p>可以看出来，第一行的运行效果，跳过了第一条直线，显示了第二、三条直线；第二行的运行效果，跳过了第一条直线，只显示了接下来四个点，也就是第二条直线；第三条直线则不再计入绘制。</p>
-<h3 id="单个点"><a href="#单个点" class="headerlink" title="单个点"></a>单个点</h3><p>方法：drawPoint (float x, float y, Paint paint)</p>
-<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">canvas.drawPoint(100,100,paint);</span><br></pre></td></tr></table></figure>
-<h3 id="多个点"><a href="#多个点" class="headerlink" title="多个点"></a>多个点</h3><ul>
-<li><p>方法：drawPoints (float[] pts, Paint paint)</p>
-</li>
-<li><p>方法：drawPoints (float[] pts, int offset, int count, Paint paint)</p>
-</li>
-</ul>
-<p>这里的方法就跟直线的很类似了，就不再赘述了。</p>
-<h3 id="矩形"><a href="#矩形" class="headerlink" title="矩形"></a>矩形</h3><p>绘制矩形有两个类：RectF类与Rect类。两个类的区别不大，目前看来的区别是构造参数类型不同。如下：</p>
+</blockquote>
+<p>比较容易发生的场景：</p>
+<blockquote>
 <ul>
-<li><p>RectF(float left, float top, float right, float bottom)</p>
-</li>
-<li><p>Rect(int left, int top, int right, int bottom)</p>
-</li>
+<li>自定义动画进行了大量的耗时计算，导致CPU卡顿</li>
+<li>UI 线程中进行了一些 IO 操作，因为时长或意外原因阻塞</li>
 </ul>
-<p>绘制方法：</p>
-<ul>
-<li><p>方法：drawRect (float left, float top, float right, float bottom, Paint paint)</p>
-</li>
-<li><p>方法：drawRect (RectF rect, Paint paint)</p>
-</li>
-<li><p>方法：drawRect (Rect r, Paint paint)</p>
-</li>
-</ul>
-<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">canvas.drawRect(10,10,100,100,paint);</span><br><span class="line">canvas.drawRect(new Rect(120,10,210,100),paint);</span><br><span class="line">canvas.drawRect(new RectF(230,10,320,100),paint);</span><br></pre></td></tr></table></figure>
-<p><img src="/2018/10/09/Android%E7%BB%98%E7%94%BB%E5%AD%A6%E4%B9%A0-Paint%E7%9B%B8%E5%85%B3/6.png" alt></p>
-<h3 id="圆角矩形"><a href="#圆角矩形" class="headerlink" title="圆角矩形"></a>圆角矩形</h3><p>方法：drawRoundRect (RectF rect, float rx, float ry, Paint paint)</p>
-<p>这里的rx与ry是指矩形四角生成的椭圆的x轴半径与y轴半径。</p>
-<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">RectF rectF &#x3D; new RectF(100,100,300,300);</span><br><span class="line">canvas.drawRoundRect(rectF,20,20,paint);</span><br></pre></td></tr></table></figure>
-<p><img src="/2018/10/09/Android%E7%BB%98%E7%94%BB%E5%AD%A6%E4%B9%A0-Paint%E7%9B%B8%E5%85%B3/7.png" alt></p>
-<h3 id="圆形"><a href="#圆形" class="headerlink" title="圆形"></a>圆形</h3><p>方法：drawCircle (float cx, float cy, float radius, Paint paint)</p>
-<p>这里的cx与cy是指圆心点的x轴与y轴坐标,radius则是圆的半径。</p>
-<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">canvas.drawCircle(200,200,100,paint);</span><br></pre></td></tr></table></figure>
-<p><img src="/2018/10/09/Android%E7%BB%98%E7%94%BB%E5%AD%A6%E4%B9%A0-Paint%E7%9B%B8%E5%85%B3/8.png" alt></p>
-<h3 id="椭圆"><a href="#椭圆" class="headerlink" title="椭圆"></a>椭圆</h3><p>椭圆是根据矩形生成的，根据矩形的左顶点与右底点坐标，决定了椭圆的x轴与y轴半径，以及中心点。</p>
-<p>方法：drawOval (RectF oval, Paint paint)</p>
-<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">RectF rectF &#x3D; new RectF(100,100,300,200);</span><br><span class="line">canvas.drawRect(rectF,paint);</span><br><span class="line"></span><br><span class="line">paint.setColor(Color.RED);</span><br><span class="line">canvas.drawOval(rectF,paint);</span><br></pre></td></tr></table></figure>
-<p>为了直观些观察，这里临时将填充样式改为了描边，且将绘制第二个图形的画笔颜色改变一下。</p>
-<p><img src="/2018/10/09/Android%E7%BB%98%E7%94%BB%E5%AD%A6%E4%B9%A0-Paint%E7%9B%B8%E5%85%B3/9.png" alt></p>
-<h3 id="弧"><a href="#弧" class="headerlink" title="弧"></a>弧</h3><p>弧是椭圆的一部分，椭圆与矩形相关，所以弧也与矩形相关。</p>
-<p>方法：drawArc (RectF oval, float startAngle, float sweepAngle, boolean useCenter, Paint paint)</p>
-<p>startAngle是弧开始的角度，sweepAngle是弧持续的角度，useCenter是是否需要弧的两边（详见例图）。<strong>注意，开始角度的起始位置是建立在Android的界面坐标系上的，而不是数学上的坐标系。</strong></p>
-<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">paint.setStyle(Paint.Style.FILL);   &#x2F;&#x2F;填充样式</span><br><span class="line">RectF rectF &#x3D; new RectF(100,100,300,300);</span><br><span class="line">canvas.drawArc(rectF,0,70,true,paint);</span><br><span class="line"></span><br><span class="line">RectF rectF2 &#x3D; new RectF(400,100,600,300);</span><br><span class="line">canvas.drawArc(rectF2,0,70,false,paint);</span><br><span class="line"></span><br><span class="line">paint.setStyle(Paint.Style.STROKE);     &#x2F;&#x2F;描边样式</span><br><span class="line">RectF rectF3 &#x3D; new RectF(100,300,300,500);</span><br><span class="line">canvas.drawArc(rectF3,0,70,true,paint);</span><br><span class="line"></span><br><span class="line">RectF rectF4 &#x3D; new RectF(400,300,600,500);</span><br><span class="line">canvas.drawArc(rectF4,0,70,false,paint);</span><br></pre></td></tr></table></figure>
-<p><img src="/2018/10/09/Android%E7%BB%98%E7%94%BB%E5%AD%A6%E4%B9%A0-Paint%E7%9B%B8%E5%85%B3/10.png" alt></p>
-<h2 id="路径绘制图形"><a href="#路径绘制图形" class="headerlink" title="路径绘制图形"></a>路径绘制图形</h2><p>除了通过canvas直接调用绘制图形的专用方法外，还可以通过对path的参数编写并调用drawPath方法，画出想要绘制的图形。其实path有很多方法的参数跟上面的方法都很相似，这下面我就不赘述参数了。</p>
-<p>方法：drawPath (Path path, Paint paint)</p>
-<h3 id="直线"><a href="#直线" class="headerlink" title="直线"></a>直线</h3><ul>
-<li>方法：moveTo (float x, float y)</li>
-</ul>
-<p>设定直线的起始点</p>
-<ul>
-<li>方法：lineTo (float x, float y)</li>
-</ul>
-<p>设定当前直线的终点，也是下一条直线的起始点</p>
-<ul>
-<li>方法：close ()</li>
-</ul>
-<p>闭环，即将最后一条直线的终点与第一条的起点连接</p>
-<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">paint.setStyle(Paint.Style.FILL);   &#x2F;&#x2F;填充样式</span><br><span class="line"></span><br><span class="line">Path path &#x3D; new Path();</span><br><span class="line">path.moveTo(10,10);</span><br><span class="line">path.lineTo(10,100);</span><br><span class="line">path.lineTo(300,100);</span><br><span class="line">path.lineTo(500,50);</span><br><span class="line">path.close();</span><br><span class="line"></span><br><span class="line">canvas.drawPath(path,paint);</span><br></pre></td></tr></table></figure>
-<p><img src="/2018/10/09/Android%E7%BB%98%E7%94%BB%E5%AD%A6%E4%B9%A0-Paint%E7%9B%B8%E5%85%B3/11.png" alt></p>
-<h3 id="矩形-1"><a href="#矩形-1" class="headerlink" title="矩形"></a>矩形</h3><p>方法：addRect (RectF rect, Path.Direction dir)</p>
-<p>矩形生成有两个方法，方法的区别主要在于矩形绘制的方向不同，一个是Path.Direction.CCW，为逆时针方向；另一个是Path.Direction.CW，为顺时针方向。为方便观察，可以通过绘制文字的生成路径来观察。</p>
-<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">Path CCWpath &#x3D; new Path();</span><br><span class="line">RectF rectF1 &#x3D; new RectF(50,50,240,200);</span><br><span class="line">CCWpath.addRect(rectF1, Path.Direction.CCW);</span><br><span class="line"></span><br><span class="line">Path CWpath &#x3D; new Path();</span><br><span class="line">RectF rectF2 &#x3D; new RectF(290,50,480,200);</span><br><span class="line">CWpath.addRect(rectF2, Path.Direction.CW);</span><br><span class="line"></span><br><span class="line">canvas.drawPath(CCWpath,paint);</span><br><span class="line">canvas.drawPath(CWpath,paint);</span><br><span class="line"></span><br><span class="line">String text &#x3D; &quot;世间安得双全法，不负如来不负卿&quot;;</span><br><span class="line">paint.setColor(Color.RED);</span><br><span class="line">paint.setTextSize(35);</span><br><span class="line">canvas.drawTextOnPath(text,CCWpath,0,18,paint);</span><br><span class="line">canvas.drawTextOnPath(text,CWpath,0,18,paint);</span><br></pre></td></tr></table></figure>
-<p><img src="/2018/10/09/Android%E7%BB%98%E7%94%BB%E5%AD%A6%E4%B9%A0-Paint%E7%9B%B8%E5%85%B3/12.png" alt></p>
-<p><img src="/2018/10/09/Android%E7%BB%98%E7%94%BB%E5%AD%A6%E4%B9%A0-Paint%E7%9B%B8%E5%85%B3/13.png" alt></p>
-<h3 id="圆角矩形-1"><a href="#圆角矩形-1" class="headerlink" title="圆角矩形"></a>圆角矩形</h3><p>方法：addRoundRect (RectF rect, float[] radii, Path.Direction dir)</p>
-<p>方法：addRoundRect (RectF rect, float rx, float ry, Path.Direction dir)</p>
-<p>两个构造函数的区别主要在于第二个参数，即设定矩形的圆角大小。第一个方法可以对每个圆角进行定制，共8个数，方向则取决于绘制的方向，比如逆时针绘制圆角矩形，圆角则从左上角、左下角到右下角、右上角；而第二个方法则统一了每个圆角的大小。</p>
-<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">Path path &#x3D; new Path();</span><br><span class="line">RectF rectF1 &#x3D; new RectF(50,50,240,200);</span><br><span class="line">path.addRoundRect(rectF1,10,15, Path.Direction.CCW);</span><br><span class="line"></span><br><span class="line">RectF rectF2 &#x3D; new RectF(290,50,480,200);</span><br><span class="line">float radius[] &#x3D; &#123;10,10,20,20,30,30,40,40&#125;;</span><br><span class="line">path.addRoundRect(rectF2,radius, Path.Direction.CCW);</span><br><span class="line"></span><br><span class="line">canvas.drawPath(path,paint);</span><br></pre></td></tr></table></figure>
-<p><img src="/2018/10/09/Android%E7%BB%98%E7%94%BB%E5%AD%A6%E4%B9%A0-Paint%E7%9B%B8%E5%85%B3/14.png" alt></p>
-<h3 id="圆形路径"><a href="#圆形路径" class="headerlink" title="圆形路径"></a>圆形路径</h3><p>方法：addCircle (float x, float y, float radius, Path.Direction dir)</p>
-<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">Path path &#x3D; new Path();</span><br><span class="line">path.addCircle(200,200,100, Path.Direction.CCW);</span><br><span class="line">canvas.drawPath(path,paint);</span><br></pre></td></tr></table></figure>
-<h3 id="椭圆路径"><a href="#椭圆路径" class="headerlink" title="椭圆路径"></a>椭圆路径</h3><p>方法：addOval (RectF oval, Path.Direction dir)</p>
-<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">Path path &#x3D; new Path();</span><br><span class="line">RectF rectF &#x3D; new RectF(100,100,300,500);</span><br><span class="line">path.addOval(rectF, Path.Direction.CCW);</span><br><span class="line"></span><br><span class="line">canvas.drawPath(path,paint);</span><br></pre></td></tr></table></figure>
-<p><img src="/2018/10/09/Android%E7%BB%98%E7%94%BB%E5%AD%A6%E4%B9%A0-Paint%E7%9B%B8%E5%85%B3/15.png" alt></p>
-<h3 id="弧形路径"><a href="#弧形路径" class="headerlink" title="弧形路径"></a>弧形路径</h3><p>方法：addArc (RectF oval, float startAngle, float sweepAngle)</p>
-<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">Path path &#x3D; new Path();</span><br><span class="line">RectF rectF &#x3D; new RectF(100,100,300,500);</span><br><span class="line">path.addArc(rectF,0,100);</span><br><span class="line"></span><br><span class="line">canvas.drawPath(path,paint);</span><br></pre></td></tr></table></figure>
-<h3 id="线段"><a href="#线段" class="headerlink" title="线段"></a>线段</h3><p>方法：quadTo (float x1, float y1, float x2, float y2)</p>
-<p>这个方法的特点是绘制的曲线遵循了“贝塞尔曲线”，所以在连续的绘制时看起来会很平滑，这里我也不多深究，也可能以后专门写个博客来描述一下区别吧。这里就贴一下别人的博客好了。</p>
-<p>参考博客：<a href="https://blog.csdn.net/stevenhu_223/article/details/9229337">quadTo()方法与lineTo()方法的区别</a></p>
-<h2 id="文字"><a href="#文字" class="headerlink" title="文字"></a>文字</h2><p>1、Paint相关设置</p>
-<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">paint.setColor(Color.RED);                  &#x2F;&#x2F;画笔颜色</span><br><span class="line">paint.setStrokeWidth(5);                    &#x2F;&#x2F;画笔宽度</span><br><span class="line">paint.setAntiAlias(true);                   &#x2F;&#x2F;抗锯齿</span><br><span class="line">paint.setStyle(Paint.Style.FILL);           &#x2F;&#x2F;绘图样式</span><br><span class="line">paint.setTextSize(80);                      &#x2F;&#x2F;文字大小</span><br><span class="line"></span><br><span class="line">paint.setFakeBoldText(true);                &#x2F;&#x2F;是否为粗体</span><br><span class="line">paint.setTextSkewX((float) -0.25);          &#x2F;&#x2F;字体水平倾斜度</span><br><span class="line"></span><br><span class="line">paint.setUnderlineText(true);               &#x2F;&#x2F;下划线</span><br><span class="line">paint.setStrikeThruText(true);              &#x2F;&#x2F;删除线</span><br><span class="line"></span><br><span class="line">paint.setTextAlign(Paint.Align.CENTER);     &#x2F;&#x2F;对齐方式</span><br><span class="line">paint.setTextScaleX(1);                     &#x2F;&#x2F;只会将水平方向拉伸</span><br></pre></td></tr></table></figure>
-<p>这就是paint绘制文字时的几个主要设置选项了。画笔颜色、宽度、抗锯齿、文字大小、下划线、删除线等这些很浅显的就不具体展示了，我只对绘图样式、是否为粗体、水平倾斜度、方向拉伸做一下展示，每行字之间至少有三个设置的不同（不包括最后两行的比较，最好两行是是否为粗体和设置阴影的区别）。示例代码及效果如下：</p>
-<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">paint.setFakeBoldText(false);</span><br><span class="line">paint.setTextSkewX((float) -0.25);</span><br><span class="line">paint.setTextScaleX(1);</span><br><span class="line">canvas.drawText(&quot;おれはおまえが好きだ&quot;,10,100,paint);</span><br><span class="line"></span><br><span class="line">paint.setStyle(Paint.Style.STROKE);</span><br><span class="line">paint.setFakeBoldText(false);</span><br><span class="line">paint.setTextSkewX((float) 0.25);</span><br><span class="line">paint.setTextScaleX((float) 0.75);</span><br><span class="line">canvas.drawText(&quot;わたしはあなたが好きだ&quot;,10,200,paint);</span><br><span class="line"></span><br><span class="line">paint.setStyle(Paint.Style.FILL_AND_STROKE);</span><br><span class="line">paint.setFakeBoldText(false);</span><br><span class="line">paint.setTextSkewX((float) -0.25);</span><br><span class="line">paint.setTextScaleX((float) 1.3);</span><br><span class="line">canvas.drawText(&quot;君の名は。&quot;,10,300,paint);</span><br><span class="line"></span><br><span class="line">paint.setShadowLayer(1,15,15,Color.GRAY);</span><br><span class="line">paint.setStyle(Paint.Style.FILL_AND_STROKE);</span><br><span class="line">paint.setFakeBoldText(true);</span><br><span class="line">paint.setTextSkewX((float) -0.25);</span><br><span class="line">paint.setTextScaleX((float) 1.3);</span><br><span class="line">canvas.drawText(&quot;君の名は。&quot;,10,400,paint);</span><br></pre></td></tr></table></figure>
-<p><img src="/2018/10/09/Android%E7%BB%98%E7%94%BB%E5%AD%A6%E4%B9%A0-Paint%E7%9B%B8%E5%85%B3/16.png" alt></p>
-<p>还有一个属性是文字对齐方式的区别。其实这里面细致的东西有很多，我在这里放上一篇讲的很细致的文章以供参考。<a href="https://www.jianshu.com/p/8b97627b21c4">博客链接</a>。我这里就只展示一下效果。</p>
-<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">paint.setTextAlign(Paint.Align.LEFT);</span><br><span class="line">canvas.drawText(&quot;君の名は。&quot;,360,100,paint);</span><br><span class="line"></span><br><span class="line">paint.setTextAlign(Paint.Align.CENTER);</span><br><span class="line">canvas.drawText(&quot;君の名は。&quot;,360,200,paint);</span><br><span class="line"></span><br><span class="line">paint.setTextAlign(Paint.Align.RIGHT);</span><br><span class="line">canvas.drawText(&quot;君の名は。&quot;,360,300,paint);</span><br></pre></td></tr></table></figure>
-<p><img src="/2018/10/09/Android%E7%BB%98%E7%94%BB%E5%AD%A6%E4%B9%A0-Paint%E7%9B%B8%E5%85%B3/17.png" alt></p>
-<p>根据设置的位置、属性以及效果可以看出，如果设置左对齐，则文字会以设置的原点为左基准线临界点，向右展开；如果为居中对齐，则文字以原点为基准线中心点；右对齐则为右基准线临界点。</p>
-<p>2、canvas绘制文字的函数</p>
-<ul>
-<li><p>方法：void drawText (String text, float x, float y, Paint paint)</p>
-</li>
-<li><p>方法：void drawText (CharSequence text, int start, int end, float x, float y, Paint paint)</p>
-</li>
-</ul>
-<p>第一个方法在上面的示例已经用过了，x和y表示位置，不用多说。而第二个方法，则可以额外对传入的字符串进行截取。不过我觉得也可以对字符串进行提前截取，再放入第一个方法，所以暂时想不到第二个方法的优势之处，可能少一行代码也算优势吧。</p>
-<ul>
-<li><p>方法：void drawPosText (char[] text, int index, int count, float[] pos, Paint paint)</p>
-</li>
-<li><p>方法：void drawPosText (String text, float[] pos, Paint paint)</p>
-</li>
-</ul>
-<p>这两个方法可以指定要绘制的文字的位置，跟上面一样，位置也是两两数字一组。</p>
-<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">float pos[]&#x3D;new float[]&#123;10,200,60,300,110,400,160,500,210,600&#125;;</span><br><span class="line">canvas.drawPosText(&quot;君の名は。&quot;,pos,paint);</span><br></pre></td></tr></table></figure>
-<p><img src="/2018/10/09/Android%E7%BB%98%E7%94%BB%E5%AD%A6%E4%B9%A0-Paint%E7%9B%B8%E5%85%B3/18.png" alt></p>
-<ul>
-<li><p>方法：void drawTextOnPath (String text, Path path, float hOffset, float vOffset, Paint paint)</p>
-</li>
-<li><p>方法：void drawTextOnPath (char[] text, int index, int count, Path path, float hOffset, float vOffset, Paint paint)</p>
-</li>
-</ul>
-<p>这两个方法属于沿路径绘制，在上面的示例中也已经见过一次了。这里主要讲hOffset、vOffset，hOffset是与路径起始点的<strong>水平</strong>偏移增量，vOffset是与路径中心的垂直偏移增量。</p>
-<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">String text &#x3D; &quot;君の名は。&quot;;</span><br><span class="line"></span><br><span class="line">Path circlePath &#x3D; new Path();</span><br><span class="line">RectF rectF &#x3D; new RectF(100,100,300,300);</span><br><span class="line">circlePath.addRoundRect(rectF,10,15,Path.Direction.CCW);</span><br><span class="line">canvas.drawPath(circlePath,paint);</span><br><span class="line"></span><br><span class="line">Path circlePath2 &#x3D; new Path();</span><br><span class="line">RectF rectF2 &#x3D; new RectF(400,100,600,300);</span><br><span class="line">circlePath2.addRoundRect(rectF2,10,15, Path.Direction.CCW);</span><br><span class="line">canvas.drawPath(circlePath2,paint);</span><br><span class="line"></span><br><span class="line">canvas.drawTextOnPath(text,circlePath,0,0,paint);</span><br><span class="line">canvas.drawTextOnPath(text,circlePath2,80,30,paint);</span><br></pre></td></tr></table></figure>
-<p><img src="/2018/10/09/Android%E7%BB%98%E7%94%BB%E5%AD%A6%E4%B9%A0-Paint%E7%9B%B8%E5%85%B3/19.png" alt></p>
-<p>此外字体还有其他的样式设置等等。个人感觉暂时不会用到，就不做学习了。</p>
-<h2 id="后记"><a href="#后记" class="headerlink" title="后记"></a>后记</h2><p>妈耶，我再也不一口气写这么长的博客了。写到后边，总觉得累了，都不想写的很详细了。真佩服那些能写出一本教程书的大佬。</p>
+</blockquote>
+<h1 id="自定义-View"><a href="#自定义-View" class="headerlink" title="自定义 View"></a>自定义 View</h1><p><a href="https://www.jianshu.com/p/bb7fe112062e">自定义 View 事件分发机制</a></p>
 ]]></content>
       <categories>
         <category>Android</category>
@@ -1643,6 +1688,185 @@
 <figure class="highlight plain"><table><tr><td class="code"><pre><span class="line"></span><br></pre></td></tr></table></figure>]]></content>
       <categories>
         <category>Java</category>
+      </categories>
+  </entry>
+  <entry>
+    <title>Android绘画学习-Paint相关</title>
+    <url>/2018/10/09/Android%E7%BB%98%E7%94%BB%E5%AD%A6%E4%B9%A0-Paint%E7%9B%B8%E5%85%B3/</url>
+    <content><![CDATA[<p>想做Android动画的时候，有的时候又需要自己画一些图形，比如自定义的进度条这样的。所以，学一些基础的绘画代码也是必要的。</p>
+<a id="more"></a>
+<p>我这里的Androi动画学习笔记是从CSDN的一位大佬的动画博客教程那里学来的，其实很多部分都与原博客相似，且内容不如原博客详细。这里直接贴上原博客，原博客有更丰富、更全面的教程，以方便大家学习，毕竟我自己的学习习惯有些问题，笔记并不一定全面。</p>
+<p>原博客：<a href="https://blog.csdn.net/harvic880925/article/details/50995268">Android自定义控件学习三部曲</a></p>
+<h1 id="Paint与Canvas"><a href="#Paint与Canvas" class="headerlink" title="Paint与Canvas"></a>Paint与Canvas</h1><p>Paint是画笔，Canvas是画布。画笔可以负责的，比如颜色，粗细，透明度等；而画布负责的，是画笔在画布上画的位置，大小，形状等。所以，搞清楚各部分负责的职能，逻辑会更清晰些。</p>
+<p>参数稍后再写，先写怎么能让应用运行起来，这样，在改一些参数设置的时候，就用不着只是看，可以亲自感受变化了。</p>
+<h2 id="基本实现方法"><a href="#基本实现方法" class="headerlink" title="基本实现方法"></a>基本实现方法</h2><p>1、先将布局更换为FrameLayout，并添加id，用于添加视图</p>
+<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">&lt;FrameLayout xmlns:android&#x3D;&quot;http:&#x2F;&#x2F;schemas.android.com&#x2F;apk&#x2F;res&#x2F;android&quot;</span><br><span class="line">    xmlns:app&#x3D;&quot;http:&#x2F;&#x2F;schemas.android.com&#x2F;apk&#x2F;res-auto&quot;</span><br><span class="line">    android:id&#x3D;&quot;@+id&#x2F;main_frame&quot;</span><br><span class="line">    xmlns:tools&#x3D;&quot;http:&#x2F;&#x2F;schemas.android.com&#x2F;tools&quot;</span><br><span class="line">    android:layout_width&#x3D;&quot;match_parent&quot;</span><br><span class="line">    android:layout_height&#x3D;&quot;match_parent&quot;</span><br><span class="line">    tools:context&#x3D;&quot;com.example.administrator.animationtest.activity.MainActivity&quot;&gt;</span><br><span class="line">&lt;&#x2F;FrameLayout&gt;</span><br></pre></td></tr></table></figure>
+<p>2、创建一个自定义视图类，继承自View类。在这个类中，重点在于重写OnDraw()函数。</p>
+<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">public class CustomView extends View &#123;</span><br><span class="line"></span><br><span class="line">    Context context;</span><br><span class="line"></span><br><span class="line">    public CustomView(Context context) &#123;</span><br><span class="line">        super(context);</span><br><span class="line">        this.context &#x3D; context;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    @Override</span><br><span class="line">    protected void onDraw(Canvas canvas) &#123;</span><br><span class="line">        super.onDraw(canvas);</span><br><span class="line"></span><br><span class="line">		&#x2F;&#x2F;示例代码</span><br><span class="line">		&#x2F;&#x2F;设置画笔基本属性</span><br><span class="line">        Paint paint &#x3D; new Paint();</span><br><span class="line">        paint.setAntiAlias(true);           &#x2F;&#x2F;抗锯齿</span><br><span class="line">        paint.setColor(Color.RED);          &#x2F;&#x2F;画笔颜色</span><br><span class="line">        paint.setStyle(Paint.Style.FILL);   &#x2F;&#x2F;填充样式</span><br><span class="line">        paint.setStrokeWidth(5);            &#x2F;&#x2F;画笔宽度</span><br><span class="line">        &#x2F;&#x2F;paint.setShadowLayer(1,15,15,Color.GREEN);      &#x2F;&#x2F;设置阴影</span><br><span class="line"></span><br><span class="line">        canvas.drawRGB(255,255,255);</span><br><span class="line">        &#x2F;&#x2F;画图</span><br><span class="line">        canvas.drawCircle(200,200,150,paint);</span><br><span class="line"></span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>3、在Activity类中添加绘画显示代码。</p>
+<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">@Bind(R.id.main_frame) FrameLayout mainFrame;</span><br><span class="line"></span><br><span class="line">@Override</span><br><span class="line">    protected void onCreate(Bundle savedInstanceState) &#123;</span><br><span class="line">        ...</span><br><span class="line">        mainFrame.addView(new CustomView(MainActivity.this));</span><br><span class="line"></span><br><span class="line">    &#125;</span><br><span class="line"></span><br></pre></td></tr></table></figure>
+<p>运行效果如下：</p>
+<p><img src="/2018/10/09/Android%E7%BB%98%E7%94%BB%E5%AD%A6%E4%B9%A0-Paint%E7%9B%B8%E5%85%B3/1.jpg" alt></p>
+<p>我记得还有一个实现方法，是在布局文件中直接引用view类，不通过addView()方法也可以显示view。但由于忘了一些细节，没办法实现这个操作，所以在这里插个眼，等找到实现方法了TP回来。</p>
+<h2 id="Paint的基本参数设置"><a href="#Paint的基本参数设置" class="headerlink" title="Paint的基本参数设置"></a>Paint的基本参数设置</h2><ul>
+<li><p>setAntiAlias(Boolean boolean)    设置是否开启抗锯齿</p>
+</li>
+<li><p>setColor(int color)                设置画笔颜色</p>
+</li>
+<li><p>setStrokeWidth(int width)        设置画笔宽度</p>
+</li>
+<li><p>setStyle(Paint.Style style)        设置填充样式</p>
+</li>
+</ul>
+<p>样式有三种：</p>
+<p>Paint.Style.FILL                  填充内部</p>
+<p>Paint.Style.FILL_AND_STROKE        填充内部以及描边</p>
+<p>Paint.STyle.STROKE                仅描边</p>
+<p>其中一和二其实没有什么区别。（起初我以为画笔如果够宽，一和二就会有明显的内部、边框之分，但实验过后发现并没有区别）</p>
+<ul>
+<li>setShadowLayer(float radius, float dx, float dy, int shadowColor)        设置阴影（对图形无效，对字体有效）</li>
+</ul>
+<p>其中radius指角度，即阴影倾斜度，dx水平位移，dy垂直位移</p>
+<h2 id="基本几何图形绘制"><a href="#基本几何图形绘制" class="headerlink" title="基本几何图形绘制"></a>基本几何图形绘制</h2><p>canvas本身就提供了一些基础图形的绘制方法，接下来就是各个方法的使用设置。</p>
+<h3 id="一条直线"><a href="#一条直线" class="headerlink" title="一条直线"></a>一条直线</h3><p>方法：drawLine (float startX, float startY, float stopX, float stopY, Paint paint)</p>
+<p>参数不用多解释，起点的横纵坐标，终点的横纵坐标，最后就是已经设置好参数的画笔。最后一项参数，在后面的绘制方法里也会有，就不再赘述了。示例如下：</p>
+<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">canvas.drawLine(100,200,300,400,paint);</span><br></pre></td></tr></table></figure>
+<p><img src="/2018/10/09/Android%E7%BB%98%E7%94%BB%E5%AD%A6%E4%B9%A0-Paint%E7%9B%B8%E5%85%B3/2.png" alt></p>
+<h3 id="多条直线"><a href="#多条直线" class="headerlink" title="多条直线"></a>多条直线</h3><ul>
+<li>方法：drawLines (float[] pts, Paint paint)</li>
+</ul>
+<p>由于每个pts的元素，都必须是以四个数，即一组点，即一条线为单位的，所以，在写多条直线的数组时，要<strong>注意数组的元素个数是否符合标准，即数的个数是否能被4整除</strong>。示例如下：</p>
+<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">float []opts&#x3D;&#123;10,10,100,100,200,200,300,300,400,400,500,500&#125;;</span><br><span class="line">canvas.drawLines(opts,paint);</span><br></pre></td></tr></table></figure>
+<p><img src="/2018/10/09/Android%E7%BB%98%E7%94%BB%E5%AD%A6%E4%B9%A0-Paint%E7%9B%B8%E5%85%B3/3.png" alt></p>
+<ul>
+<li>方法：drawLines (float[] pts, int offset, int count, Paint paint)</li>
+</ul>
+<p>这个方法与上个方法相比，多出来两个不同的参数。offset表示跳过的数据个数，count表示实际参与绘制的数据个数。什么意思呢？就是在绘制的时候，会先跳过已设置的offset个数的点，只将接下来的count个数的点所构成的直线绘制出来。由此可以得知，两个参数均必须是4的倍数，且两者之和不超过数据的长度。示例如下：</p>
+<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">float []opts&#x3D;&#123;10,10,100,100,200,200,300,300,400,400,500,500&#125;;</span><br><span class="line">canvas.drawLines(opts,4,8,paint);</span><br><span class="line">&#x2F;&#x2F;canvas.drawLines(opts,4,4,paint);</span><br></pre></td></tr></table></figure>
+<p><img src="/2018/10/09/Android%E7%BB%98%E7%94%BB%E5%AD%A6%E4%B9%A0-Paint%E7%9B%B8%E5%85%B3/4.png" alt></p>
+<p><img src="/2018/10/09/Android%E7%BB%98%E7%94%BB%E5%AD%A6%E4%B9%A0-Paint%E7%9B%B8%E5%85%B3/5.png" alt></p>
+<p>可以看出来，第一行的运行效果，跳过了第一条直线，显示了第二、三条直线；第二行的运行效果，跳过了第一条直线，只显示了接下来四个点，也就是第二条直线；第三条直线则不再计入绘制。</p>
+<h3 id="单个点"><a href="#单个点" class="headerlink" title="单个点"></a>单个点</h3><p>方法：drawPoint (float x, float y, Paint paint)</p>
+<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">canvas.drawPoint(100,100,paint);</span><br></pre></td></tr></table></figure>
+<h3 id="多个点"><a href="#多个点" class="headerlink" title="多个点"></a>多个点</h3><ul>
+<li><p>方法：drawPoints (float[] pts, Paint paint)</p>
+</li>
+<li><p>方法：drawPoints (float[] pts, int offset, int count, Paint paint)</p>
+</li>
+</ul>
+<p>这里的方法就跟直线的很类似了，就不再赘述了。</p>
+<h3 id="矩形"><a href="#矩形" class="headerlink" title="矩形"></a>矩形</h3><p>绘制矩形有两个类：RectF类与Rect类。两个类的区别不大，目前看来的区别是构造参数类型不同。如下：</p>
+<ul>
+<li><p>RectF(float left, float top, float right, float bottom)</p>
+</li>
+<li><p>Rect(int left, int top, int right, int bottom)</p>
+</li>
+</ul>
+<p>绘制方法：</p>
+<ul>
+<li><p>方法：drawRect (float left, float top, float right, float bottom, Paint paint)</p>
+</li>
+<li><p>方法：drawRect (RectF rect, Paint paint)</p>
+</li>
+<li><p>方法：drawRect (Rect r, Paint paint)</p>
+</li>
+</ul>
+<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">canvas.drawRect(10,10,100,100,paint);</span><br><span class="line">canvas.drawRect(new Rect(120,10,210,100),paint);</span><br><span class="line">canvas.drawRect(new RectF(230,10,320,100),paint);</span><br></pre></td></tr></table></figure>
+<p><img src="/2018/10/09/Android%E7%BB%98%E7%94%BB%E5%AD%A6%E4%B9%A0-Paint%E7%9B%B8%E5%85%B3/6.png" alt></p>
+<h3 id="圆角矩形"><a href="#圆角矩形" class="headerlink" title="圆角矩形"></a>圆角矩形</h3><p>方法：drawRoundRect (RectF rect, float rx, float ry, Paint paint)</p>
+<p>这里的rx与ry是指矩形四角生成的椭圆的x轴半径与y轴半径。</p>
+<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">RectF rectF &#x3D; new RectF(100,100,300,300);</span><br><span class="line">canvas.drawRoundRect(rectF,20,20,paint);</span><br></pre></td></tr></table></figure>
+<p><img src="/2018/10/09/Android%E7%BB%98%E7%94%BB%E5%AD%A6%E4%B9%A0-Paint%E7%9B%B8%E5%85%B3/7.png" alt></p>
+<h3 id="圆形"><a href="#圆形" class="headerlink" title="圆形"></a>圆形</h3><p>方法：drawCircle (float cx, float cy, float radius, Paint paint)</p>
+<p>这里的cx与cy是指圆心点的x轴与y轴坐标,radius则是圆的半径。</p>
+<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">canvas.drawCircle(200,200,100,paint);</span><br></pre></td></tr></table></figure>
+<p><img src="/2018/10/09/Android%E7%BB%98%E7%94%BB%E5%AD%A6%E4%B9%A0-Paint%E7%9B%B8%E5%85%B3/8.png" alt></p>
+<h3 id="椭圆"><a href="#椭圆" class="headerlink" title="椭圆"></a>椭圆</h3><p>椭圆是根据矩形生成的，根据矩形的左顶点与右底点坐标，决定了椭圆的x轴与y轴半径，以及中心点。</p>
+<p>方法：drawOval (RectF oval, Paint paint)</p>
+<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">RectF rectF &#x3D; new RectF(100,100,300,200);</span><br><span class="line">canvas.drawRect(rectF,paint);</span><br><span class="line"></span><br><span class="line">paint.setColor(Color.RED);</span><br><span class="line">canvas.drawOval(rectF,paint);</span><br></pre></td></tr></table></figure>
+<p>为了直观些观察，这里临时将填充样式改为了描边，且将绘制第二个图形的画笔颜色改变一下。</p>
+<p><img src="/2018/10/09/Android%E7%BB%98%E7%94%BB%E5%AD%A6%E4%B9%A0-Paint%E7%9B%B8%E5%85%B3/9.png" alt></p>
+<h3 id="弧"><a href="#弧" class="headerlink" title="弧"></a>弧</h3><p>弧是椭圆的一部分，椭圆与矩形相关，所以弧也与矩形相关。</p>
+<p>方法：drawArc (RectF oval, float startAngle, float sweepAngle, boolean useCenter, Paint paint)</p>
+<p>startAngle是弧开始的角度，sweepAngle是弧持续的角度，useCenter是是否需要弧的两边（详见例图）。<strong>注意，开始角度的起始位置是建立在Android的界面坐标系上的，而不是数学上的坐标系。</strong></p>
+<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">paint.setStyle(Paint.Style.FILL);   &#x2F;&#x2F;填充样式</span><br><span class="line">RectF rectF &#x3D; new RectF(100,100,300,300);</span><br><span class="line">canvas.drawArc(rectF,0,70,true,paint);</span><br><span class="line"></span><br><span class="line">RectF rectF2 &#x3D; new RectF(400,100,600,300);</span><br><span class="line">canvas.drawArc(rectF2,0,70,false,paint);</span><br><span class="line"></span><br><span class="line">paint.setStyle(Paint.Style.STROKE);     &#x2F;&#x2F;描边样式</span><br><span class="line">RectF rectF3 &#x3D; new RectF(100,300,300,500);</span><br><span class="line">canvas.drawArc(rectF3,0,70,true,paint);</span><br><span class="line"></span><br><span class="line">RectF rectF4 &#x3D; new RectF(400,300,600,500);</span><br><span class="line">canvas.drawArc(rectF4,0,70,false,paint);</span><br></pre></td></tr></table></figure>
+<p><img src="/2018/10/09/Android%E7%BB%98%E7%94%BB%E5%AD%A6%E4%B9%A0-Paint%E7%9B%B8%E5%85%B3/10.png" alt></p>
+<h2 id="路径绘制图形"><a href="#路径绘制图形" class="headerlink" title="路径绘制图形"></a>路径绘制图形</h2><p>除了通过canvas直接调用绘制图形的专用方法外，还可以通过对path的参数编写并调用drawPath方法，画出想要绘制的图形。其实path有很多方法的参数跟上面的方法都很相似，这下面我就不赘述参数了。</p>
+<p>方法：drawPath (Path path, Paint paint)</p>
+<h3 id="直线"><a href="#直线" class="headerlink" title="直线"></a>直线</h3><ul>
+<li>方法：moveTo (float x, float y)</li>
+</ul>
+<p>设定直线的起始点</p>
+<ul>
+<li>方法：lineTo (float x, float y)</li>
+</ul>
+<p>设定当前直线的终点，也是下一条直线的起始点</p>
+<ul>
+<li>方法：close ()</li>
+</ul>
+<p>闭环，即将最后一条直线的终点与第一条的起点连接</p>
+<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">paint.setStyle(Paint.Style.FILL);   &#x2F;&#x2F;填充样式</span><br><span class="line"></span><br><span class="line">Path path &#x3D; new Path();</span><br><span class="line">path.moveTo(10,10);</span><br><span class="line">path.lineTo(10,100);</span><br><span class="line">path.lineTo(300,100);</span><br><span class="line">path.lineTo(500,50);</span><br><span class="line">path.close();</span><br><span class="line"></span><br><span class="line">canvas.drawPath(path,paint);</span><br></pre></td></tr></table></figure>
+<p><img src="/2018/10/09/Android%E7%BB%98%E7%94%BB%E5%AD%A6%E4%B9%A0-Paint%E7%9B%B8%E5%85%B3/11.png" alt></p>
+<h3 id="矩形-1"><a href="#矩形-1" class="headerlink" title="矩形"></a>矩形</h3><p>方法：addRect (RectF rect, Path.Direction dir)</p>
+<p>矩形生成有两个方法，方法的区别主要在于矩形绘制的方向不同，一个是Path.Direction.CCW，为逆时针方向；另一个是Path.Direction.CW，为顺时针方向。为方便观察，可以通过绘制文字的生成路径来观察。</p>
+<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">Path CCWpath &#x3D; new Path();</span><br><span class="line">RectF rectF1 &#x3D; new RectF(50,50,240,200);</span><br><span class="line">CCWpath.addRect(rectF1, Path.Direction.CCW);</span><br><span class="line"></span><br><span class="line">Path CWpath &#x3D; new Path();</span><br><span class="line">RectF rectF2 &#x3D; new RectF(290,50,480,200);</span><br><span class="line">CWpath.addRect(rectF2, Path.Direction.CW);</span><br><span class="line"></span><br><span class="line">canvas.drawPath(CCWpath,paint);</span><br><span class="line">canvas.drawPath(CWpath,paint);</span><br><span class="line"></span><br><span class="line">String text &#x3D; &quot;世间安得双全法，不负如来不负卿&quot;;</span><br><span class="line">paint.setColor(Color.RED);</span><br><span class="line">paint.setTextSize(35);</span><br><span class="line">canvas.drawTextOnPath(text,CCWpath,0,18,paint);</span><br><span class="line">canvas.drawTextOnPath(text,CWpath,0,18,paint);</span><br></pre></td></tr></table></figure>
+<p><img src="/2018/10/09/Android%E7%BB%98%E7%94%BB%E5%AD%A6%E4%B9%A0-Paint%E7%9B%B8%E5%85%B3/12.png" alt></p>
+<p><img src="/2018/10/09/Android%E7%BB%98%E7%94%BB%E5%AD%A6%E4%B9%A0-Paint%E7%9B%B8%E5%85%B3/13.png" alt></p>
+<h3 id="圆角矩形-1"><a href="#圆角矩形-1" class="headerlink" title="圆角矩形"></a>圆角矩形</h3><p>方法：addRoundRect (RectF rect, float[] radii, Path.Direction dir)</p>
+<p>方法：addRoundRect (RectF rect, float rx, float ry, Path.Direction dir)</p>
+<p>两个构造函数的区别主要在于第二个参数，即设定矩形的圆角大小。第一个方法可以对每个圆角进行定制，共8个数，方向则取决于绘制的方向，比如逆时针绘制圆角矩形，圆角则从左上角、左下角到右下角、右上角；而第二个方法则统一了每个圆角的大小。</p>
+<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">Path path &#x3D; new Path();</span><br><span class="line">RectF rectF1 &#x3D; new RectF(50,50,240,200);</span><br><span class="line">path.addRoundRect(rectF1,10,15, Path.Direction.CCW);</span><br><span class="line"></span><br><span class="line">RectF rectF2 &#x3D; new RectF(290,50,480,200);</span><br><span class="line">float radius[] &#x3D; &#123;10,10,20,20,30,30,40,40&#125;;</span><br><span class="line">path.addRoundRect(rectF2,radius, Path.Direction.CCW);</span><br><span class="line"></span><br><span class="line">canvas.drawPath(path,paint);</span><br></pre></td></tr></table></figure>
+<p><img src="/2018/10/09/Android%E7%BB%98%E7%94%BB%E5%AD%A6%E4%B9%A0-Paint%E7%9B%B8%E5%85%B3/14.png" alt></p>
+<h3 id="圆形路径"><a href="#圆形路径" class="headerlink" title="圆形路径"></a>圆形路径</h3><p>方法：addCircle (float x, float y, float radius, Path.Direction dir)</p>
+<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">Path path &#x3D; new Path();</span><br><span class="line">path.addCircle(200,200,100, Path.Direction.CCW);</span><br><span class="line">canvas.drawPath(path,paint);</span><br></pre></td></tr></table></figure>
+<h3 id="椭圆路径"><a href="#椭圆路径" class="headerlink" title="椭圆路径"></a>椭圆路径</h3><p>方法：addOval (RectF oval, Path.Direction dir)</p>
+<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">Path path &#x3D; new Path();</span><br><span class="line">RectF rectF &#x3D; new RectF(100,100,300,500);</span><br><span class="line">path.addOval(rectF, Path.Direction.CCW);</span><br><span class="line"></span><br><span class="line">canvas.drawPath(path,paint);</span><br></pre></td></tr></table></figure>
+<p><img src="/2018/10/09/Android%E7%BB%98%E7%94%BB%E5%AD%A6%E4%B9%A0-Paint%E7%9B%B8%E5%85%B3/15.png" alt></p>
+<h3 id="弧形路径"><a href="#弧形路径" class="headerlink" title="弧形路径"></a>弧形路径</h3><p>方法：addArc (RectF oval, float startAngle, float sweepAngle)</p>
+<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">Path path &#x3D; new Path();</span><br><span class="line">RectF rectF &#x3D; new RectF(100,100,300,500);</span><br><span class="line">path.addArc(rectF,0,100);</span><br><span class="line"></span><br><span class="line">canvas.drawPath(path,paint);</span><br></pre></td></tr></table></figure>
+<h3 id="线段"><a href="#线段" class="headerlink" title="线段"></a>线段</h3><p>方法：quadTo (float x1, float y1, float x2, float y2)</p>
+<p>这个方法的特点是绘制的曲线遵循了“贝塞尔曲线”，所以在连续的绘制时看起来会很平滑，这里我也不多深究，也可能以后专门写个博客来描述一下区别吧。这里就贴一下别人的博客好了。</p>
+<p>参考博客：<a href="https://blog.csdn.net/stevenhu_223/article/details/9229337">quadTo()方法与lineTo()方法的区别</a></p>
+<h2 id="文字"><a href="#文字" class="headerlink" title="文字"></a>文字</h2><p>1、Paint相关设置</p>
+<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">paint.setColor(Color.RED);                  &#x2F;&#x2F;画笔颜色</span><br><span class="line">paint.setStrokeWidth(5);                    &#x2F;&#x2F;画笔宽度</span><br><span class="line">paint.setAntiAlias(true);                   &#x2F;&#x2F;抗锯齿</span><br><span class="line">paint.setStyle(Paint.Style.FILL);           &#x2F;&#x2F;绘图样式</span><br><span class="line">paint.setTextSize(80);                      &#x2F;&#x2F;文字大小</span><br><span class="line"></span><br><span class="line">paint.setFakeBoldText(true);                &#x2F;&#x2F;是否为粗体</span><br><span class="line">paint.setTextSkewX((float) -0.25);          &#x2F;&#x2F;字体水平倾斜度</span><br><span class="line"></span><br><span class="line">paint.setUnderlineText(true);               &#x2F;&#x2F;下划线</span><br><span class="line">paint.setStrikeThruText(true);              &#x2F;&#x2F;删除线</span><br><span class="line"></span><br><span class="line">paint.setTextAlign(Paint.Align.CENTER);     &#x2F;&#x2F;对齐方式</span><br><span class="line">paint.setTextScaleX(1);                     &#x2F;&#x2F;只会将水平方向拉伸</span><br></pre></td></tr></table></figure>
+<p>这就是paint绘制文字时的几个主要设置选项了。画笔颜色、宽度、抗锯齿、文字大小、下划线、删除线等这些很浅显的就不具体展示了，我只对绘图样式、是否为粗体、水平倾斜度、方向拉伸做一下展示，每行字之间至少有三个设置的不同（不包括最后两行的比较，最好两行是是否为粗体和设置阴影的区别）。示例代码及效果如下：</p>
+<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">paint.setFakeBoldText(false);</span><br><span class="line">paint.setTextSkewX((float) -0.25);</span><br><span class="line">paint.setTextScaleX(1);</span><br><span class="line">canvas.drawText(&quot;おれはおまえが好きだ&quot;,10,100,paint);</span><br><span class="line"></span><br><span class="line">paint.setStyle(Paint.Style.STROKE);</span><br><span class="line">paint.setFakeBoldText(false);</span><br><span class="line">paint.setTextSkewX((float) 0.25);</span><br><span class="line">paint.setTextScaleX((float) 0.75);</span><br><span class="line">canvas.drawText(&quot;わたしはあなたが好きだ&quot;,10,200,paint);</span><br><span class="line"></span><br><span class="line">paint.setStyle(Paint.Style.FILL_AND_STROKE);</span><br><span class="line">paint.setFakeBoldText(false);</span><br><span class="line">paint.setTextSkewX((float) -0.25);</span><br><span class="line">paint.setTextScaleX((float) 1.3);</span><br><span class="line">canvas.drawText(&quot;君の名は。&quot;,10,300,paint);</span><br><span class="line"></span><br><span class="line">paint.setShadowLayer(1,15,15,Color.GRAY);</span><br><span class="line">paint.setStyle(Paint.Style.FILL_AND_STROKE);</span><br><span class="line">paint.setFakeBoldText(true);</span><br><span class="line">paint.setTextSkewX((float) -0.25);</span><br><span class="line">paint.setTextScaleX((float) 1.3);</span><br><span class="line">canvas.drawText(&quot;君の名は。&quot;,10,400,paint);</span><br></pre></td></tr></table></figure>
+<p><img src="/2018/10/09/Android%E7%BB%98%E7%94%BB%E5%AD%A6%E4%B9%A0-Paint%E7%9B%B8%E5%85%B3/16.png" alt></p>
+<p>还有一个属性是文字对齐方式的区别。其实这里面细致的东西有很多，我在这里放上一篇讲的很细致的文章以供参考。<a href="https://www.jianshu.com/p/8b97627b21c4">博客链接</a>。我这里就只展示一下效果。</p>
+<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">paint.setTextAlign(Paint.Align.LEFT);</span><br><span class="line">canvas.drawText(&quot;君の名は。&quot;,360,100,paint);</span><br><span class="line"></span><br><span class="line">paint.setTextAlign(Paint.Align.CENTER);</span><br><span class="line">canvas.drawText(&quot;君の名は。&quot;,360,200,paint);</span><br><span class="line"></span><br><span class="line">paint.setTextAlign(Paint.Align.RIGHT);</span><br><span class="line">canvas.drawText(&quot;君の名は。&quot;,360,300,paint);</span><br></pre></td></tr></table></figure>
+<p><img src="/2018/10/09/Android%E7%BB%98%E7%94%BB%E5%AD%A6%E4%B9%A0-Paint%E7%9B%B8%E5%85%B3/17.png" alt></p>
+<p>根据设置的位置、属性以及效果可以看出，如果设置左对齐，则文字会以设置的原点为左基准线临界点，向右展开；如果为居中对齐，则文字以原点为基准线中心点；右对齐则为右基准线临界点。</p>
+<p>2、canvas绘制文字的函数</p>
+<ul>
+<li><p>方法：void drawText (String text, float x, float y, Paint paint)</p>
+</li>
+<li><p>方法：void drawText (CharSequence text, int start, int end, float x, float y, Paint paint)</p>
+</li>
+</ul>
+<p>第一个方法在上面的示例已经用过了，x和y表示位置，不用多说。而第二个方法，则可以额外对传入的字符串进行截取。不过我觉得也可以对字符串进行提前截取，再放入第一个方法，所以暂时想不到第二个方法的优势之处，可能少一行代码也算优势吧。</p>
+<ul>
+<li><p>方法：void drawPosText (char[] text, int index, int count, float[] pos, Paint paint)</p>
+</li>
+<li><p>方法：void drawPosText (String text, float[] pos, Paint paint)</p>
+</li>
+</ul>
+<p>这两个方法可以指定要绘制的文字的位置，跟上面一样，位置也是两两数字一组。</p>
+<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">float pos[]&#x3D;new float[]&#123;10,200,60,300,110,400,160,500,210,600&#125;;</span><br><span class="line">canvas.drawPosText(&quot;君の名は。&quot;,pos,paint);</span><br></pre></td></tr></table></figure>
+<p><img src="/2018/10/09/Android%E7%BB%98%E7%94%BB%E5%AD%A6%E4%B9%A0-Paint%E7%9B%B8%E5%85%B3/18.png" alt></p>
+<ul>
+<li><p>方法：void drawTextOnPath (String text, Path path, float hOffset, float vOffset, Paint paint)</p>
+</li>
+<li><p>方法：void drawTextOnPath (char[] text, int index, int count, Path path, float hOffset, float vOffset, Paint paint)</p>
+</li>
+</ul>
+<p>这两个方法属于沿路径绘制，在上面的示例中也已经见过一次了。这里主要讲hOffset、vOffset，hOffset是与路径起始点的<strong>水平</strong>偏移增量，vOffset是与路径中心的垂直偏移增量。</p>
+<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">String text &#x3D; &quot;君の名は。&quot;;</span><br><span class="line"></span><br><span class="line">Path circlePath &#x3D; new Path();</span><br><span class="line">RectF rectF &#x3D; new RectF(100,100,300,300);</span><br><span class="line">circlePath.addRoundRect(rectF,10,15,Path.Direction.CCW);</span><br><span class="line">canvas.drawPath(circlePath,paint);</span><br><span class="line"></span><br><span class="line">Path circlePath2 &#x3D; new Path();</span><br><span class="line">RectF rectF2 &#x3D; new RectF(400,100,600,300);</span><br><span class="line">circlePath2.addRoundRect(rectF2,10,15, Path.Direction.CCW);</span><br><span class="line">canvas.drawPath(circlePath2,paint);</span><br><span class="line"></span><br><span class="line">canvas.drawTextOnPath(text,circlePath,0,0,paint);</span><br><span class="line">canvas.drawTextOnPath(text,circlePath2,80,30,paint);</span><br></pre></td></tr></table></figure>
+<p><img src="/2018/10/09/Android%E7%BB%98%E7%94%BB%E5%AD%A6%E4%B9%A0-Paint%E7%9B%B8%E5%85%B3/19.png" alt></p>
+<p>此外字体还有其他的样式设置等等。个人感觉暂时不会用到，就不做学习了。</p>
+<h2 id="后记"><a href="#后记" class="headerlink" title="后记"></a>后记</h2><p>妈耶，我再也不一口气写这么长的博客了。写到后边，总觉得累了，都不想写的很详细了。真佩服那些能写出一本教程书的大佬。</p>
+]]></content>
+      <categories>
+        <category>Android</category>
       </categories>
   </entry>
   <entry>
