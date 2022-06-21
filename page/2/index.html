@@ -511,7 +511,7 @@
                   <i class="far fa-calendar-check"></i>
                 </span>
                 <span class="post-meta-item-text">更新于</span>
-                <time title="修改时间：2022-06-17 13:11:33" itemprop="dateModified" datetime="2022-06-17T13:11:33+08:00">2022-06-17</time>
+                <time title="修改时间：2022-06-22 00:07:39" itemprop="dateModified" datetime="2022-06-22T00:07:39+08:00">2022-06-22</time>
               </span>
             <span class="post-meta-item">
               <span class="post-meta-item-icon">
@@ -529,14 +529,14 @@
                 <i class="far fa-file-word"></i>
               </span>
                 <span class="post-meta-item-text">本文字数：</span>
-              <span>4.1k</span>
+              <span>7.9k</span>
             </span>
             <span class="post-meta-item" title="阅读时长">
               <span class="post-meta-item-icon">
                 <i class="far fa-clock"></i>
               </span>
                 <span class="post-meta-item-text">阅读时长 &asymp;</span>
-              <span>4 分钟</span>
+              <span>7 分钟</span>
             </span>
 
         </div>
@@ -776,6 +776,16 @@
 </tbody>
 </table>
 </div>
+<h1 id="RelativeLayout-与-LinearLayout-的区别"><a href="#RelativeLayout-与-LinearLayout-的区别" class="headerlink" title="RelativeLayout 与 LinearLayout 的区别"></a>RelativeLayout 与 LinearLayout 的区别</h1><h2 id="布局上"><a href="#布局上" class="headerlink" title="布局上"></a>布局上</h2><p>LinearLayout 会默认保持组件之间的间隔以及相互对齐。可通过 orientation 来设计布局的方向，垂直和水平。</p>
+<p>RelativeLayout 相对线性来说比较灵活。线性布局往往需要布局嵌套，想相对布局可以指定与其他组件或父组件的位置。</p>
+<h2 id="性能上"><a href="#性能上" class="headerlink" title="性能上"></a>性能上</h2><p><a target="_blank" rel="noopener" href="https://www.jianshu.com/p/b6767e382368">LinearLayout和RelativeLayout性能区别</a></p>
+<blockquote>
+<ul>
+<li>RelativeLayout 慢于 LinearLayout 是因为它会让子 View 调用 2 次 measure 过程，而正常情况下 LinearLayout 只需一次。但若存在 weight 属性，LinearLayout 也需 2 次 measure，先避开设置 weight 属性的 view 做一次 measure，再对设置过 weight 属性的 view 做一次 measure</li>
+<li>在不考虑层级深度的情况下，使用 LinearLayout 而非 RelativeLayout</li>
+</ul>
+</blockquote>
+<p>总结，层级多用 RelativeLayout ，层级固定用 LinearLayout</p>
 <h1 id="多线程"><a href="#多线程" class="headerlink" title="多线程"></a>多线程</h1><p><a target="_blank" rel="noopener" href="https://juejin.cn/post/6844903874671673357">多线程知识总结</a></p>
 <h2 id="线程池"><a href="#线程池" class="headerlink" title="线程池"></a>线程池</h2><p><a target="_blank" rel="noopener" href="https://www.jianshu.com/p/0e4a5e70bf0e">线程池TheradPool解析</a></p>
 <p><a target="_blank" rel="noopener" href="https://developer.aliyun.com/article/653145">获取多条线程的执行结果</a></p>
@@ -803,7 +813,75 @@
 <li>UI 线程中进行了一些 IO 操作，因为时长或意外原因阻塞</li>
 </ul>
 </blockquote>
-<h1 id="自定义-View"><a href="#自定义-View" class="headerlink" title="自定义 View"></a>自定义 View</h1><p><a target="_blank" rel="noopener" href="https://www.jianshu.com/p/bb7fe112062e">自定义 View 事件分发机制</a></p>
+<h1 id="自定义-View-事件机制"><a href="#自定义-View-事件机制" class="headerlink" title="自定义 View 事件机制"></a>自定义 View 事件机制</h1><p><a target="_blank" rel="noopener" href="https://www.jianshu.com/p/bb7fe112062e">自定义 View 事件分发机制</a></p>
+<h2 id="前言"><a href="#前言" class="headerlink" title="前言"></a>前言</h2><h3 id="MotionEvent-事件"><a href="#MotionEvent-事件" class="headerlink" title="MotionEvent 事件"></a>MotionEvent 事件</h3><p>手指触碰屏幕后，产生以下几种事件：</p>
+<blockquote>
+<ul>
+<li>ACTION_DOWN：手指接触屏幕</li>
+<li>ACTION_MOVE：手指在屏幕上移动</li>
+<li>ACTION_UP：手指松开屏幕</li>
+</ul>
+</blockquote>
+<h3 id="产生的一系列事件"><a href="#产生的一系列事件" class="headerlink" title="产生的一系列事件"></a>产生的一系列事件</h3><blockquote>
+<ul>
+<li>点击屏幕后松开，序列为：DOWN -&gt; UP</li>
+<li>点击屏幕滑动一会松开，序列为：DOWN -&gt; MOVE -&gt; MOVE -&gt; … -&gt; MOVE -&gt; UP</li>
+</ul>
+</blockquote>
+<h3 id="通过-MotionEvent-事件获取-x，y-坐标"><a href="#通过-MotionEvent-事件获取-x，y-坐标" class="headerlink" title="通过 MotionEvent 事件获取 x，y 坐标"></a>通过 MotionEvent 事件获取 x，y 坐标</h3><blockquote>
+<ul>
+<li>getX()/getY() 方法获取相当于 View 左上角的 x，y 坐标</li>
+<li>getRawX()/getRawY() 方法获取相当于手机屏幕左上角的 x，y 坐标</li>
+</ul>
+</blockquote>
+<h2 id="View-的事件分发机制"><a href="#View-的事件分发机制" class="headerlink" title="View 的事件分发机制"></a>View 的事件分发机制</h2><h3 id="事件传递顺序"><a href="#事件传递顺序" class="headerlink" title="事件传递顺序"></a>事件传递顺序</h3><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">Activity -&gt; Window -&gt; DecorView -&gt; Layout 或 ViewGroup -&gt; 被点击的 View</span><br></pre></td></tr></table></figure>
+<p>如果子 View 没有处理事件，则事件没有被消耗，会反向传递上来</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">被点击的 View -&gt; Layout 或 ViewGroup -&gt; DecorView -&gt; Window -&gt; Activity</span><br></pre></td></tr></table></figure>
+<h3 id="事件分发的三大方法"><a href="#事件分发的三大方法" class="headerlink" title="事件分发的三大方法"></a>事件分发的三大方法</h3><p>ViewGroup 中有 3 个跟事件分发有关的方法，分别是 dispatchTouchEvent、onInterceptTouchEvent、onTouchEvent。</p>
+<p><strong>dispatchTouchEvent 方法</strong></p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">1、dispatchTouchEvent 方法用来进行事件的分发</span><br><span class="line">2、事件传递到当前 View 时，就会被调用</span><br><span class="line">3、dispatchTouchEvent 方法里面包含了具体的事件分发逻辑，返回结果受当前 View 的 onTouchEvent 方法和下级 View 的 dispatchTouchEvent 方法的影响</span><br></pre></td></tr></table></figure>
+<p><strong>onInterceptTouchEvent 方法</strong></p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">1、onInterceptTouchEvent 方法在 dispatchTouchEvent 方法内部被调用，用来判断是否拦截某个事件</span><br><span class="line">2、如果当前 View 拦截了某个事件，那么在同一个事件序列当中，此方法不会被再次调用，返回结果表示是否拦截当前事件</span><br><span class="line">3、该方法只有 ViewGroup 中存在，View 中没有</span><br></pre></td></tr></table></figure>
+<p><strong>onTouchEvent 方法</strong></p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">在 dispatchTouchEvent 方法中调用，用来处理点击事件，返回结果表示是否消耗当前事件，如果不消耗，则在同一个事件序列中，当前 View 无法再次接收到事件</span><br></pre></td></tr></table></figure>
+<h3 id="onTouchListener、onTouchEvent、onClickListenre-的优先级"><a href="#onTouchListener、onTouchEvent、onClickListenre-的优先级" class="headerlink" title="onTouchListener、onTouchEvent、onClickListenre 的优先级"></a>onTouchListener、onTouchEvent、onClickListenre 的优先级</h3><p>1、onTouchListener 和 onTouchEvent 都在 dispatchTouchEvent 方法中被调用，onClickListener 在 onTouchEvent 方法中被调用</p>
+<p>2、onTouchListener 的优先级高于 onTouchEvent 方法，如果 onTouchListener 的 onTouch 方法返回 true，则 onTouchEvent 方法不会被调用，当然 onClickListener 就更不会被调用了</p>
+<p>3、在 onTouchEvent 方法中，如果当前 View 设置了 onClickListener，那么 onClickListener 的 onClick 方法会被调用</p>
+<p>4、只要 View 的 Clickable 和 Longkg_Clickable 有一个为 true，View 就会消耗当前事件，也就是 onTouchEvent 方法最后会返回 true</p>
+<p>5、View 的 Long_Clickable 属性默认为 false；可点击的 View 的 Clickable 属性为 true，不可点击的 View 的 Clickable 属性为 false</p>
+<h3 id="事件分发流程"><a href="#事件分发流程" class="headerlink" title="事件分发流程"></a>事件分发流程</h3><p>1、事件传递到 ViewGroup 时，dispatchTouchEvent 方法会被调用。如果这个 ViewGroup 的 onInterceptTouchEvent 方法返回 true，则表示它要拦截事件，事件会交给当前 ViewGroup 的 onTouchEvent 方法处理</p>
+<p>2、如果当时 ViewGroup 的 onInterceptTouchEvent 返回 false，即不拦截事件，则会调用子元素的 dispatchTouchEvent 方法，这样就把事件传递给了子元素</p>
+<p>3、如果子元素没有消耗事件，也就是子元素的 dispatchTouchEvent 方法返回 false，那事件会由当前 ViewGroup 自己处理，当前 ViewGroup 的 onTouchEvent 会被调用。如果当前 ViewGroup 的 dispatchTouchEvent 方法也返回 false，最后会一层层往上返回。如果事件一直没被消耗，那么最后 Activity 的 onTouchEvent 方法会被调用。</p>
+<p>4、ViewGroup 中并没有 onTouchEven t方法。在所有子元素没有消耗事件时，ViewGroup 会调用父类，也就是 View 的 dispatchTouchEvent 方法，从而调用到 onTouchEvent 方法来自己处理事件，如果自己没有消耗事件，dispatchTouchEvent 方法就会返回 false，从而将事件反向往上层传递。</p>
+<p>5、如果 ACTION_DOWN 事件子元素没处理(onTouchEvent 返回 false)，那这个事件序列的其他事件(MOVE 和 UP 事件)都不会再分派给子元素处理。</p>
+<h3 id="事件分发逻辑"><a href="#事件分发逻辑" class="headerlink" title="事件分发逻辑"></a>事件分发逻辑</h3><p>1、View 中没有 onInterceptTouchEvent 方法，所以一旦事件传递到 View，那么 View 的 dispatchTouchEvent 方法就会被调用。</p>
+<p>2、dispatchTouchEvent 方法中处理事件的逻辑顺序是 onTouchListener —&gt; onTouchEvent —&gt; onClickListener。</p>
+<p>3、如果 View 设置了 onTouchListener，那 onTouchListene 的 onTouch 方法会被调用。如果 onTouch 方法返回 true，那事件就被消耗了，事件分发结束，onTouchEvent 不会被调用。</p>
+<p>4、如果 onTouch 方法返回 false，那么 onTouchEvent 就会被调用。如果 View 设置了 onClickListener，当 ACTION_UP 事件到来时，onTouchEvent 中的onClickListener 的 onClick 方法也会被调用。</p>
+<p>5、View 一般都会消耗事件，如果 View 没有消耗 ACTION_DOWN 事件，那后面 ACTION_MOVE 和 ACTION_UP 就都不会传递给 View。</p>
+<h1 id="Java-集合排序"><a href="#Java-集合排序" class="headerlink" title="Java 集合排序"></a>Java 集合排序</h1><p>1、Collections.sort(list) 方法</p>
+<p>2、Collections.sort(list, comparator) 方法</p>
+<p>3、对 String 类型的集合，可采用  Collections.sort(list,String.CASE_INSENSITIVE_ORDER) 等方法</p>
+<h1 id="Java-集合删除"><a href="#Java-集合删除" class="headerlink" title="Java 集合删除"></a>Java 集合删除</h1><p>1、使用迭代器 iterator 遍历删除</p>
+<p>2、for 循环</p>
+<p>for 循环删除要特别注意，删除元素后，后面的元素均往前移位，而索引+1，此时应当同时改变索引的值。</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">for(int i&#x3D;0;i&lt;list.size();i++) &#123;</span><br><span class="line">	if(list.get(i)%2&#x3D;&#x3D;0) &#123;</span><br><span class="line">		list.remove(i);</span><br><span class="line">		i--;</span><br><span class="line">	&#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<h1 id="List-和-Set"><a href="#List-和-Set" class="headerlink" title="List 和 Set"></a>List 和 Set</h1><h2 id="区别"><a href="#区别" class="headerlink" title="区别"></a>区别</h2><p>1、是否允许重复元素的存在。List 是允许的，而 Set 不允许</p>
+<p>2、元素的先后存放顺序。List 是有序集合，而 Set 无序</p>
+<p>3、List 可通过下标访问，而 Set 不能</p>
+<h1 id="HashMap"><a href="#HashMap" class="headerlink" title="HashMap"></a>HashMap</h1><p><a target="_blank" rel="noopener" href="https://juejin.cn/post/6844904111817637901">详解 HashMap 数据结构</a></p>
+<h2 id="特点"><a href="#特点" class="headerlink" title="特点"></a>特点</h2><p>1、存储 key - value 结构，数据类型不限制</p>
+<p>2、根据 key 的 hashCode 值进行存储数据，故 key 值不重复</p>
+<p>3、最多允许一条记录的 key 为 null</p>
+<p>4、无序</p>
+<p>5、查询效率高</p>
+<p>6、线程不安全（要线程安全，使用 Collections 的 synchronizedMap </p>
+<h2 id="属性"><a href="#属性" class="headerlink" title="属性"></a>属性</h2><p>1、默认初始容量：16</p>
+<p>2、可扩容，扩容之后的容量为 2 的幂次方</p>
+<p>3、链表长度大于 8，转为红黑树</p>
+<p>4、链表长度小于 6，从红黑树转为链表</p>
+<h2 id="基本结构"><a href="#基本结构" class="headerlink" title="基本结构"></a>基本结构</h2><p>数组 + 链表 + 红黑树</p>
+<h1 id="okhttp-原理"><a href="#okhttp-原理" class="headerlink" title="okhttp 原理"></a>okhttp 原理</h1><p><a target="_blank" rel="noopener" href="https://juejin.cn/post/7020027832977850381">OkHttp 原理 8 连问</a></p>
 
       
     </div>
@@ -1504,12 +1582,12 @@
     <span class="post-meta-item-icon">
       <i class="fa fa-chart-area"></i>
     </span>
-    <span title="站点总字数">142k</span>
+    <span title="站点总字数">145k</span>
     <span class="post-meta-divider">|</span>
     <span class="post-meta-item-icon">
       <i class="fa fa-coffee"></i>
     </span>
-    <span title="站点阅读时长">2:09</span>
+    <span title="站点阅读时长">2:12</span>
 </div>
   <div class="powered-by">由 <a href="https://hexo.io/" class="theme-link" rel="noopener" target="_blank">Hexo</a> & <a href="https://mist.theme-next.org/" class="theme-link" rel="noopener" target="_blank">NexT.Mist</a> 强力驱动
   </div>
