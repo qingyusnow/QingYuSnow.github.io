@@ -2452,7 +2452,8 @@ authority：com.google.android.apps.docs.storage
   <entry>
     <title>面试时的问题</title>
     <url>/2019/03/13/%E9%9D%A2%E8%AF%95%E6%97%B6%E7%9A%84%E9%97%AE%E9%A2%98/</url>
-    <content><![CDATA[<a id="more"></a>
+    <content><![CDATA[<p>对面试时的问题做一些归纳总结</p>
+<a id="more"></a>
 <h1 id="Activity之间传递数据的方式"><a href="#Activity之间传递数据的方式" class="headerlink" title="Activity之间传递数据的方式"></a>Activity之间传递数据的方式</h1><p><a href="https://pennhan.github.io/2019/04/14/Android-Activity%E4%B9%8B%E9%97%B4%E7%9A%84%E9%80%9A%E4%BF%A1%E6%96%B9%E5%BC%8F/">Android Activity之间的通信方式</a></p>
 <blockquote>
 <ul>
