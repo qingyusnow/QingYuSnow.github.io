@@ -1,0 +1,577 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=2">
+<meta name="theme-color" content="#222">
+<meta name="generator" content="Hexo 5.2.0">
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/logo.png">
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/logo.png">
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/logo.png">
+  <link rel="mask-icon" href="/images/logo.png" color="#222">
+
+<link rel="stylesheet" href="/css/main.css">
+
+
+<link rel="stylesheet" href="/lib/font-awesome/css/all.min.css">
+
+<script id="hexo-configurations">
+    var NexT = window.NexT || {};
+    var CONFIG = {"hostname":"example.com","root":"/","scheme":"Mist","version":"7.8.0","exturl":false,"sidebar":{"position":"right","display":"post","padding":18,"offset":12,"onmobile":false},"copycode":{"enable":false,"show_result":false,"style":null},"back2top":{"enable":true,"sidebar":false,"scrollpercent":false},"bookmark":{"enable":false,"color":"#222","save":"auto"},"fancybox":false,"mediumzoom":false,"lazyload":false,"pangu":false,"comments":{"style":"tabs","active":null,"storage":true,"lazyload":false,"nav":null},"algolia":{"hits":{"per_page":10},"labels":{"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}},"localsearch":{"enable":true,"trigger":"auto","top_n_per_article":1,"unescape":false,"preload":false},"motion":{"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}},"path":"search.xml"};
+  </script>
+
+  <meta name="description" content="数据结构基础知识体系详解数据结构与算法系列">
+<meta property="og:type" content="article">
+<meta property="og:title" content="数据结构">
+<meta property="og:url" content="http://example.com/2022/07/04/%E6%95%B0%E6%8D%AE%E7%BB%93%E6%9E%84/index.html">
+<meta property="og:site_name" content="希夏">
+<meta property="og:description" content="数据结构基础知识体系详解数据结构与算法系列">
+<meta property="og:locale" content="zh_CN">
+<meta property="article:published_time" content="2022-07-04T02:18:37.000Z">
+<meta property="article:modified_time" content="2022-07-05T03:38:09.347Z">
+<meta property="article:author" content="希夏">
+<meta name="twitter:card" content="summary">
+
+<link rel="canonical" href="http://example.com/2022/07/04/%E6%95%B0%E6%8D%AE%E7%BB%93%E6%9E%84/">
+
+
+<script id="page-configurations">
+  // https://hexo.io/docs/variables.html
+  CONFIG.page = {
+    sidebar: "",
+    isHome : false,
+    isPost : true,
+    lang   : 'zh-CN'
+  };
+</script>
+
+  <title>数据结构 | 希夏</title>
+  
+
+
+
+
+
+
+  <noscript>
+  <style>
+  .use-motion .brand,
+  .use-motion .menu-item,
+  .sidebar-inner,
+  .use-motion .post-block,
+  .use-motion .pagination,
+  .use-motion .comments,
+  .use-motion .post-header,
+  .use-motion .post-body,
+  .use-motion .collection-header { opacity: initial; }
+
+  .use-motion .site-title,
+  .use-motion .site-subtitle {
+    opacity: initial;
+    top: initial;
+  }
+
+  .use-motion .logo-line-before i { left: initial; }
+  .use-motion .logo-line-after i { right: initial; }
+  </style>
+</noscript>
+
+<!-- hexo injector head_end start -->
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.12.0/dist/katex.min.css">
+
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/hexo-math@4.0.0/dist/style.css">
+<!-- hexo injector head_end end --></head>
+
+<body itemscope itemtype="http://schema.org/WebPage">
+  <div class="container use-motion">
+    <div class="headband"></div>
+
+    <header class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-container">
+  <div class="site-nav-toggle">
+    <div class="toggle" aria-label="切换导航栏">
+      <span class="toggle-line toggle-line-first"></span>
+      <span class="toggle-line toggle-line-middle"></span>
+      <span class="toggle-line toggle-line-last"></span>
+    </div>
+  </div>
+
+  <div class="site-meta">
+
+    <a href="/" class="brand" rel="start">
+      <span class="logo-line-before"><i></i></span>
+      <h1 class="site-title">希夏</h1>
+      <span class="logo-line-after"><i></i></span>
+    </a>
+  </div>
+
+  <div class="site-nav-right">
+    <div class="toggle popup-trigger">
+        <i class="fa fa-search fa-fw fa-lg"></i>
+    </div>
+  </div>
+</div>
+
+
+
+
+<nav class="site-nav">
+  <ul id="menu" class="main-menu menu">
+        <li class="menu-item menu-item-home">
+
+    <a href="/" rel="section"><i class="fa fa-home fa-fw"></i>首页</a>
+
+  </li>
+        <li class="menu-item menu-item-about">
+
+    <a href="/about/" rel="section"><i class="fa fa-user fa-fw"></i>关于</a>
+
+  </li>
+        <li class="menu-item menu-item-categories">
+
+    <a href="/categories/" rel="section"><i class="fa fa-th fa-fw"></i>分类</a>
+
+  </li>
+        <li class="menu-item menu-item-archives">
+
+    <a href="/archives/" rel="section"><i class="fa fa-archive fa-fw"></i>归档</a>
+
+  </li>
+        <li class="menu-item menu-item-reviewme">
+
+    <a href="/reviewme/" rel="section"><i class="fa fa-user fa-fw"></i>关于我</a>
+
+  </li>
+      <li class="menu-item menu-item-search">
+        <a role="button" class="popup-trigger"><i class="fa fa-search fa-fw"></i>搜索
+        </a>
+      </li>
+  </ul>
+</nav>
+
+
+
+  <div class="search-pop-overlay">
+    <div class="popup search-popup">
+        <div class="search-header">
+  <span class="search-icon">
+    <i class="fa fa-search"></i>
+  </span>
+  <div class="search-input-container">
+    <input autocomplete="off" autocapitalize="off"
+           placeholder="搜索..." spellcheck="false"
+           type="search" class="search-input">
+  </div>
+  <span class="popup-btn-close">
+    <i class="fa fa-times-circle"></i>
+  </span>
+</div>
+<div id="search-result">
+  <div id="no-result">
+    <i class="fa fa-spinner fa-pulse fa-5x fa-fw"></i>
+  </div>
+</div>
+
+    </div>
+  </div>
+
+</div>
+    </header>
+
+    
+  <div class="back-to-top">
+    <i class="fa fa-arrow-up"></i>
+    <span>0%</span>
+  </div>
+
+
+    <main class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          
+
+          <div class="content post posts-expand">
+            
+
+    
+  
+  
+  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="zh-CN">
+    <link itemprop="mainEntityOfPage" href="http://example.com/2022/07/04/%E6%95%B0%E6%8D%AE%E7%BB%93%E6%9E%84/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar.jpg">
+      <meta itemprop="name" content="希夏">
+      <meta itemprop="description" content="我还在幻想着，能找到一个喜欢的人">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="希夏">
+    </span>
+      <header class="post-header">
+        <h1 class="post-title" itemprop="name headline">
+          数据结构
+        </h1>
+
+        <div class="post-meta">
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-calendar"></i>
+              </span>
+              <span class="post-meta-item-text">发表于</span>
+
+              <time title="创建时间：2022-07-04 10:18:37" itemprop="dateCreated datePublished" datetime="2022-07-04T10:18:37+08:00">2022-07-04</time>
+            </span>
+              <span class="post-meta-item">
+                <span class="post-meta-item-icon">
+                  <i class="far fa-calendar-check"></i>
+                </span>
+                <span class="post-meta-item-text">更新于</span>
+                <time title="修改时间：2022-07-05 11:38:09" itemprop="dateModified" datetime="2022-07-05T11:38:09+08:00">2022-07-05</time>
+              </span>
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-folder"></i>
+              </span>
+              <span class="post-meta-item-text">分类于</span>
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/%E7%AE%97%E6%B3%95/" itemprop="url" rel="index"><span itemprop="name">算法</span></a>
+                </span>
+            </span>
+
+          <br>
+            <span class="post-meta-item" title="本文字数">
+              <span class="post-meta-item-icon">
+                <i class="far fa-file-word"></i>
+              </span>
+                <span class="post-meta-item-text">本文字数：</span>
+              <span>3.7k</span>
+            </span>
+            <span class="post-meta-item" title="阅读时长">
+              <span class="post-meta-item-icon">
+                <i class="far fa-clock"></i>
+              </span>
+                <span class="post-meta-item-text">阅读时长 &asymp;</span>
+              <span>3 分钟</span>
+            </span>
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+        <p><a target="_blank" rel="noopener" href="https://pdai.tech/md/algorithm/alg-basic-overview.html">数据结构基础知识体系详解</a><br><a target="_blank" rel="noopener" href="https://www.cnblogs.com/skywang12345/p/3603935.html">数据结构与算法系列</a></p>
+<a id="more"></a>
+<h1 id="数组"><a href="#数组" class="headerlink" title="数组"></a>数组</h1><p>数组是一种<strong>连续存储线性结构，元素类型相同，大小相等</strong>。数组尺寸不能改变，通常使用整形索引值访问元素。</p>
+<h2 id="优点"><a href="#优点" class="headerlink" title="优点"></a>优点</h2><blockquote>
+<ul>
+<li>存取速度快</li>
+</ul>
+</blockquote>
+<h2 id="缺点"><a href="#缺点" class="headerlink" title="缺点"></a>缺点</h2><blockquote>
+<ul>
+<li>空间通常有限制</li>
+<li>需要大块连续的内存块</li>
+<li>插入删除元素的效率很低</li>
+</ul>
+</blockquote>
+<h2 id="Java-的-ArrayList"><a href="#Java-的-ArrayList" class="headerlink" title="Java 的 ArrayList"></a>Java 的 ArrayList</h2><p>ArrayList 实现了 List 接口，是顺序容器，即有存放顺序的。该类与 Vector 的区别是为追求效率，未实现同步。每个 ArrayList 都有一个容量 (capacity)，表示底层数组的实际大小。当添加元素且容量不足时，容器会自动增大底层数组的大小，约为原大小的 1.5 倍。</p>
+<p>size()，isEmpty()，get()，set() 方法均能在常数时间内完成，add() 方法的时间开销与插入位置有关，addAll() 方法的时间开销与添加元素的数量成正比。其余方法大多是线性时间。</p>
+<h3 id="优缺点"><a href="#优缺点" class="headerlink" title="优缺点"></a>优缺点</h3><blockquote>
+<ul>
+<li>遍历元素和随机访问元素的效率较高</li>
+<li>添加和删除需要大量移动元素，按照元素查询效率低</li>
+</ul>
+</blockquote>
+<h3 id="自动扩容"><a href="#自动扩容" class="headerlink" title="自动扩容"></a>自动扩容</h3><p>数组进行扩容时，会将老数组中的元素拷贝一份到新数组中，每次<strong>底层容量</strong>增长大约为原容量的 1.5 倍（可通过反射方式获取底层容量大小）。该操作代价很高。在实际使用时，应尽量避免容量的扩张。若可预知保存的匀速数量，在构造实例时，可指定其容量；或根据实际需求，通过调用 nesureCapacity 方法来手动增加 ArrayList 实例的容量。</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br></pre></td><td class="code"><pre><span class="line">&#x2F;&#x2F;利用反射机制获取当前ArrayList对象的底层容量</span><br><span class="line">public static int getArrayListCapacity(ArrayList arrayList) &#123;</span><br><span class="line">    Class&lt;ArrayList&gt; arrayListClass &#x3D; ArrayList.class;</span><br><span class="line">    try &#123;</span><br><span class="line">        Field field &#x3D; arrayListClass.getDeclaredField(&quot;elementData&quot;);</span><br><span class="line">        field.setAccessible(true);</span><br><span class="line">        Object[] objects &#x3D; (Object[])field.get(arrayList);</span><br><span class="line">        return objects.length;</span><br><span class="line">    &#125; catch (NoSuchFieldException e) &#123;</span><br><span class="line">        e.printStackTrace();</span><br><span class="line">        return -1;</span><br><span class="line">    &#125; catch (IllegalAccessException e) &#123;</span><br><span class="line">        e.printStackTrace();</span><br><span class="line">        return -1;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<h3 id="add-addAll"><a href="#add-addAll" class="headerlink" title="add(), addAll()"></a>add(), addAll()</h3><p>在添加元素之前，都需要进行剩余空间检查。而扩容操作最终都是通过 grow() 方法完成的。</p>
+<p>add(int index, E e) 需要先对元素进行移动，然后完成插入操作，故该方法有着线性的时间复杂度。</p>
+<p>addAll() 方法与 add() 方法 一样，存在在末尾添加和指定位置添加的两种情况。addAll() 的时间复杂度不仅与插入元素的多少有关，也跟插入的位置有关。</p>
+<h3 id="set-与-get-不多赘述"><a href="#set-与-get-不多赘述" class="headerlink" title="set() 与 get() 不多赘述"></a>set() 与 get() 不多赘述</h3><h3 id="remove"><a href="#remove" class="headerlink" title="remove()"></a>remove()</h3><p>add() 方法的逆操作过程，需要将删除点之后的元素向前移动一个位置。需要注意的是，为了让 GC 起作用，最后一个位置被显示赋值 null 值。</p>
+<h3 id="trimToSize"><a href="#trimToSize" class="headerlink" title="trimToSize()"></a>trimToSize()</h3><p>将底层容量调整为当前列表保存的实际元素数量。</p>
+<h3 id="Fail-Fast-机制"><a href="#Fail-Fast-机制" class="headerlink" title="Fail-Fast 机制"></a>Fail-Fast 机制</h3><p>ArrayList 也实现了<strong>快速失败</strong>的机制。与此对应的机制还有安全失败。</p>
+<p><a target="_blank" rel="noopener" href="https://juejin.cn/post/6844903711148359693">快速失败和安全失败</a></p>
+<h3 id="Array-与-ArrayList-的区别"><a href="#Array-与-ArrayList-的区别" class="headerlink" title="Array 与 ArrayList 的区别"></a>Array 与 ArrayList 的区别</h3><p><a target="_blank" rel="noopener" href="https://cloud.tencent.com/developer/article/1530730">Array 与 ArrayList 的区别</a></p>
+<h2 id="Vector-类"><a href="#Vector-类" class="headerlink" title="Vector 类"></a>Vector 类</h2><p>与 ArrayList 很相似，该类实现了一个动态数组，但两者有些不同：</p>
+<blockquote>
+<ul>
+<li>Vector 是同步访问的</li>
+<li>Vector 包含了很多传统的方法，这些方法不属于集合</li>
+</ul>
+</blockquote>
+<h3 id="自动扩容-1"><a href="#自动扩容-1" class="headerlink" title="自动扩容"></a>自动扩容</h3><p>与 ArrayList 一样，Vector 也会自动扩容，只不过每次都扩增为原容量的 2 倍。</p>
+<h1 id="链表"><a href="#链表" class="headerlink" title="链表"></a>链表</h1><p><strong>节点离散分配，彼此通过指针相连，每个节点可有一个前驱节点和后续节点</strong>。首节点没有前驱节点，尾结点没有后续节点。确定一个链表，只需要一个头指针。</p>
+<h2 id="优点-1"><a href="#优点-1" class="headerlink" title="优点"></a>优点</h2><blockquote>
+<ul>
+<li>空间没有限制</li>
+<li>内存无需连续</li>
+<li>插入删除元素的效率很高</li>
+</ul>
+</blockquote>
+<h2 id="缺点-1"><a href="#缺点-1" class="headerlink" title="缺点"></a>缺点</h2><blockquote>
+<ul>
+<li>存取速度慢</li>
+</ul>
+</blockquote>
+<h2 id="Java-的-LinkedList"><a href="#Java-的-LinkedList" class="headerlink" title="Java 的 LinkedList"></a>Java 的 LinkedList</h2><p>LinkedList 同时实现了 List 接口和 Deque 接口，即既可看作一个顺序容器，也可看作一个队列，又可看作一个栈。不过 Java 官方不再建议使用 Stack 类，且 Java 里没有 Queue 类，关于栈或队列，更建议选择 ArrayQueue。</p>
+<p>实现方式决定了 LinkedList 所有与下标有关的操作都是线性时间，而在首段或末尾删除元素则是常数时间。为追求效率，也未实现同步。</p>
+<h3 id="底层数据结构"><a href="#底层数据结构" class="headerlink" title="底层数据结构"></a>底层数据结构</h3><p>LinkedList 通过<strong>双向列表</strong>实现。双向列表的每个节点用内部类 Node 表示。LinkedList 通过 first 和 last 引用分别指向链表的第一个和最后一个元素。当链表为空时，first 和 last 都指向 null。</p>
+<h3 id="getFirst-getLast"><a href="#getFirst-getLast" class="headerlink" title="getFirst(), getLast()"></a>getFirst(), getLast()</h3><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br></pre></td><td class="code"><pre><span class="line">public E getFirst() &#123;</span><br><span class="line">    final Node&lt;E&gt; f &#x3D; first;</span><br><span class="line">    if (f &#x3D;&#x3D; null)</span><br><span class="line">        throw new NoSuchElementException();</span><br><span class="line">    return f.item;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">public E getLast() &#123;</span><br><span class="line">    final Node&lt;E&gt; l &#x3D; last;</span><br><span class="line">    if (l &#x3D;&#x3D; null)</span><br><span class="line">        throw new NoSuchElementException();</span><br><span class="line">    return l.item;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<h3 id="removeFirst-removeLast-remove-e-remove-index"><a href="#removeFirst-removeLast-remove-e-remove-index" class="headerlink" title="removeFirst(), removeLast(), remove(e), remove(index)"></a>removeFirst(), removeLast(), remove(e), remove(index)</h3><p>删除元素，指的是删除第一次出现的元素。若没有该元素，则返回 false。判断的依据是 equals 方法，如果为 true，则直接 unlink 这个 node。LinkedList 也可存放及删除 null 元素。</p>
+<p>remove(index) 使用下标计数，只需要判断该 index 是否有元素既可。</p>
+<h3 id="add"><a href="#add" class="headerlink" title="add()"></a>add()</h3><p>add(E e) 方法在末尾插入元素，因为有 last 指向链表末尾，花费为常数时间；另一个为 add(int index, E element)，该方法在指定下标出插入元素，则需要先通过线性查找找到具体位置，再完成插入操作。</p>
+<p>addAll() 方法并不是通过调用 add()，而是自己重新实现了一套逻辑。</p>
+<h3 id="clear"><a href="#clear" class="headerlink" title="clear()"></a>clear()</h3><p>为了让 GC 更快回收元素，将每个 node 之间的引用关系赋空。</p>
+<h3 id="查找"><a href="#查找" class="headerlink" title="查找"></a>查找</h3><p>查找操作的本质是查找元素的下标。查找第一次出现的 index，找不到则返回 -1。</p>
+<h1 id="栈和队列"><a href="#栈和队列" class="headerlink" title="栈和队列"></a>栈和队列</h1><p>数组和链表是线性存储结构的基础，栈和队列是线性存储结构的应用。</p>
+<h2 id="栈"><a href="#栈" class="headerlink" title="栈"></a>栈</h2><p>特点</p>
+<blockquote>
+<ul>
+<li>栈中数据是按照“先进后出，后进先出”方式进出栈的</li>
+<li>向栈中添加或删除数据时，只能从栈顶操作</li>
+</ul>
+</blockquote>
+<p>常用三种操作：</p>
+<blockquote>
+<ul>
+<li>push：向栈中添加元素</li>
+<li>peek：返回栈顶元素</li>
+<li>pop：返回并删除栈顶元素</li>
+</ul>
+</blockquote>
+<p>Java 中有 Stack 类作为栈的实现。</p>
+<h2 id="队列"><a href="#队列" class="headerlink" title="队列"></a>队列</h2><p>特点</p>
+<blockquote>
+<ul>
+<li>队列中数据时按照“先进先出，后进后出”方式进出队列的</li>
+<li>队列只允许在“队首”进行删除操作，在“队尾”进行插入操作</li>
+</ul>
+</blockquote>
+<p>常用两种操作：入队和出队</p>
+<h2 id="Deque-与-ArrayDeque"><a href="#Deque-与-ArrayDeque" class="headerlink" title="Deque 与 ArrayDeque"></a>Deque 与 ArrayDeque</h2><p>Deque 的全称是”double ended queue”，即双端队列，既可以当栈使用，又可以当作队列使用。ArrayDeque 和 LinkedList 是 Deque 的两个通用实现。</p>
+<p>ArrayDeque 底层通过数组实现。为了满足两端的增删需求，该数组为<strong>循环数组</strong>。ArrayDeque 为非线程安全；且该容器不允许放入 null 元素。</p>
+<p>在该结构中，head 指向首端第一个有效元素，<strong>tail 指向尾端第一个可以插入元素的空位</strong>。因为是循环数组，<strong>head 不一定等于 0，tail 也不一定比 head 大</strong>。</p>
+<h3 id="addFirst"><a href="#addFirst" class="headerlink" title="addFirst()"></a>addFirst()</h3><p>addFirst(E e) 是在 Deque 的首端插入元素。在添加的时候，需要考虑两个问题：</p>
+<blockquote>
+<ul>
+<li>空间是否足够。扩容时会申请一个原数组大小 2 倍的数组；且复制时，会先将 head 右边的元素复制过去，再复制 tail 左边的元素。</li>
+<li>下标是否越界。因为代码里的操作部分包含 head- -。</li>
+</ul>
+</blockquote>
+<h3 id="addLast"><a href="#addLast" class="headerlink" title="addLast()"></a>addLast()</h3><p>addLast(E e) 是在 Deque 的尾端插入元素。由于 <strong>tail 总是指向下一个可以插入的空位</strong>，因此只需 elements[tail] = e。<strong>插入完成后</strong>再检查空间，看情况是否进行扩容。</p>
+<h3 id="peekFirst-amp-amp-peekLast"><a href="#peekFirst-amp-amp-peekLast" class="headerlink" title="peekFirst() &amp;&amp; peekLast()"></a>peekFirst() &amp;&amp; peekLast()</h3><p>返回 head 元素，或 tail 前面的 元素。</p>
+<h3 id="pollFirst"><a href="#pollFirst" class="headerlink" title="pollFirst()"></a>pollFirst()</h3><p>删除并返回 Deque 首端元素，也就是 head 位置处的元素。</p>
+<h3 id="pollLast"><a href="#pollLast" class="headerlink" title="pollLast()"></a>pollLast()</h3><p>删除并返回 Deque 尾端元素，也就是 <strong>tail 位置前面</strong>的那个元素。</p>
+<h1 id="树"><a href="#树" class="headerlink" title="树"></a>树</h1><h1 id="哈希"><a href="#哈希" class="headerlink" title="哈希"></a>哈希</h1><h2 id="概述"><a href="#概述" class="headerlink" title="概述"></a>概述</h2><p>根据关键码值而直接进行访问的数据结构。它通过把关键码值映射到表中一个位置来访问记录，以加快查找的速度。</p>
+<p>哈希相比数组和链表，寻址容易，插入删除也容易。</p>
+<h3 id="速度快的原理"><a href="#速度快的原理" class="headerlink" title="速度快的原理"></a>速度快的原理</h3><p>哈希在知道 key 值以后，可以直接计算出这个元素在集合中的位置，省略了繁复的查找过程。</p>
+
+    </div>
+
+    
+    
+    
+
+      <footer class="post-footer">
+
+        
+
+
+        
+    <div class="post-nav">
+      <div class="post-nav-item">
+    <a href="/2022/06/15/Android-%E7%89%88%E6%9C%AC%E5%8F%98%E6%9B%B4%E6%94%B9%E5%8A%A8/" rel="prev" title="Android 版本变更改动">
+      <i class="fa fa-chevron-left"></i> Android 版本变更改动
+    </a></div>
+      <div class="post-nav-item"></div>
+    </div>
+      </footer>
+    
+  </article>
+  
+  
+  
+
+
+
+          </div>
+          
+
+<script>
+  window.addEventListener('tabs:register', () => {
+    let { activeClass } = CONFIG.comments;
+    if (CONFIG.comments.storage) {
+      activeClass = localStorage.getItem('comments_active') || activeClass;
+    }
+    if (activeClass) {
+      let activeTab = document.querySelector(`a[href="#comment-${activeClass}"]`);
+      if (activeTab) {
+        activeTab.click();
+      }
+    }
+  });
+  if (CONFIG.comments.storage) {
+    window.addEventListener('tabs:click', event => {
+      if (!event.target.matches('.tabs-comment .tab-content .tab-pane')) return;
+      let commentClass = event.target.classList[1];
+      localStorage.setItem('comments_active', commentClass);
+    });
+  }
+</script>
+
+        </div>
+          
+  
+  <div class="toggle sidebar-toggle">
+    <span class="toggle-line toggle-line-first"></span>
+    <span class="toggle-line toggle-line-middle"></span>
+    <span class="toggle-line toggle-line-last"></span>
+  </div>
+
+  <aside class="sidebar">
+    <div class="sidebar-inner">
+
+      <ul class="sidebar-nav motion-element">
+        <li class="sidebar-nav-toc">
+          文章目录
+        </li>
+        <li class="sidebar-nav-overview">
+          站点概览
+        </li>
+      </ul>
+
+      <!--noindex-->
+      <div class="post-toc-wrap sidebar-panel">
+          <div class="post-toc motion-element"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#%E6%95%B0%E7%BB%84"><span class="nav-number">1.</span> <span class="nav-text">数组</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#%E4%BC%98%E7%82%B9"><span class="nav-number">1.1.</span> <span class="nav-text">优点</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E7%BC%BA%E7%82%B9"><span class="nav-number">1.2.</span> <span class="nav-text">缺点</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#Java-%E7%9A%84-ArrayList"><span class="nav-number">1.3.</span> <span class="nav-text">Java 的 ArrayList</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#%E4%BC%98%E7%BC%BA%E7%82%B9"><span class="nav-number">1.3.1.</span> <span class="nav-text">优缺点</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E8%87%AA%E5%8A%A8%E6%89%A9%E5%AE%B9"><span class="nav-number">1.3.2.</span> <span class="nav-text">自动扩容</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#add-addAll"><span class="nav-number">1.3.3.</span> <span class="nav-text">add(), addAll()</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#set-%E4%B8%8E-get-%E4%B8%8D%E5%A4%9A%E8%B5%98%E8%BF%B0"><span class="nav-number">1.3.4.</span> <span class="nav-text">set() 与 get() 不多赘述</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#remove"><span class="nav-number">1.3.5.</span> <span class="nav-text">remove()</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#trimToSize"><span class="nav-number">1.3.6.</span> <span class="nav-text">trimToSize()</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#Fail-Fast-%E6%9C%BA%E5%88%B6"><span class="nav-number">1.3.7.</span> <span class="nav-text">Fail-Fast 机制</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#Array-%E4%B8%8E-ArrayList-%E7%9A%84%E5%8C%BA%E5%88%AB"><span class="nav-number">1.3.8.</span> <span class="nav-text">Array 与 ArrayList 的区别</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#Vector-%E7%B1%BB"><span class="nav-number">1.4.</span> <span class="nav-text">Vector 类</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#%E8%87%AA%E5%8A%A8%E6%89%A9%E5%AE%B9-1"><span class="nav-number">1.4.1.</span> <span class="nav-text">自动扩容</span></a></li></ol></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#%E9%93%BE%E8%A1%A8"><span class="nav-number">2.</span> <span class="nav-text">链表</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#%E4%BC%98%E7%82%B9-1"><span class="nav-number">2.1.</span> <span class="nav-text">优点</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E7%BC%BA%E7%82%B9-1"><span class="nav-number">2.2.</span> <span class="nav-text">缺点</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#Java-%E7%9A%84-LinkedList"><span class="nav-number">2.3.</span> <span class="nav-text">Java 的 LinkedList</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#%E5%BA%95%E5%B1%82%E6%95%B0%E6%8D%AE%E7%BB%93%E6%9E%84"><span class="nav-number">2.3.1.</span> <span class="nav-text">底层数据结构</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#getFirst-getLast"><span class="nav-number">2.3.2.</span> <span class="nav-text">getFirst(), getLast()</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#removeFirst-removeLast-remove-e-remove-index"><span class="nav-number">2.3.3.</span> <span class="nav-text">removeFirst(), removeLast(), remove(e), remove(index)</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#add"><span class="nav-number">2.3.4.</span> <span class="nav-text">add()</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#clear"><span class="nav-number">2.3.5.</span> <span class="nav-text">clear()</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E6%9F%A5%E6%89%BE"><span class="nav-number">2.3.6.</span> <span class="nav-text">查找</span></a></li></ol></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#%E6%A0%88%E5%92%8C%E9%98%9F%E5%88%97"><span class="nav-number">3.</span> <span class="nav-text">栈和队列</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#%E6%A0%88"><span class="nav-number">3.1.</span> <span class="nav-text">栈</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E9%98%9F%E5%88%97"><span class="nav-number">3.2.</span> <span class="nav-text">队列</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#Deque-%E4%B8%8E-ArrayDeque"><span class="nav-number">3.3.</span> <span class="nav-text">Deque 与 ArrayDeque</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#addFirst"><span class="nav-number">3.3.1.</span> <span class="nav-text">addFirst()</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#addLast"><span class="nav-number">3.3.2.</span> <span class="nav-text">addLast()</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#peekFirst-amp-amp-peekLast"><span class="nav-number">3.3.3.</span> <span class="nav-text">peekFirst() &amp;&amp; peekLast()</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#pollFirst"><span class="nav-number">3.3.4.</span> <span class="nav-text">pollFirst()</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#pollLast"><span class="nav-number">3.3.5.</span> <span class="nav-text">pollLast()</span></a></li></ol></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#%E6%A0%91"><span class="nav-number">4.</span> <span class="nav-text">树</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#%E5%93%88%E5%B8%8C"><span class="nav-number">5.</span> <span class="nav-text">哈希</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#%E6%A6%82%E8%BF%B0"><span class="nav-number">5.1.</span> <span class="nav-text">概述</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#%E9%80%9F%E5%BA%A6%E5%BF%AB%E7%9A%84%E5%8E%9F%E7%90%86"><span class="nav-number">5.1.1.</span> <span class="nav-text">速度快的原理</span></a></li></ol></li></ol></li></ol></div>
+      </div>
+      <!--/noindex-->
+
+      <div class="site-overview-wrap sidebar-panel">
+        <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+    <img class="site-author-image" itemprop="image" alt="希夏"
+      src="/images/avatar.jpg">
+  <p class="site-author-name" itemprop="name">希夏</p>
+  <div class="site-description" itemprop="description">我还在幻想着，能找到一个喜欢的人</div>
+</div>
+<div class="site-state-wrap motion-element">
+  <nav class="site-state">
+      <div class="site-state-item site-state-posts">
+          <a href="/archives/">
+        
+          <span class="site-state-item-count">21</span>
+          <span class="site-state-item-name">日志</span>
+        </a>
+      </div>
+      <div class="site-state-item site-state-categories">
+            <a href="/categories/">
+          
+        <span class="site-state-item-count">5</span>
+        <span class="site-state-item-name">分类</span></a>
+      </div>
+  </nav>
+</div>
+
+
+
+      </div>
+
+    </div>
+  </aside>
+  <div id="sidebar-dimmer"></div>
+
+
+      </div>
+    </main>
+
+    <footer class="footer">
+      <div class="footer-inner">
+        
+
+        
+
+<div class="copyright">
+  
+  &copy; 
+  <span itemprop="copyrightYear">2022</span>
+  <span class="with-love">
+    <i class="fa fa-heart"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">希夏</span>
+    <span class="post-meta-divider">|</span>
+    <span class="post-meta-item-icon">
+      <i class="fa fa-chart-area"></i>
+    </span>
+    <span title="站点总字数">149k</span>
+    <span class="post-meta-divider">|</span>
+    <span class="post-meta-item-icon">
+      <i class="fa fa-coffee"></i>
+    </span>
+    <span title="站点阅读时长">2:15</span>
+</div>
+  <div class="powered-by">由 <a href="https://hexo.io/" class="theme-link" rel="noopener" target="_blank">Hexo</a> & <a href="https://mist.theme-next.org/" class="theme-link" rel="noopener" target="_blank">NexT.Mist</a> 强力驱动
+  </div>
+
+        
+
+
+
+
+
+
+
+
+      </div>
+    </footer>
+  </div>
+
+  
+  <script src="/lib/anime.min.js"></script>
+  <script src="/lib/velocity/velocity.min.js"></script>
+  <script src="/lib/velocity/velocity.ui.min.js"></script>
+
+<script src="/js/utils.js"></script>
+
+<script src="/js/motion.js"></script>
+
+
+<script src="/js/schemes/muse.js"></script>
+
+
+<script src="/js/next-boot.js"></script>
+
+
+
+
+  
+
+
+
+
+  
+<script src="/js/local-search.js"></script>
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+
+  
+
+  
+
+</body>
+</html>
